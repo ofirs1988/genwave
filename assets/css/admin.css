@@ -1,0 +1,587 @@
+@charset "UTF-8";
+section.gen-wave {
+  margin: 50px;
+  /* CSS להסתרת האייקון בזמן הטעינה */
+  /* עיצוב ייחודי ל-checkbox */
+}
+section.gen-wave table {
+  width: 100%;
+  margin: auto;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+section.gen-wave th, section.gen-wave td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+section.gen-wave th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+  color: #333;
+}
+section.gen-wave tr:hover {
+  background-color: #f1f1f1;
+}
+section.gen-wave tr:last-child td {
+  border-bottom: none;
+}
+section.gen-wave .wrap {
+  background: #ffffff;
+  padding: 20px 25px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  position: relative;
+}
+section.gen-wave .wrap::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+}
+section.gen-wave h1 {
+  color: #2d3748;
+  font-size: 20px;
+  font-weight: 700;
+  border-bottom: none;
+  padding-bottom: 8px;
+  margin-bottom: 18px;
+  position: relative;
+}
+section.gen-wave h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  border-radius: 2px;
+}
+section.gen-wave .form-label {
+  font-weight: 600;
+  color: #4a5568;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+section.gen-wave .form-label i {
+  color: #667eea;
+  margin-right: 5px;
+  font-size: 12px;
+}
+section.gen-wave .form-control {
+  margin-bottom: 10px;
+  border-radius: 6px;
+  border: 1.5px solid #e2e8f0;
+  padding: 8px 12px;
+  transition: all 0.2s ease;
+  background-color: #ffffff;
+  font-size: 13px;
+}
+section.gen-wave .form-control:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.08);
+  outline: none;
+}
+section.gen-wave .btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  color: #ffffff;
+  padding: 7px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(102, 126, 234, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+section.gen-wave .btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #5f72bd 0%, #9921e8 100%);
+  transition: left 0.3s ease;
+}
+section.gen-wave .btn-primary:hover::before {
+  left: 0;
+}
+section.gen-wave .btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(118, 75, 162, 0.3);
+}
+section.gen-wave .btn-primary span {
+  position: relative;
+  z-index: 1;
+}
+section.gen-wave .alert {
+  font-size: 14px;
+  padding: 10px 15px;
+  margin-top: 10px;
+}
+section.gen-wave .loader {
+  border: 2px solid #f3f3f3; /* צבע רקע */
+  border-top: 2px solid #3498db; /* צבע השוליים */
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-left: 5px; /* מרווח בין הטקסט לאייקון */
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+section.gen-wave .insta-icon {
+  display: inline-block;
+  margin-left: 5px;
+}
+section.gen-wave .hide-icon {
+  display: none;
+}
+@supports (-webkit-appearance: none) or (-moz-appearance: none) {
+  section.gen-wave input[type=checkbox],
+  section.gen-wave input[type=radio] {
+    --active: #275EFE;
+    --active-inner: #fff;
+    --focus: 2px rgba(39, 94, 254, .3);
+    --border: #BBC1E1;
+    --border-hover: #275EFE;
+    --background: #fff;
+    --disabled: #F6F8FF;
+    --disabled-inner: #E1E6F9;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    height: 21px;
+    outline: none;
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    margin: 0;
+    cursor: pointer;
+    border: 1px solid var(--bc, var(--border));
+    background: var(--b, var(--background));
+    transition: background 0.3s, border-color 0.3s, box-shadow 0.2s;
+  }
+  section.gen-wave input[type=checkbox]:after,
+  section.gen-wave input[type=radio]:after {
+    content: "";
+    display: block;
+    left: 0;
+    top: 0;
+    position: absolute;
+    transition: transform var(--d-t, 0.3s) var(--d-t-e, ease), opacity var(--d-o, 0.2s);
+  }
+  section.gen-wave input[type=checkbox]:checked,
+  section.gen-wave input[type=radio]:checked {
+    --b: var(--active);
+    --bc: var(--active);
+    --d-o: .3s;
+    --d-t: .6s;
+    --d-t-e: cubic-bezier(.2, .85, .32, 1.2);
+  }
+  section.gen-wave input[type=checkbox]:disabled,
+  section.gen-wave input[type=radio]:disabled {
+    --b: var(--disabled);
+    cursor: not-allowed;
+    opacity: 0.9;
+  }
+  section.gen-wave input[type=checkbox]:disabled:checked,
+  section.gen-wave input[type=radio]:disabled:checked {
+    --b: var(--disabled-inner);
+    --bc: var(--border);
+  }
+  section.gen-wave input[type=checkbox]:disabled + label,
+  section.gen-wave input[type=radio]:disabled + label {
+    cursor: not-allowed;
+  }
+  section.gen-wave input[type=checkbox]:hover:not(:checked):not(:disabled),
+  section.gen-wave input[type=radio]:hover:not(:checked):not(:disabled) {
+    --bc: var(--border-hover);
+  }
+  section.gen-wave input[type=checkbox]:focus,
+  section.gen-wave input[type=radio]:focus {
+    box-shadow: 0 0 0 var(--focus);
+  }
+  section.gen-wave input[type=checkbox]:not(.switch),
+  section.gen-wave input[type=radio]:not(.switch) {
+    width: 21px;
+  }
+  section.gen-wave input[type=checkbox]:not(.switch):after,
+  section.gen-wave input[type=radio]:not(.switch):after {
+    opacity: var(--o, 0);
+  }
+  section.gen-wave input[type=checkbox]:not(.switch):checked,
+  section.gen-wave input[type=radio]:not(.switch):checked {
+    --o: 1;
+  }
+  section.gen-wave input[type=checkbox] + label,
+  section.gen-wave input[type=radio] + label {
+    font-size: 14px;
+    line-height: 21px;
+    display: inline-block;
+    vertical-align: top;
+    cursor: pointer;
+    margin-left: 4px;
+  }
+  section.gen-wave input[type=checkbox]:not(.switch) {
+    border-radius: 7px;
+  }
+  section.gen-wave input[type=checkbox]:not(.switch):after {
+    width: 5px;
+    height: 9px;
+    border: 2px solid var(--active-inner);
+    border-top: 0;
+    border-left: 0;
+    left: 7px;
+    top: 4px;
+    transform: rotate(var(--r, 20deg));
+  }
+  section.gen-wave input[type=checkbox]:not(.switch):checked {
+    --r: 43deg;
+  }
+  section.gen-wave input[type=checkbox].switch {
+    width: 38px;
+    border-radius: 11px;
+  }
+  section.gen-wave input[type=checkbox].switch:after {
+    left: 2px;
+    top: 2px;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    background: var(--ab, var(--border));
+    transform: translateX(var(--x, 0));
+  }
+  section.gen-wave input[type=checkbox].switch:checked {
+    --ab: var(--active-inner);
+    --x: 17px;
+  }
+  section.gen-wave input[type=checkbox].switch:disabled:not(:checked):after {
+    opacity: 0.6;
+  }
+  section.gen-wave input[type=radio] {
+    border-radius: 50%;
+  }
+  section.gen-wave input[type=radio]:after {
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    background: var(--active-inner);
+    opacity: 0;
+    transform: scale(var(--s, 0.7));
+  }
+  section.gen-wave input[type=radio]:checked {
+    --s: .5;
+  }
+}
+
+.aiaw-btn {
+  margin: 0;
+}
+.aiaw-btn a {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  border: 0;
+  padding: 7px 16px;
+  line-height: 1.4;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 13px;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  will-change: transform;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.aiaw-success {
+  margin: auto;
+}
+.aiaw-success a {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(17, 153, 142, 0.25);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.aiaw-success a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #06beb6 0%, #48ff9a 100%);
+  transition: left 0.3s ease;
+  z-index: 0;
+}
+.aiaw-success a:hover::before {
+  left: 0;
+}
+.aiaw-success a:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(56, 239, 125, 0.35);
+  color: #ffffff !important;
+}
+.aiaw-success a i,
+.aiaw-success a span {
+  position: relative;
+  z-index: 1;
+}
+.aiaw-success a i {
+  font-size: 13px;
+}
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.aiaw-default {
+  margin: auto;
+}
+.aiaw-default a {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(102, 126, 234, 0.25);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.aiaw-default a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #5f72bd 0%, #9921e8 100%);
+  transition: left 0.3s ease;
+  z-index: 0;
+}
+.aiaw-default a:hover::before {
+  left: 0;
+}
+.aiaw-default a:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(118, 75, 162, 0.35);
+  color: #ffffff !important;
+}
+.aiaw-default a i,
+.aiaw-default a span {
+  position: relative;
+  z-index: 1;
+}
+.aiaw-default i {
+  font-size: 13px;
+  transition: transform 0.2s ease;
+}
+.aiaw-default a:hover i {
+  transform: translateX(3px);
+}
+
+/* Modern Disconnect Button */
+.aiaw-danger {
+  margin: auto;
+}
+.aiaw-danger a {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(245, 87, 108, 0.25);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.aiaw-danger a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #fa709a 0%, #fe4a49 100%);
+  transition: left 0.3s ease;
+  z-index: 0;
+}
+.aiaw-danger a:hover::before {
+  left: 0;
+}
+.aiaw-danger a:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(254, 74, 73, 0.4);
+  color: #ffffff !important;
+}
+.aiaw-danger a i,
+.aiaw-danger a span {
+  position: relative;
+  z-index: 1;
+}
+.aiaw-danger a i {
+  font-size: 13px;
+  transition: transform 0.2s;
+}
+.aiaw-danger a:hover i {
+  transform: rotate(10deg);
+}
+
+/* Modern Refresh Tokens Button - Override */
+.aiaw-btn:not(.aiaw-success):not(.aiaw-default):not(.aiaw-danger) a {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #ffffff;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.aiaw-btn a::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+.aiaw-btn a:hover::after {
+  width: 300px;
+  height: 300px;
+}
+.aiaw-btn a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+.aiaw-btn a svg {
+  transition: transform 0.6s ease;
+}
+.aiaw-btn a:hover svg {
+  transform: rotate(180deg);
+}
+
+/* Button Container Spacing */
+.mb-3.row {
+  margin-bottom: 1.5rem !important;
+}
+
+/* Smooth fade-in animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+section.gen-wave .mb-3.row {
+  animation: fadeInUp 0.6s ease-out;
+  animation-fill-mode: both;
+}
+
+section.gen-wave .mb-3.row:nth-child(1) {
+  animation-delay: 0.1s;
+}
+section.gen-wave .mb-3.row:nth-child(2) {
+  animation-delay: 0.2s;
+}
+section.gen-wave .mb-3.row:nth-child(3) {
+  animation-delay: 0.3s;
+}
+section.gen-wave .mb-3.row:nth-child(4) {
+  animation-delay: 0.4s;
+}
+section.gen-wave .mb-3.row:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+[lang=he-IL] {
+  direction: rtl;
+  font-family: Arial, sans-serif;
+}
+[lang=he-IL] .gen-wave {
+  text-align: right;
+}
+[lang=he-IL] th, [lang=he-IL] td {
+  text-align: right !important;
+}
+
+.ai-pro {
+  padding: 20px;
+}
+.ai-pro h1 {
+  color: #333;
+}
+.ai-pro .ant-card {
+  color: #fff !important;
+}
+.ai-pro .ant-card-head {
+  background: #d02f7b;
+  color: white;
+}
+.ai-pro .ant-card-head h2 {
+  color: white;
+}
+.ai-pro .ant-card-body {
+  background: #0e0e0e;
+}
+.ai-pro .ant-card-body h1, .ai-pro .ant-card-body h2, .ai-pro .ant-card-body h3, .ai-pro .ant-card-body h4, .ai-pro .ant-card-body h5, .ai-pro .ant-card-body h6 {
+  color: #fff;
+}
+.ai-pro .chart-container {
+  margin-top: 20px;
+}
+.ai-pro .chart-container .chart-title {
+  text-align: center;
+}
+
+.system-messages {
+  display: none;
+  transition: opacity 0.3s ease; /* אנימציה להסרה */
+}
+.system-messages .loader {
+  border: 2px solid #f3f3f3; /* צבע רקע */
+  border-top: 2px solid #3498db; /* צבע טעינה */
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-right: 5px; /* רווח בין הטקסט ל-loader */
+  vertical-align: middle;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

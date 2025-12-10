@@ -1,0 +1,451 @@
+/* AI Content Generator Popup Styles */
+
+.ai-generator-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100000;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.ai-generator-popup {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Header */
+.ai-popup-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ai-popup-header h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+}
+
+.ai-close-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #999;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.ai-close-btn:hover {
+    background: #f5f5f5;
+    color: #333;
+}
+
+/* Body */
+.ai-popup-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+}
+
+/* Error Message */
+.ai-error-message {
+    background: #fff3e0;
+    border: 1px solid #ffcc80;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    color: #e65100;
+    font-size: 14px;
+}
+
+/* Success Message */
+.ai-success-message {
+    position: fixed;
+    top: 32px;
+    right: 32px;
+    background: #4caf50;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+    z-index: 100001;
+    animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Step: Select Options */
+.ai-step-select h3 {
+    margin: 0 0 20px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.ai-options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+}
+
+.ai-option-card {
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    position: relative;
+}
+
+.ai-option-card:hover {
+    border-color: #1890ff;
+    box-shadow: 0 4px 12px rgba(24, 144, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+.ai-option-card.selected {
+    border-color: #1890ff;
+    background: #f0f8ff;
+}
+
+.ai-option-icon {
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+    border-radius: 8px;
+}
+
+.ai-option-card.selected .ai-option-icon {
+    background: #e6f4ff;
+}
+
+.ai-option-content {
+    flex: 1;
+}
+
+.ai-option-content h4 {
+    margin: 0 0 4px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.ai-option-content p {
+    margin: 0;
+    font-size: 12px;
+    color: #666;
+    line-height: 1.4;
+}
+
+.ai-option-checkbox {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+}
+
+.ai-option-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* Step: Configure */
+.ai-step-configure h3 {
+    margin: 0 0 20px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.ai-config-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.ai-config-section {
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.ai-config-section h4 {
+    margin: 0 0 16px 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ai-config-field {
+    margin-bottom: 16px;
+}
+
+.ai-config-field:last-child {
+    margin-bottom: 0;
+}
+
+.ai-config-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #555;
+}
+
+.ai-config-field input[type="range"] {
+    width: 70%;
+    margin-right: 12px;
+}
+
+.ai-config-field span {
+    font-size: 13px;
+    color: #1890ff;
+    font-weight: 500;
+}
+
+.ai-config-field textarea {
+    width: 100%;
+    min-height: 60px;
+    padding: 8px 12px;
+    border: 1px solid #d0d0d0;
+    border-radius: 4px;
+    font-size: 13px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.ai-config-field textarea:focus {
+    outline: none;
+    border-color: #1890ff;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+}
+
+/* Token Info */
+.ai-token-info {
+    margin-top: 20px;
+    padding: 16px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 8px;
+    color: white;
+}
+
+.token-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+.token-summary span {
+    font-weight: 500;
+}
+
+/* Step: Results */
+.ai-step-result h3 {
+    margin: 0 0 20px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.ai-results-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.ai-result-item {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.ai-result-header {
+    background: #f5f5f5;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ai-result-header h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ai-apply-btn {
+    background: #4caf50;
+    color: white;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ai-apply-btn:hover {
+    background: #45a049;
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+.ai-result-content {
+    padding: 16px;
+    background: white;
+}
+
+.ai-result-content pre {
+    margin: 0;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    color: #333;
+}
+
+/* Footer */
+.ai-popup-footer {
+    padding: 16px 24px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+/* Buttons */
+.ai-btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ai-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.ai-btn-primary {
+    background: #1890ff;
+    color: white;
+}
+
+.ai-btn-primary:hover:not(:disabled) {
+    background: #40a9ff;
+    box-shadow: 0 2px 8px rgba(24, 144, 255, 0.3);
+}
+
+.ai-btn-secondary {
+    background: #f5f5f5;
+    color: #333;
+}
+
+.ai-btn-secondary:hover:not(:disabled) {
+    background: #e8e8e8;
+}
+
+/* Spinner */
+.ai-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .ai-generator-popup {
+        width: 95%;
+        max-height: 90vh;
+        margin: 20px;
+    }
+
+    .ai-options-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ai-popup-body {
+        padding: 16px;
+    }
+
+    .token-summary {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+}

@@ -1,0 +1,394 @@
+# Copyright (C) 2025 Gen Wave
+# This file is distributed under the same license as the Gen Wave plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Gen Wave 1.1.0\n"
+"Report-Msgid-Bugs-To: https://genwave.ai\n"
+"POT-Creation-Date: 2025-11-01 00:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Claude Code\n"
+
+#: genwave.php:29
+msgid "Gen Wave - AI Content Generation"
+msgstr ""
+
+#: src/MetaBox.php:62
+msgid "Product"
+msgstr ""
+
+#: src/MetaBox.php:62
+msgid "Post"
+msgstr ""
+
+#: src/MetaBox.php:76
+msgid "Connection Required"
+msgstr ""
+
+#: src/MetaBox.php:78
+msgid "Please connect your Gen Wave account to use AI content generation."
+msgstr ""
+
+#: src/MetaBox.php:84
+msgid "Connect Account"
+msgstr ""
+
+#: src/MetaBox.php:101
+msgid "Generate AI Content"
+msgstr ""
+
+#: src/MetaBox.php:109
+msgid "Show Options"
+msgstr ""
+
+#: src/MetaBox.php:117
+#, php-format
+msgid "Use Gen Wave to automatically generate content for this %s."
+msgstr ""
+
+#: src/MetaBox.php:125
+msgid "Language:"
+msgstr ""
+
+#: src/MetaBox.php:128
+msgid "Loading languages..."
+msgstr ""
+
+#: src/MetaBox.php:136
+msgid "Content Length:"
+msgstr ""
+
+#: src/MetaBox.php:139
+msgid "Short (~500 characters)"
+msgstr ""
+
+#: src/MetaBox.php:140
+msgid "Medium (~1000 characters)"
+msgstr ""
+
+#: src/MetaBox.php:148
+msgid "Instructions for AI:"
+msgstr ""
+
+#: src/MetaBox.php:154
+msgid "Enter instructions for the AI to generate content... (max 1000 characters)"
+msgstr ""
+
+#: src/MetaBox.php:157
+msgid "characters"
+msgstr ""
+
+#: src/MetaBox.php:165
+msgid "Generation Method:"
+msgstr ""
+
+#: src/MetaBox.php:174
+msgid "Generate Title"
+msgstr ""
+
+#: src/MetaBox.php:178
+msgid "Create product title using AI"
+msgstr ""
+
+#: src/MetaBox.php:179
+msgid "Create post title using AI"
+msgstr ""
+
+#: src/MetaBox.php:192
+msgid "Generate Short Description"
+msgstr ""
+
+#: src/MetaBox.php:194
+msgid "Create product short description using AI"
+msgstr ""
+
+#: src/MetaBox.php:205
+msgid "Generate Description"
+msgstr ""
+
+#: src/MetaBox.php:209
+msgid "Create full product description using AI"
+msgstr ""
+
+#: src/MetaBox.php:210
+msgid "Create full post content using AI"
+msgstr ""
+
+#: src/MetaBox.php:226
+msgid "Note:"
+msgstr ""
+
+#: src/MetaBox.php:227
+#, php-format
+msgid "For advanced features like bulk generation, multiple AI providers, and real-time streaming, upgrade to %s."
+msgstr ""
+
+#: src/MetaBox.php:229
+msgid "Gen Wave Pro"
+msgstr ""
+
+#: src/MetaBox.php:242
+msgid "Instructions Required"
+msgstr ""
+
+#: src/MetaBox.php:250
+msgid "To generate"
+msgstr ""
+
+#: src/MetaBox.php:250
+msgid "content"
+msgstr ""
+
+#: src/MetaBox.php:250
+msgid "please provide instructions for the AI."
+msgstr ""
+
+#: src/MetaBox.php:256
+msgid "Examples:"
+msgstr ""
+
+#: src/MetaBox.php:259
+msgid "\"Write a catchy title about sustainable gardening tips\""
+msgstr ""
+
+#: src/MetaBox.php:260
+msgid "\"Create a professional description for a WordPress development service\""
+msgstr ""
+
+#: src/MetaBox.php:261
+msgid "\"Generate an engaging product description for organic coffee beans\""
+msgstr ""
+
+#: src/MetaBox.php:262
+msgid "\"Write content about the benefits of meditation for beginners\""
+msgstr ""
+
+#: src/MetaBox.php:267
+msgid "Tip:"
+msgstr ""
+
+#: src/MetaBox.php:267
+msgid "The more specific your instructions, the better the AI-generated content will be."
+msgstr ""
+
+#: src/MetaBox.php:274
+msgid "Got it!"
+msgstr ""
+
+#: src/MetaBox.php:290
+msgid "Generated Content"
+msgstr ""
+
+#: src/MetaBox.php:300
+msgid "Input Tokens"
+msgstr ""
+
+#: src/MetaBox.php:304
+msgid "Output Tokens"
+msgstr ""
+
+#: src/MetaBox.php:308
+msgid "Total Tokens"
+msgstr ""
+
+#: src/MetaBox.php:312
+msgid "Token Cost"
+msgstr ""
+
+#: src/MetaBox.php:321
+msgid "Generated Content:"
+msgstr ""
+
+#: src/MetaBox.php:324
+msgid "Loading..."
+msgstr ""
+
+#: src/MetaBox.php:331
+msgid "Cancel"
+msgstr ""
+
+#: src/MetaBox.php:334
+msgid "Update Post"
+msgstr ""
+
+#: views/settings.php:34
+msgid "Gen Wave Plugin Settings"
+msgstr ""
+
+#: views/settings.php:48
+msgid "License Key"
+msgstr ""
+
+#: views/settings.php:52
+msgid "Loading..."
+msgstr ""
+
+#: views/settings.php:62
+msgid "Login has been verified"
+msgstr ""
+
+#: views/settings.php:76
+msgid "Successfully connected"
+msgstr ""
+
+#: views/settings.php:90
+msgid "Refresh Tokens"
+msgstr ""
+
+#: views/settings.php:99
+msgid "Disconnect"
+msgstr ""
+
+#: views/settings.php:112
+msgid "Update License"
+msgstr ""
+
+#: views/settings.php:112
+msgid "Save License"
+msgstr ""
+
+#: src/Handlers/GenerationHandler.php:34
+msgid "Security verification failed. Please refresh the page and try again."
+msgstr ""
+
+#: src/Handlers/GenerationHandler.php:44
+msgid "Valid Post ID is required"
+msgstr ""
+
+#: src/Handlers/GenerationHandler.php:53
+#, php-format
+msgid "Invalid generation method. Allowed: %s"
+msgstr ""
+
+#: src/Handlers/GenerationHandler.php:60
+msgid "Invalid language parameter"
+msgstr ""
+
+#: src/Handlers/GenerationHandler.php:68
+msgid "Content length must be between 100 and 10000 characters"
+msgstr ""
+
+#: src/Handlers/GenerationHandler.php:75
+msgid "Instructions cannot exceed 1000 characters"
+msgstr ""
+
+#: src/Handlers/GenerationHandler.php:82
+msgid "Post not found"
+msgstr ""
+
+#: src/Handlers/GenerationHandler.php:89
+msgid "You do not have permission to edit this post"
+msgstr ""
+
+#: src/Handlers/GenerationHandler.php:96
+msgid "Invalid post type"
+msgstr ""
+
+#: src/Handlers/GenerationHandler.php:145
+msgid "Failed to generate job ID. Please try again."
+msgstr ""
+
+#: src/Handlers/GenerationHandler.php:166
+msgid "Failed to create generation request"
+msgstr ""
+
+#: src/Handlers/GenerationHandler.php:190
+msgid "Failed to create post request"
+msgstr ""
+
+#: src/Handlers/GenerationHandler.php:219
+msgid "Content generated successfully"
+msgstr ""
+
+#: src/Handlers/GenerationHandler.php:229
+#, php-format
+msgid "Error generating content: %s"
+msgstr ""
+
+#: src/Handlers/GenerationHandler.php:245
+msgid "Security verification failed"
+msgstr ""
+
+#: src/Handlers/GenerationHandler.php:254
+msgid "Valid Post request ID is required"
+msgstr ""
+
+#: src/Handlers/GenerationHandler.php:268
+msgid "Request not found"
+msgstr ""
+
+#: src/Handlers/GenerationHandler.php:275
+msgid "You do not have permission to update this content"
+msgstr ""
+
+#: src/Handlers/GenerationHandler.php:294
+msgid "Post marked as converted"
+msgstr ""
+
+#: src/Handlers/GenerationHandler.php:297
+msgid "Failed to update conversion status"
+msgstr ""
+
+#: src/Handlers/GenerationHandler.php:302
+#, php-format
+msgid "Error: %s"
+msgstr ""
+
+#: src/Handlers/ProductHandler.php:29
+msgid "Insufficient permissions"
+msgstr ""
+
+#: src/Handlers/PollingHandler.php:38
+msgid "Security verification failed"
+msgstr ""
+
+#: src/Handlers/PollingHandler.php:45
+msgid "No response data provided"
+msgstr ""
+
+#: src/Handlers/PollingHandler.php:54
+msgid "Response data exceeds maximum size"
+msgstr ""
+
+#: src/Handlers/PollingHandler.php:63
+#, php-format
+msgid "Invalid JSON format: %s"
+msgstr ""
+
+#: src/Handlers/PollingHandler.php:72
+msgid "Response data must be an array"
+msgstr ""
+
+#: src/Handlers/PollingHandler.php:79
+msgid "Response data is empty"
+msgstr ""
+
+#: src/Handlers/PollingHandler.php:86
+msgid "Cannot process more than 100 posts at once"
+msgstr ""
+
+#: src/Global/AiRestApi.php:64
+msgid "You do not have permission to access this endpoint"
+msgstr ""
+
+#: src/Global/AiRestApi.php:160
+msgid "Response data saved successfully"
+msgstr ""
+
+#: src/Global/AiRestApi.php:162
+msgid "Invalid JSON in response"
+msgstr ""
+
+#: src/Global/AiRestApi.php:165
+msgid "Missing response key in data"
+msgstr ""
+
+#: src/Global/AiRestApi.php:169
+msgid "No data received"
+msgstr ""
