@@ -1,10 +1,10 @@
-=== Gen Wave ===
+=== Genwave - AI Generate ===
 Contributors: ofirs1988
 Tags: ai, authentication, license-management, api, content-generation
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,7 +23,7 @@ This free plugin connects your site to the Gen Wave platform and includes basic 
 * **Account Connection** – Securely connect to your Gen Wave account
 * **Single Content Generation** – Generate AI content for individual posts/products
 * **Token Balance Tracking** – Monitor your usage and remaining tokens
-* **Multi-language Support** – Generate content in English, Hebrew, Arabic, Russian, French, and Chinese
+* **Multi-language Support** – Generate content in any language
 
 = Gen Wave Pro Features =
 
@@ -100,7 +100,7 @@ Gen Wave uses a token system. You purchase tokens and use them when generating c
 
 = What languages are supported? =
 
-Gen Wave supports content generation in English, Hebrew, Arabic, Russian, French, and Chinese.
+Genwave supports content generation in any language. The plugin includes a dropdown with 28 popular languages for easy selection, but the AI can generate content in any language you specify.
 
 = Can I use Gen Wave with WooCommerce? =
 
@@ -129,6 +129,27 @@ Yes, the plugin works on multisite installations. Each site needs its own Gen Wa
 
 == Changelog ==
 
+= 1.0.3 =
+**New Features:**
+* New React-based Dashboard page with modern UI
+* New Generate page for content generation with item selection
+* Custom instructions field - tell the AI exactly what to write about
+* Multi-language support with 28 preset languages (works with any language)
+* MetaBox improvements: subtle top button + prominent bottom generate button
+
+**Improvements:**
+* Complete UI redesign with modern card-based interface
+* Better token usage display and tracking
+* Improved API communication for custom instructions
+* Streamlined settings page with React components
+* Removed unused vendor dependencies (smaller plugin size)
+
+**Technical:**
+* Added webpack build system for React components
+* New PHP pages: Dashboard.php, Generate.php
+* Updated ApiManager for custom instructions support
+* Enhanced GenerationHandler with language parameter
+
 = 1.0.2 =
 * Improved readme documentation
 * Added clearer feature descriptions
@@ -147,6 +168,9 @@ Yes, the plugin works on multisite installations. Each site needs its own Gen Wa
 * Secure encrypted communication
 
 == Upgrade Notice ==
+
+= 1.0.3 =
+Major update: New Dashboard & Generate pages, custom instructions, multi-language support, modern UI redesign.
 
 = 1.0.2 =
 Documentation improvements - no code changes.

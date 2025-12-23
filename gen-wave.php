@@ -1,14 +1,14 @@
 <?php
 /*
-Plugin Name: Gen Wave
-Description: Core authentication and licensing infrastructure plugin. Provides secure token-based authentication (AES-256-CBC), license management, domain verification, user balance tracking, and API gateway for Gen Wave Pro integration.
-Version: 1.0.2
+ * Plugin Name: Genwave - AI Generate
+ * Description: AI-powered content generation for WordPress posts and WooCommerce products. Generate titles, descriptions, and more with custom instructions in any language.
+ * Version: 1.0.3
  * Author: Genwave.ai
  * Author URI: https://genwave.ai
-Text Domain: gen-wave
-Domain Path: /languages
-License: GPL v2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain: gen-wave
+ * Domain Path: /languages
+ * License: GPL v2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Gen Wave is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
-define( 'GEN_WAVE_VERSION', '1.0.2' );
+define( 'GEN_WAVE_VERSION', '1.0.3' );
 
 define( 'GEN_WAVE__FILE__', __FILE__ );
 define( 'GEN_WAVE_PLUGIN_BASE', plugin_basename( GEN_WAVE__FILE__ ) );
