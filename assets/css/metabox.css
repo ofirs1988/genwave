@@ -1,0 +1,308 @@
+/**
+ * Gen Wave MetaBox Styles
+ */
+
+/* Modern Generate Button - Subtle Style */
+.genwave-modern-button {
+    position: relative;
+    width: 100%;
+    padding: 10px 16px;
+    border: 1px solid #667eea;
+    border-radius: 6px;
+    background: #fff;
+    color: #667eea;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.genwave-modern-button:hover {
+    background: #667eea;
+    color: #fff;
+}
+
+.genwave-modern-button:active {
+    transform: scale(0.98);
+}
+
+.genwave-modern-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.genwave-button-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+}
+
+.genwave-button-icon {
+    font-size: 14px;
+}
+
+.genwave-button-text {
+    font-size: 13px;
+}
+
+/* Hide shine effect for subtle look */
+.genwave-button-shine {
+    display: none;
+}
+
+/* Generate button at bottom of options */
+.genwave-generate-bottom-btn {
+    width: 100%;
+    padding: 12px 20px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.genwave-generate-bottom-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.genwave-generate-bottom-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Toggle Options Button */
+.genwave-toggle-button {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #fff;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.genwave-toggle-button:hover {
+    background: #f8f9fa;
+    border-color: #667eea;
+    color: #667eea;
+}
+
+#genwave-toggle-icon {
+    transition: transform 0.3s ease;
+    margin-top: 3px;
+}
+
+#genwave-advanced-options {
+    overflow: hidden;
+}
+
+/* Loading state */
+.genwave-modern-button.loading .genwave-button-icon {
+    animation: rotation 1s linear infinite;
+}
+
+.genwave-metabox-wrapper .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.genwave-status-message.error {
+    border-left-color: #dc3232;
+    background: #fef7f7;
+}
+
+.genwave-status-message.success {
+    border-left-color: #00a32a;
+    background: #f0f6fc;
+}
+
+/* Action Message Styles */
+.genwave-action-message {
+    margin-top: 12px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: slideDown 0.3s ease-out;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid;
+}
+
+.genwave-action-message i {
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.genwave-action-message.loading {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border-left-color: #2196f3;
+    color: #1565c0;
+}
+
+.genwave-action-message.success {
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    border-left-color: #4caf50;
+    color: #2e7d32;
+}
+
+.genwave-action-message.error {
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    border-left-color: #f44336;
+    color: #c62828;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Rotation animation */
+@keyframes rotation {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(359deg); }
+}
+
+/* Modal hover effects */
+.genwave-modal-close:hover {
+    opacity: 1 !important;
+    transform: scale(1.1);
+    transition: all 0.2s ease;
+}
+
+#genwave-update-content:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+}
+
+#genwave-modal-cancel {
+    transition: all 0.2s ease;
+}
+
+#genwave-modal-cancel:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3) !important;
+    opacity: 0.9;
+}
+
+#genwave-update-content {
+    transition: all 0.2s ease;
+}
+
+#genwave-update-content:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+    opacity: 0.9;
+}
+
+/* Scrollbar styling for modal content */
+#genwave-generated-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+#genwave-generated-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+#genwave-generated-content::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+#genwave-generated-content::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Staging Animations */
+@keyframes progressSlide {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Confetti Animation */
+.genwave-confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #f0f;
+    animation: confetti-fall 3s linear forwards;
+    opacity: 1;
+}
+
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+.genwave-modal-content {
+    animation: modalZoomIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalZoomIn {
+    0% {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Instructions modal hover effects */
+.genwave-instructions-close:hover {
+    opacity: 1 !important;
+    transform: scale(1.05);
+    transition: all 0.2s ease;
+}

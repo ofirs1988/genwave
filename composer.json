@@ -1,0 +1,11 @@
+{
+    "name": "ofir/gen-wave-plugin",
+    "description": "WordPress authentication and integration core plugin. Provides secure token-based authentication system with AES-256-CBC encryption, license management infrastructure, domain verification, and API gateway. Built with Composer, PSR-4 autoloading, and modern PHP OOP patterns. Handles user token balance tracking, secure credential storage, Laravel-compatible JWT authentication, and centralized API communication layer for Gen Wave Pro plugin.",
+    "type": "wordpress-plugin",
+    "autoload": {
+        "psr-4": {
+            "GenWavePlugin\\": "src/"
+        }
+    }
+}
+ג
