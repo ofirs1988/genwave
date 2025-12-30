@@ -58,7 +58,7 @@ class Tools {
         <div class="wrap">
             <h1>
                 <span class="dashicons dashicons-admin-tools" style="margin-right: 8px;"></span>
-                Tools - Gen Wave Plugin
+                Tools - Genwave Plugin
             </h1>
 
             <?php if ($message): ?>

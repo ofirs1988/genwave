@@ -1,6 +1,6 @@
 <?php
 
-namespace GenWavePlugin\Global;
+namespace GenWavePlugin\Core;
 
 if (!defined('ABSPATH')) {
     exit;

@@ -9,8 +9,8 @@ if (!defined('ABSPATH')) {
 use GenWavePlugin\Controllers\TokensController;
 use GenWavePlugin\Controllers\VerifyLoginController;
 use GenWavePlugin\Controllers\WoocommerceController;
-use GenWavePlugin\Global\ApiManager;
-use GenWavePlugin\Global\Config;
+use GenWavePlugin\Core\ApiManager;
+use GenWavePlugin\Core\Config;
 use GenWavePlugin\Handlers\GenerationHandler;
 use GenWavePlugin\Handlers\ProductHandler;
 use GenWavePlugin\Handlers\PollingHandler;
@@ -1135,7 +1135,7 @@ class AjaxManager
             if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'genwave_generate_nonce')) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Gen Wave Generate Single: Invalid nonce');
+                    error_log('Genwave Generate Single: Invalid nonce');
                 }
                 wp_send_json_error(['message' => 'Security verification failed. Please refresh the page and try again.']);
                 return;
@@ -1143,7 +1143,7 @@ class AjaxManager
 
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Gen Wave Generate Single: Function called');
+                error_log('Genwave Generate Single: Function called');
             }
 
             // VALIDATION: Get and validate post ID
@@ -1159,7 +1159,7 @@ class AjaxManager
             if (!in_array($generation_method, $allowed_methods, true)) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Gen Wave: Invalid generation_method: {$generation_method}");
+                    error_log("Genwave: Invalid generation_method: {$generation_method}");
                 }
                 wp_send_json_error(['message' => 'Invalid generation method. Allowed: ' . implode(', ', $allowed_methods)]);
                 return;
@@ -1213,7 +1213,7 @@ class AjaxManager
             if ($length < 100 || $length > 10000) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Gen Wave: Invalid length: {$length}");
+                    error_log("Genwave: Invalid length: {$length}");
                 }
                 wp_send_json_error(['message' => 'Content length must be between 100 and 10000 characters']);
                 return;
@@ -1236,7 +1236,7 @@ class AjaxManager
             if (!current_user_can('edit_post', $post_id)) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Gen Wave: User cannot edit post {$post_id}");
+                    error_log("Genwave: User cannot edit post {$post_id}");
                 }
                 wp_send_json_error(['message' => 'You do not have permission to edit this post']);
                 return;
@@ -1405,13 +1405,13 @@ class AjaxManager
                 }
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Gen Wave: Using custom instructions with generic wrapper');
+                    error_log('Genwave: Using custom instructions with generic wrapper');
                 }
             } else {
                 $instructions_text = $this->build_instructions($generation_method, $post->post_type, $language);
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Gen Wave: Using default instructions');
+                    error_log('Genwave: Using default instructions');
                 }
             }
 
@@ -1433,7 +1433,7 @@ class AjaxManager
 
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log,WordPress.PHP.DevelopmentFunctions.error_log_print_r -- Debug mode only
-                error_log('Gen Wave: Sending request to LiteLLM: ' . print_r($request_data, true));
+                error_log('Genwave: Sending request to LiteLLM: ' . print_r($request_data, true));
             }
 
             // Call LiteLLM API
@@ -1441,7 +1441,7 @@ class AjaxManager
 
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log,WordPress.PHP.DevelopmentFunctions.error_log_print_r -- Debug mode only
-                error_log('Gen Wave: LiteLLM response: ' . print_r($response, true));
+                error_log('Genwave: LiteLLM response: ' . print_r($response, true));
             }
 
             if (isset($response['error']) && $response['error']) {
@@ -1511,7 +1511,7 @@ class AjaxManager
             if (isset($response['results']['token_usage'])) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log,WordPress.PHP.DevelopmentFunctions.error_log_print_r -- Debug mode only
-                    error_log('Gen Wave: Token usage data structure: ' . print_r($response['results']['token_usage'], true));
+                    error_log('Genwave: Token usage data structure: ' . print_r($response['results']['token_usage'], true));
                 }
                 $this->save_token_usage($job_id, $response['results']['token_usage']);
             }
@@ -1525,7 +1525,7 @@ class AjaxManager
         } catch (Exception $e) {
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Gen Wave Generate Single: Exception: ' . $e->getMessage());
+                error_log('Genwave Generate Single: Exception: ' . $e->getMessage());
             }
 
             // Update WordPress DB record as failed if we have a request ID
@@ -1645,14 +1645,14 @@ class AjaxManager
                 );
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Gen Wave: Inserted token usage for job_id '{$job_id}'");
+                    error_log("Genwave: Inserted token usage for job_id '{$job_id}'");
                 }
             }
 
         } catch (Exception $e) {
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Gen Wave: Failed to save token usage: ' . $e->getMessage());
+                error_log('Genwave: Failed to save token usage: ' . $e->getMessage());
             }
         }
     }
@@ -1681,7 +1681,7 @@ class AjaxManager
                 if ($exists == 0) {
                     if (defined('WP_DEBUG') && WP_DEBUG) {
                         // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                        error_log("Gen Wave: Generated unique job_id: {$job_id}");
+                        error_log("Genwave: Generated unique job_id: {$job_id}");
                     }
                     return $job_id;
                 }
@@ -1689,20 +1689,20 @@ class AjaxManager
                 // If collision detected, log and retry
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Gen Wave: Job ID collision detected ({$job_id}), attempt {$attempt}");
+                    error_log("Genwave: Job ID collision detected ({$job_id}), attempt {$attempt}");
                 }
 
             } catch (Exception $e) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Gen Wave: Error generating job_id: ' . $e->getMessage());
+                    error_log('Genwave: Error generating job_id: ' . $e->getMessage());
                 }
             }
         }
 
         if (defined('WP_DEBUG') && WP_DEBUG) {
             // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-            error_log('Gen Wave: Failed to generate unique job_id after ' . $max_attempts . ' attempts');
+            error_log('Genwave: Failed to generate unique job_id after ' . $max_attempts . ' attempts');
         }
         return false;
     }
@@ -1716,7 +1716,7 @@ class AjaxManager
             if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'genwave_mark_converted_nonce')) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Gen Wave Mark Converted: Invalid nonce');
+                    error_log('Genwave Mark Converted: Invalid nonce');
                 }
                 wp_send_json_error(['message' => 'Security verification failed']);
                 return;
@@ -1749,7 +1749,7 @@ class AjaxManager
             if (!current_user_can('edit_post', $record->post_id)) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Gen Wave: User cannot edit post {$record->post_id} for request {$post_request_id}");
+                    error_log("Genwave: User cannot edit post {$record->post_id} for request {$post_request_id}");
                 }
                 wp_send_json_error(['message' => 'You do not have permission to update this content']);
                 return;
@@ -1771,13 +1771,13 @@ class AjaxManager
             if ($updated !== false) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Gen Wave: Marked post_request_id {$post_request_id} as converted (is_converted=1)");
+                    error_log("Genwave: Marked post_request_id {$post_request_id} as converted (is_converted=1)");
                 }
                 wp_send_json_success(['message' => 'Post marked as converted']);
             } else {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Gen Wave: Failed to mark post_request_id {$post_request_id} as converted");
+                    error_log("Genwave: Failed to mark post_request_id {$post_request_id} as converted");
                 }
                 wp_send_json_error(['message' => 'Failed to update conversion status']);
             }
@@ -1785,7 +1785,7 @@ class AjaxManager
         } catch (Exception $e) {
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Gen Wave Mark Converted: Exception: ' . $e->getMessage());
+                error_log('Genwave Mark Converted: Exception: ' . $e->getMessage());
             }
             wp_send_json_error(['message' => 'Error: ' . $e->getMessage()]);
         }

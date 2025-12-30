@@ -1,6 +1,6 @@
 <?php
 /**
- * Gen Wave Plugin Upgrade Script
+ * Genwave Plugin Upgrade Script
  * Handles database schema upgrades automatically
  */
 
@@ -22,7 +22,7 @@ function genwave_check_and_upgrade() {
 
     if (defined('WP_DEBUG') && WP_DEBUG) {
         // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-        error_log('Gen Wave: Starting database upgrade from version ' . $current_db_version . ' to ' . $required_db_version);
+        error_log('Genwave: Starting database upgrade from version ' . $current_db_version . ' to ' . $required_db_version);
     }
 
     // Run upgrades based on version
@@ -34,7 +34,7 @@ function genwave_check_and_upgrade() {
 
     if (defined('WP_DEBUG') && WP_DEBUG) {
         // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-        error_log('Gen Wave: Database version set to ' . $required_db_version);
+        error_log('Genwave: Database version set to ' . $required_db_version);
     }
 }
 
@@ -53,7 +53,7 @@ function genwave_upgrade_to_1_0_2() {
 
     if (defined('WP_DEBUG') && WP_DEBUG) {
         // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-        error_log('Gen Wave: Upgrading database schema to 1.0.2 (gen_requests_posts columns)');
+        error_log('Genwave: Upgrading database schema to 1.0.2 (gen_requests_posts columns)');
     }
 
     $table_name = $wpdb->prefix . 'gen_requests_posts';
@@ -65,7 +65,7 @@ function genwave_upgrade_to_1_0_2() {
     if (!$table_exists) {
         if (defined('WP_DEBUG') && WP_DEBUG) {
             // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-            error_log('Gen Wave: Table ' . $table_name . ' does not exist, skipping upgrade');
+            error_log('Genwave: Table ' . $table_name . ' does not exist, skipping upgrade');
         }
         return;
     }
@@ -98,12 +98,12 @@ function genwave_upgrade_to_1_0_2() {
             if ($wpdb->last_error) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Gen Wave: Error adding column ' . $column_name . ': ' . $wpdb->last_error);
+                    error_log('Genwave: Error adding column ' . $column_name . ': ' . $wpdb->last_error);
                 }
             } else {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Gen Wave: Added column ' . $column_name . ' to ' . $table_name);
+                    error_log('Genwave: Added column ' . $column_name . ' to ' . $table_name);
                 }
             }
         }
@@ -118,19 +118,19 @@ function genwave_upgrade_to_1_0_2() {
         if ($wpdb->last_error) {
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Gen Wave: Error adding idx_status index: ' . $wpdb->last_error);
+                error_log('Genwave: Error adding idx_status index: ' . $wpdb->last_error);
             }
         } else {
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Gen Wave: Added idx_status index to ' . $table_name);
+                error_log('Genwave: Added idx_status index to ' . $table_name);
             }
         }
     }
 
     if (defined('WP_DEBUG') && WP_DEBUG) {
         // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-        error_log('Gen Wave: Schema upgrade to 1.0.2 completed');
+        error_log('Genwave: Schema upgrade to 1.0.2 completed');
     }
 }
 
@@ -143,7 +143,7 @@ function genwave_upgrade_to_1_1_0() {
 
     if (defined('WP_DEBUG') && WP_DEBUG) {
         // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-        error_log('Gen Wave: Upgrading database schema to 1.1.0 (decimal precision upgrade)');
+        error_log('Genwave: Upgrading database schema to 1.1.0 (decimal precision upgrade)');
     }
 
     // Upgrade wp_ai_pro_token_usage table (in wp_ai database)
@@ -168,12 +168,12 @@ function genwave_upgrade_to_1_1_0() {
         if ($wpdb->last_error) {
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Gen Wave: Error upgrading wp_ai_pro_token_usage: ' . $wpdb->last_error);
+                error_log('Genwave: Error upgrading wp_ai_pro_token_usage: ' . $wpdb->last_error);
             }
         } else {
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Gen Wave: Successfully upgraded wp_ai_pro_token_usage to decimal(15,8)');
+                error_log('Genwave: Successfully upgraded wp_ai_pro_token_usage to decimal(15,8)');
             }
         }
     }
@@ -183,7 +183,7 @@ function genwave_upgrade_to_1_1_0() {
 
     if (defined('WP_DEBUG') && WP_DEBUG) {
         // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-        error_log('Gen Wave: Schema upgrade to 1.1.0 completed');
+        error_log('Genwave: Schema upgrade to 1.1.0 completed');
     }
 }
 

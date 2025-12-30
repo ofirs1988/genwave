@@ -6,8 +6,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-use GenWavePlugin\Global\ApiManager;
-use GenWavePlugin\Global\Config;
+use GenWavePlugin\Core\ApiManager;
+use GenWavePlugin\Core\Config;
 
 /**
  * IntegrationCallbackController - Handles OAuth-like callback from external authentication service
@@ -120,7 +120,7 @@ class IntegrationCallbackController
             } else {
                 ?>
                 <div class="notice notice-success is-dismissible">
-                    <p><strong>Success!</strong> You are now connected to your Gen Wave account.</p>
+                    <p><strong>Success!</strong> You are now connected to your Genwave account.</p>
                 </div>
                 <?php
             }

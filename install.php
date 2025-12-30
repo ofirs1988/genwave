@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 /**
- * Gen Wave - Database Installation
+ * Genwave - Database Installation
  * Creates all necessary database tables on plugin activation
  *
  * Table Prefix: gen_ (instead of ai_pro_)
@@ -24,7 +24,7 @@ function genwave_create_tables() {
     global $wpdb;
     if (defined('WP_DEBUG') && WP_DEBUG) {
         // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-        error_log('Gen Wave: genwave_create_tables called');
+        error_log('Genwave: genwave_create_tables called');
     }
 
     // Define the charset and collation
@@ -70,7 +70,7 @@ function genwave_create_tables() {
     if ($wpdb->last_error) {
         if (defined('WP_DEBUG') && WP_DEBUG) {
             // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-            error_log('Gen Wave: Error creating gen_requests table: ' . $wpdb->last_error);
+            error_log('Genwave: Error creating gen_requests table: ' . $wpdb->last_error);
         }
         return false;
     }
@@ -116,7 +116,7 @@ function genwave_create_tables() {
     if ($wpdb->last_error) {
         if (defined('WP_DEBUG') && WP_DEBUG) {
             // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-            error_log('Gen Wave: Error creating gen_requests_posts table: ' . $wpdb->last_error);
+            error_log('Genwave: Error creating gen_requests_posts table: ' . $wpdb->last_error);
         }
     }
 
@@ -138,7 +138,7 @@ function genwave_create_tables() {
     if ($wpdb->last_error) {
         if (defined('WP_DEBUG') && WP_DEBUG) {
             // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-            error_log('Gen Wave: Error creating gen_settings table: ' . $wpdb->last_error);
+            error_log('Genwave: Error creating gen_settings table: ' . $wpdb->last_error);
         }
     }
 
@@ -166,7 +166,7 @@ function genwave_create_tables() {
     if ($wpdb->last_error) {
         if (defined('WP_DEBUG') && WP_DEBUG) {
             // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-            error_log('Gen Wave: Error creating gen_token_usage table: ' . $wpdb->last_error);
+            error_log('Genwave: Error creating gen_token_usage table: ' . $wpdb->last_error);
         }
     }
 
@@ -191,7 +191,7 @@ function genwave_create_tables() {
     if ($wpdb->last_error) {
         if (defined('WP_DEBUG') && WP_DEBUG) {
             // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-            error_log('Gen Wave: Error creating gen_status table: ' . $wpdb->last_error);
+            error_log('Genwave: Error creating gen_status table: ' . $wpdb->last_error);
         }
     }
 
@@ -218,7 +218,7 @@ function genwave_create_tables() {
     if ($wpdb->last_error) {
         if (defined('WP_DEBUG') && WP_DEBUG) {
             // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-            error_log('Gen Wave: Error creating jobs table: ' . $wpdb->last_error);
+            error_log('Genwave: Error creating jobs table: ' . $wpdb->last_error);
         }
     }
 
@@ -228,13 +228,13 @@ function genwave_create_tables() {
 
     if (defined('WP_DEBUG') && WP_DEBUG) {
         // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-        error_log('Gen Wave: All tables created successfully');
+        error_log('Genwave: All tables created successfully');
     }
     return true;
 }
 
 /**
- * Drop all Gen Wave tables (for uninstallation)
+ * Drop all Genwave tables (for uninstallation)
  */
 function genwave_drop_tables() {
     global $wpdb;
@@ -258,6 +258,6 @@ function genwave_drop_tables() {
 
     if (defined('WP_DEBUG') && WP_DEBUG) {
         // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-        error_log('Gen Wave: All tables dropped');
+        error_log('Genwave: All tables dropped');
     }
 }

@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-use GenWavePlugin\Global\Config;
+use GenWavePlugin\Core\Config;
 
 class VerifyLoginController
 {
@@ -48,7 +48,7 @@ class VerifyLoginController
 
         // TRY NEW SECURE METHOD FIRST
         try {
-            $api_manager = new \GenWavePlugin\Global\ApiManager(GENWAVE_API_URL);
+            $api_manager = new \GenWavePlugin\Core\ApiManager(GENWAVE_API_URL);
             $response = $api_manager->postSecure('/integration/initiate', [  // Fixed: removed /api prefix
                 'license_key' => $license_key,
                 'domain' => $server_domain,

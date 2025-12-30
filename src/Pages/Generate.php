@@ -2,7 +2,7 @@
 
 namespace GenWavePlugin\Pages;
 
-use GenWavePlugin\Global\AdminPageManager;
+use GenWavePlugin\Core\AdminPageManager;
 
 if (!defined('ABSPATH')) {
     exit;

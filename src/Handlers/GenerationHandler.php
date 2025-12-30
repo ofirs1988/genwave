@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-use GenWavePlugin\Global\ApiManager;
+use GenWavePlugin\Core\ApiManager;
 use Exception;
 
 /**
@@ -36,7 +36,7 @@ class GenerationHandler
             if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'genwave_generate_nonce')) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Gen Wave Generate Single: Invalid nonce');
+                    error_log('Genwave Generate Single: Invalid nonce');
                 }
                 wp_send_json_error(['message' => __('Security verification failed. Please refresh the page and try again.', 'gen-wave')]);
                 return;
@@ -44,7 +44,7 @@ class GenerationHandler
 
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Gen Wave Generate Single: Function called');
+                error_log('Genwave Generate Single: Function called');
             }
 
             // VALIDATION: Get and validate post ID
@@ -60,7 +60,7 @@ class GenerationHandler
             if (!in_array($generation_method, $allowed_methods, true)) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Gen Wave: Invalid generation_method: {$generation_method}");
+                    error_log("Genwave: Invalid generation_method: {$generation_method}");
                 }
                 /* translators: %s: comma-separated list of allowed generation methods */
                 wp_send_json_error(['message' => sprintf(__('Invalid generation method. Allowed: %s', 'gen-wave'), implode(', ', $allowed_methods))]);
@@ -79,7 +79,7 @@ class GenerationHandler
             if ($length < 100 || $length > 10000) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Gen Wave: Invalid length: {$length}");
+                    error_log("Genwave: Invalid length: {$length}");
                 }
                 wp_send_json_error(['message' => __('Content length must be between 100 and 10000 characters', 'gen-wave')]);
                 return;
@@ -102,7 +102,7 @@ class GenerationHandler
             if (!current_user_can('edit_post', $post_id)) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Gen Wave: User cannot edit post {$post_id}");
+                    error_log("Genwave: User cannot edit post {$post_id}");
                 }
                 wp_send_json_error(['message' => __('You do not have permission to edit this post', 'gen-wave')]);
                 return;
@@ -181,7 +181,7 @@ class GenerationHandler
             if (!$inserted) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Gen Wave: Failed to insert request record: " . $wpdb->last_error);
+                    error_log("Genwave: Failed to insert request record: " . $wpdb->last_error);
                 }
                 wp_send_json_error(['message' => __('Failed to create generation request', 'gen-wave')]);
                 return;
@@ -190,7 +190,7 @@ class GenerationHandler
             $wp_request_id = $wpdb->insert_id;
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log("Gen Wave: Inserted request record with ID: {$wp_request_id}, job_id: {$job_id}");
+                error_log("Genwave: Inserted request record with ID: {$wp_request_id}, job_id: {$job_id}");
             }
 
             // Insert record in wp_gen_requests_posts
@@ -210,7 +210,7 @@ class GenerationHandler
             if (!$post_inserted) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Gen Wave: Failed to insert post request: " . $wpdb->last_error);
+                    error_log("Genwave: Failed to insert post request: " . $wpdb->last_error);
                 }
                 wp_send_json_error(['message' => __('Failed to create post request', 'gen-wave')]);
                 return;
@@ -219,7 +219,7 @@ class GenerationHandler
             $post_request_id = $wpdb->insert_id;
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log("Gen Wave: Inserted post request with ID: {$post_request_id}");
+                error_log("Genwave: Inserted post request with ID: {$post_request_id}");
             }
 
             // Call LiteLLM API
@@ -227,31 +227,31 @@ class GenerationHandler
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
                 error_log("=== GEN WAVE: CALLING LITELLM ===");
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log("Gen Wave: Post ID: " . $post_id);
+                error_log("Genwave: Post ID: " . $post_id);
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log("Gen Wave: Generation Method: " . $generation_method);
+                error_log("Genwave: Generation Method: " . $generation_method);
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log("Gen Wave: Language: " . $language);
+                error_log("Genwave: Language: " . $language);
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log("Gen Wave: Length: " . $length);
+                error_log("Genwave: Length: " . $length);
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log,WordPress.PHP.DevelopmentFunctions.error_log_print_r -- Debug mode only
-                error_log("Gen Wave: Post data: " . print_r($post_data, true));
+                error_log("Genwave: Post data: " . print_r($post_data, true));
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log("Gen Wave: Custom Instructions: " . $custom_instructions);
+                error_log("Genwave: Custom Instructions: " . $custom_instructions);
             }
 
             // Get credentials for logging (encrypted)
-            $encrypted_token = \GenWavePlugin\Global\Config::get('token');
-            $encrypted_uidd = \GenWavePlugin\Global\Config::get('uidd');
-            $license_key = \GenWavePlugin\Global\Config::get('license_key');
+            $encrypted_token = \GenWavePlugin\Core\Config::get('token');
+            $encrypted_uidd = \GenWavePlugin\Core\Config::get('uidd');
+            $license_key = \GenWavePlugin\Core\Config::get('license_key');
 
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log("Gen Wave: License Key: " . $license_key);
+                error_log("Genwave: License Key: " . $license_key);
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log("Gen Wave: Has Token: " . ($encrypted_token ? 'YES' : 'NO'));
+                error_log("Genwave: Has Token: " . ($encrypted_token ? 'YES' : 'NO'));
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log("Gen Wave: Has UIDD: " . ($encrypted_uidd ? 'YES' : 'NO'));
+                error_log("Genwave: Has UIDD: " . ($encrypted_uidd ? 'YES' : 'NO'));
             }
 
             $result = $api_manager->callLiteLLMStreaming(
@@ -268,14 +268,14 @@ class GenerationHandler
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
                 error_log("=== GEN WAVE: LITELLM RESPONSE ===");
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log,WordPress.PHP.DevelopmentFunctions.error_log_print_r -- Debug mode only
-                error_log("Gen Wave: Response: " . print_r($result, true));
+                error_log("Genwave: Response: " . print_r($result, true));
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log("Gen Wave: Has Error: " . (isset($result['error']) && $result['error'] ? 'YES' : 'NO'));
+                error_log("Genwave: Has Error: " . (isset($result['error']) && $result['error'] ? 'YES' : 'NO'));
                 if (isset($result['error']) && $result['error']) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Gen Wave: Error Message: " . ($result['message'] ?? 'Unknown'));
+                    error_log("Genwave: Error Message: " . ($result['message'] ?? 'Unknown'));
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Gen Wave: Response Code: " . ($result['response_code'] ?? 'N/A'));
+                    error_log("Genwave: Response Code: " . ($result['response_code'] ?? 'N/A'));
                 }
             }
 
@@ -294,9 +294,9 @@ class GenerationHandler
         } catch (Exception $e) {
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Gen Wave Generate Single: Exception: ' . $e->getMessage());
+                error_log('Genwave Generate Single: Exception: ' . $e->getMessage());
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Gen Wave Generate Single: Stack trace: ' . $e->getTraceAsString());
+                error_log('Genwave Generate Single: Stack trace: ' . $e->getTraceAsString());
             }
             wp_send_json_error([
                 /* translators: %s: error message from the exception */
@@ -317,7 +317,7 @@ class GenerationHandler
             if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'genwave_mark_converted_nonce')) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Gen Wave Mark Converted: Invalid nonce');
+                    error_log('Genwave Mark Converted: Invalid nonce');
                 }
                 wp_send_json_error(['message' => __('Security verification failed', 'gen-wave')]);
                 return;
@@ -350,7 +350,7 @@ class GenerationHandler
             if (!current_user_can('edit_post', $record->post_id)) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Gen Wave: User cannot edit post {$record->post_id} for request {$post_request_id}");
+                    error_log("Genwave: User cannot edit post {$record->post_id} for request {$post_request_id}");
                 }
                 wp_send_json_error(['message' => __('You do not have permission to update this content', 'gen-wave')]);
                 return;
@@ -372,13 +372,13 @@ class GenerationHandler
             if ($updated !== false) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Gen Wave: Marked post_request_id {$post_request_id} as converted (is_converted=1)");
+                    error_log("Genwave: Marked post_request_id {$post_request_id} as converted (is_converted=1)");
                 }
                 wp_send_json_success(['message' => __('Post marked as converted', 'gen-wave')]);
             } else {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Gen Wave: Failed to mark post_request_id {$post_request_id} as converted");
+                    error_log("Genwave: Failed to mark post_request_id {$post_request_id} as converted");
                 }
                 wp_send_json_error(['message' => __('Failed to update conversion status', 'gen-wave')]);
             }
@@ -386,7 +386,7 @@ class GenerationHandler
         } catch (Exception $e) {
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Gen Wave Mark Converted: Exception: ' . $e->getMessage());
+                error_log('Genwave Mark Converted: Exception: ' . $e->getMessage());
             }
             /* translators: %s: error message */
             wp_send_json_error(['message' => sprintf(__('Error: %s', 'gen-wave'), $e->getMessage())]);
@@ -421,7 +421,7 @@ class GenerationHandler
                 if ($exists == 0) {
                     if (defined('WP_DEBUG') && WP_DEBUG) {
                         // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                        error_log("Gen Wave: Generated unique job_id: {$job_id}");
+                        error_log("Genwave: Generated unique job_id: {$job_id}");
                     }
                     return $job_id;
                 }
@@ -429,20 +429,20 @@ class GenerationHandler
                 // If collision detected, log and retry
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Gen Wave: Job ID collision detected ({$job_id}), attempt {$attempt}");
+                    error_log("Genwave: Job ID collision detected ({$job_id}), attempt {$attempt}");
                 }
 
             } catch (Exception $e) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Gen Wave: Error generating job_id: ' . $e->getMessage());
+                    error_log('Genwave: Error generating job_id: ' . $e->getMessage());
                 }
             }
         }
 
         if (defined('WP_DEBUG') && WP_DEBUG) {
             // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-            error_log('Gen Wave: Failed to generate unique job_id after ' . $max_attempts . ' attempts');
+            error_log('Genwave: Failed to generate unique job_id after ' . $max_attempts . ' attempts');
         }
         return false;
     }
@@ -478,13 +478,13 @@ class GenerationHandler
             );
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log("Gen Wave: Inserted token usage for job_id '{$job_id}'");
+                error_log("Genwave: Inserted token usage for job_id '{$job_id}'");
             }
 
         } catch (Exception $e) {
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Gen Wave: Failed to save token usage: ' . $e->getMessage());
+                error_log('Genwave: Failed to save token usage: ' . $e->getMessage());
             }
         }
     }

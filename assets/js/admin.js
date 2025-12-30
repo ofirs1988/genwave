@@ -125,8 +125,6 @@ jQuery(document).ready(function($) {
         };
 
         $.post(ajaxurl, data, function (response) {
-            console.log(response);
-
             if (response.success) {
                 const tokens = response.data.tokens;
 
@@ -236,8 +234,6 @@ jQuery(document).ready(function($) {
             };
 
             $.post(ajaxurl, data, function (response) {
-                console.log(response);
-
                 card.find('.gw-action-message, .action-message').remove();
 
                 if (response.success) {

@@ -1,6 +1,6 @@
 <?php
 
-namespace GenWavePlugin\Global;
+namespace GenWavePlugin\Core;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -141,7 +141,7 @@ class ApiManager {
         if (is_wp_error($response)) {
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Gen Wave API Error: ' . $response->get_error_message());
+                error_log('Genwave API Error: ' . $response->get_error_message());
             }
             return [
                 'success' => false,
@@ -1025,7 +1025,7 @@ class ApiManager {
             // DEBUG: Log selectedOptions being sent
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log,WordPress.PHP.DevelopmentFunctions.error_log_print_r -- Debug mode only
-                error_log("Gen Wave: Building LiteLLM payload, selectedOptions from request_data: " . print_r($request_data['selectedOptions'] ?? ['description'], true));
+                error_log("Genwave: Building LiteLLM payload, selectedOptions from request_data: " . print_r($request_data['selectedOptions'] ?? ['description'], true));
             }
 
             $language = $request_data['language'] ?? 'en';
@@ -1062,11 +1062,11 @@ class ApiManager {
             // DEBUG: Log the full payload
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log,WordPress.PHP.DevelopmentFunctions.error_log_print_r -- Debug mode only
-                error_log("Gen Wave: Full LiteLLM payload selectedOptions: " . print_r($litellm_payload['selectedOptions'], true));
+                error_log("Genwave: Full LiteLLM payload selectedOptions: " . print_r($litellm_payload['selectedOptions'], true));
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log,WordPress.PHP.DevelopmentFunctions.error_log_print_r -- Debug mode only
-                error_log("Gen Wave: Custom instructions in payload: " . (!empty($custom_instructions) ? $custom_instructions : 'NONE'));
+                error_log("Genwave: Custom instructions in payload: " . (!empty($custom_instructions) ? $custom_instructions : 'NONE'));
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log,WordPress.PHP.DevelopmentFunctions.error_log_print_r -- Debug mode only
-                error_log("Gen Wave: Instructions payload type: " . (is_array($instructions_payload) && !isset($instructions_payload[0]) ? 'DICT' : 'LIST'));
+                error_log("Genwave: Instructions payload type: " . (is_array($instructions_payload) && !isset($instructions_payload[0]) ? 'DICT' : 'LIST'));
             }
 
             // Skip duplicate check for single posts (allow regeneration)
@@ -1092,7 +1092,7 @@ class ApiManager {
 
             // DEBUG: Log decryption results
             if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log("Gen Wave Auth Debug:");
+                error_log("Genwave Auth Debug:");
                 error_log("  Encrypted token (first 50): " . substr($encrypted_token, 0, 50));
                 error_log("  Decrypted token (first 50): " . ($decrypted_token ? substr($decrypted_token, 0, 50) : 'EMPTY/FAILED'));
                 error_log("  Encrypted UIDD (first 50): " . substr($encrypted_uidd, 0, 50));

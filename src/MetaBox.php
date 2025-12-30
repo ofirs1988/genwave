@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
 class MetaBox {
 
     public function __construct() {
-        // Only register metabox if Gen Wave Pro is NOT active
+        // Only register metabox if Genwave Pro is NOT active
         if (!$this->is_pro_active()) {
             add_action('add_meta_boxes', [$this, 'register_meta_boxes']);
             add_action('save_post', [$this, 'save_meta_box_data']);
@@ -17,7 +17,7 @@ class MetaBox {
     }
 
     /**
-     * Check if Gen Wave Pro plugin is active
+     * Check if Genwave Pro plugin is active
      */
     private function is_pro_active() {
         return defined('GEN_WAVE_PRO_VERSION');
@@ -30,7 +30,7 @@ class MetaBox {
         // Add metabox for posts
         add_meta_box(
             'genwave_generate_box',
-            __('Gen Wave - AI Content Generation', 'gen-wave'),
+            __('Genwave - AI Content Generation', 'gen-wave'),
             [$this, 'render_meta_box'],
             'post',
             'side',
@@ -41,7 +41,7 @@ class MetaBox {
         if (class_exists('WooCommerce')) {
             add_meta_box(
                 'genwave_generate_box',
-                __('Gen Wave - AI Content Generation', 'gen-wave'),
+                __('Genwave - AI Content Generation', 'gen-wave'),
                 [$this, 'render_meta_box'],
                 'product',
                 'side',
@@ -58,7 +58,7 @@ class MetaBox {
         wp_nonce_field('genwave_meta_box_nonce', 'genwave_meta_box_nonce_field');
 
         // Check if user is connected
-        $uidd = \GenWavePlugin\Global\Config::get('uidd');
+        $uidd = \GenWavePlugin\Core\Config::get('uidd');
         $is_connected = !empty($uidd) && strlen($uidd) > 3;
 
         // Get current post type
@@ -79,7 +79,7 @@ class MetaBox {
                     <div style="font-size: 48px; margin-bottom: 15px;">🔒</div>
                     <h3 style="margin: 0 0 10px 0; color: #2d3748; font-size: 16px;"><?php esc_html_e('Connection Required', 'gen-wave'); ?></h3>
                     <p style="margin: 0 0 20px 0; color: #4a5568; font-size: 13px; line-height: 1.6;">
-                        <?php esc_html_e('Please connect your Gen Wave account to use AI content generation.', 'gen-wave'); ?>
+                        <?php esc_html_e('Please connect your Genwave account to use AI content generation.', 'gen-wave'); ?>
                     </p>
                     <a href="<?php echo esc_url(admin_url('admin.php?page=gen-wave-plugin-settings')); ?>"
                        class="button button-primary"
@@ -120,7 +120,7 @@ class MetaBox {
                     <p style="margin: 0; font-size: 12px; color: #646970;">
                         <?php
                         /* translators: %s: post type name (e.g., "post", "product") */
-                        printf(esc_html__('Use Gen Wave to automatically generate content for this %s.', 'gen-wave'), esc_html(strtolower($post_type_label)));
+                        printf(esc_html__('Use Genwave to automatically generate content for this %s.', 'gen-wave'), esc_html(strtolower($post_type_label)));
                         ?>
                     </p>
                 </div>
@@ -237,9 +237,9 @@ class MetaBox {
                 <p style="margin: 0; font-size: 12px; color: #856404;">
                     <strong><?php esc_html_e('Note:', 'gen-wave'); ?></strong> <?php
                     printf(
-                        /* translators: %s: link to Gen Wave Pro */
+                        /* translators: %s: link to Genwave Pro */
                         esc_html__('For advanced features like bulk generation, multiple AI providers, and real-time streaming, upgrade to %s.', 'gen-wave'),
-                        '<a href="https://genwave.ai" target="_blank" style="color: #856404; text-decoration: underline;">' . esc_html__('Gen Wave Pro', 'gen-wave') . '</a>'
+                        '<a href="https://genwave.ai" target="_blank" style="color: #856404; text-decoration: underline;">' . esc_html__('Genwave Pro', 'gen-wave') . '</a>'
                     ); ?>
                 </p>
             </div>

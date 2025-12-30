@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-use GenWavePlugin\Global\Config;
+use GenWavePlugin\Core\Config;
 
 class AdminBar {
     public function __construct()

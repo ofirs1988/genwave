@@ -6,8 +6,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-use GenWavePlugin\Global\ApiManager;
-use GenWavePlugin\Global\Config;
+use GenWavePlugin\Core\ApiManager;
+use GenWavePlugin\Core\Config;
 
 class TokensController{
     static $api_manager;

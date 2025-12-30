@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Genwave - AI Generate
  * Description: AI-powered content generation for WordPress posts and WooCommerce products. Generate titles, descriptions, and more with custom instructions in any language.
- * Version: 1.0.3
+ * Version: 1.0.4
  * Author: Genwave.ai
  * Author URI: https://genwave.ai
  * Text Domain: gen-wave
@@ -10,25 +10,25 @@
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Gen Wave is free software: you can redistribute it and/or modify
+Genwave is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 2 of the License, or
 any later version.
 
-Gen Wave is distributed in the hope that it will be useful,
+Genwave is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Gen Wave. If not, see https://www.gnu.org/licenses/gpl-2.0.html.
+along with Genwave. If not, see https://www.gnu.org/licenses/gpl-2.0.html.
 */
 
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
-define( 'GEN_WAVE_VERSION', '1.0.3' );
+define( 'GEN_WAVE_VERSION', '1.0.4' );
 
 define( 'GEN_WAVE__FILE__', __FILE__ );
 define( 'GEN_WAVE_PLUGIN_BASE', plugin_basename( GEN_WAVE__FILE__ ) );
@@ -98,8 +98,8 @@ if (!defined('GEN_WAVE_SMART_API')) {
  *
  * This plugin uses a shared secret key for AES-256-CBC encryption between:
  * - WordPress Plugin (this code)
- * - Gen Wave Laravel Backend (account.genwave.ai)
- * - Gen Wave AI API (api.genwave.ai)
+ * - Genwave Laravel Backend (account.genwave.ai)
+ * - Genwave AI API (api.genwave.ai)
  *
  * SECURITY DESIGN:
  * 1. The key is stored in wp_options (database) for each installation
@@ -108,14 +108,14 @@ if (!defined('GEN_WAVE_SMART_API')) {
  *    - Shared secret for service-to-service authentication
  *    - Backward compatibility with existing installations
  *
- * 3. Key rotation is supported through the Gen Wave dashboard
+ * 3. Key rotation is supported through the Genwave dashboard
  * 4. All three services must use the same key for encryption/decryption to work
  *
  * This is intentional security-by-design, not a vulnerability.
  */
 $gen_wave_encryption_key = get_option('genwave_encryption_key');
 if (!$gen_wave_encryption_key) {
-    // Default shared secret - synchronized with Gen Wave backend services
+    // Default shared secret - synchronized with Genwave backend services
     $gen_wave_encryption_key = 'ATW1kctl7zkJDLC7IRC8JDfPBrgREiLu';
 }
 define('GEN_WAVE_SECRET_KEY', $gen_wave_encryption_key);
@@ -145,7 +145,7 @@ function genwave_plugin_activation() {
         update_option('genwave_encryption_key', $default_key, false); // false = don't autoload
         if (defined('WP_DEBUG') && WP_DEBUG) {
             // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-            error_log('Gen Wave: Encryption key saved to wp_options on activation');
+            error_log('Genwave: Encryption key saved to wp_options on activation');
         }
     }
 

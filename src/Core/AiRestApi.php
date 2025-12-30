@@ -1,6 +1,6 @@
 <?php
 
-namespace GenWavePlugin\Global;
+namespace GenWavePlugin\Core;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -393,7 +393,7 @@ class AiRestApi extends WP_REST_Controller
 
     /**
      * Domain verification endpoint for Laravel backend
-     * Verifies that Gen Wave plugin is active and returns verification token
+     * Verifies that Genwve plugin is active and returns verification token
      *
      * Endpoint: GET /wp-json/gen-wave/v1/verify-domain?token=VERIFICATION_TOKEN
      */
@@ -414,7 +414,7 @@ class AiRestApi extends WP_REST_Controller
         // Return success with plugin information
         return new WP_REST_Response([
             'success' => true,
-            'message' => __('Gen Wave plugin is active', 'gen-wave'),
+            'message' => __('Genwave plugin is active', 'gen-wave'),
             'plugin_version' => GEN_WAVE_VERSION,
             'token' => $token,
             'domain' => get_site_url(),

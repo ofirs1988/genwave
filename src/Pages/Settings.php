@@ -6,10 +6,10 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-use GenWavePlugin\Global\AdminPageManager;
-use GenWavePlugin\Global\ApiManager;
-use GenWavePlugin\Global\Config;
-use GenWavePlugin\Global\ViewManager;
+use GenWavePlugin\Core\AdminPageManager;
+use GenWavePlugin\Core\ApiManager;
+use GenWavePlugin\Core\Config;
+use GenWavePlugin\Core\ViewManager;
 use GenWavePlugin\Helper\Decrypt;
 use GenWavePlugin\Helper\License;
 
@@ -55,8 +55,8 @@ class Settings
     public function registerSettings()
     {
         $this->adminPageManager->addPage(
-            'Gen Wave Account',
-            'Gen Wave',
+            'Genwave Account',
+            'Genwave',
             'manage_options',
             'gen-wave-plugin-settings',
             [$this, 'renderAdminPage'],
@@ -64,8 +64,8 @@ class Settings
         );
 
         $this->adminPageManager->addSubmenu(
-            'gen-wave-plugin-settings', // The submenu will be added under Gen Wave
-            'Gen Wave Account',
+            'gen-wave-plugin-settings', // The submenu will be added under Genwave
+            'Genwave Account',
             'Account',
             'manage_options',
             'gen-wave-plugin-dashboard',

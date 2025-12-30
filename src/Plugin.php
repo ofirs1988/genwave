@@ -6,9 +6,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-use GenWavePlugin\Global\AdminPageManager;
-use GenWavePlugin\Global\AiRestApi;
-use GenWavePlugin\Global\Enqueue;
+use GenWavePlugin\Core\AdminPageManager;
+use GenWavePlugin\Core\AiRestApi;
+use GenWavePlugin\Core\Enqueue;
 use GenWavePlugin\Pages\Settings;
 use GenWavePlugin\Pages\Tools;
 use GenWavePlugin\Pages\Dashboard;

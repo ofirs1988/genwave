@@ -8,7 +8,7 @@ if (!defined('ABSPATH')) {
 
 /**
  * Installation Manager Class
- * Handles smart installation checks and database table creation for Gen Wave
+ * Handles smart installation checks and database table creation for Genwave
  */
 class InstallationManager {
 
@@ -94,7 +94,7 @@ class InstallationManager {
         if (!empty($missing_tables)) {
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Gen Wave: Missing tables: ' . implode(', ', $missing_tables));
+                error_log('Genwave: Missing tables: ' . implode(', ', $missing_tables));
             }
             return false;
         }
@@ -115,7 +115,7 @@ class InstallationManager {
             if (!file_exists($install_file)) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Gen Wave: install.php file not found at: ' . $install_file);
+                    error_log('Genwave: install.php file not found at: ' . $install_file);
                 }
                 return false;
             }
@@ -132,20 +132,20 @@ class InstallationManager {
                     update_option(self::INSTALLATION_OPTION, true);
                     if (defined('WP_DEBUG') && WP_DEBUG) {
                         // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                        error_log('Gen Wave: Installation completed successfully.');
+                        error_log('Genwave: Installation completed successfully.');
                     }
                     return true;
                 } else {
                     if (defined('WP_DEBUG') && WP_DEBUG) {
                         // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                        error_log('Gen Wave: Installation failed - tables still missing after creation attempt.');
+                        error_log('Genwave: Installation failed - tables still missing after creation attempt.');
                     }
                     return false;
                 }
             } else {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Gen Wave: genwave_create_tables function not found in install.php');
+                    error_log('Genwave: genwave_create_tables function not found in install.php');
                 }
                 return false;
             }
@@ -153,7 +153,7 @@ class InstallationManager {
         } catch (\Exception $e) {
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Gen Wave: Installation error: ' . $e->getMessage());
+                error_log('Genwave: Installation error: ' . $e->getMessage());
             }
             return false;
         }

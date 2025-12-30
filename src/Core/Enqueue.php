@@ -8,7 +8,7 @@
  * - This optimizes performance by avoiding unnecessary polling when no active jobs exist
  */
 
-namespace GenWavePlugin\Global;
+namespace GenWavePlugin\Core;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -59,7 +59,7 @@ class Enqueue {
     }
 
     public function enqueueScripts($hook) {
-        // Only load on Gen Wave plugin pages and post/product edit screens
+        // Only load on Genwave plugin pages and post/product edit screens
         $screen = get_current_screen();
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Just checking page parameter for conditional loading
         $current_page = isset($_GET['page']) ? sanitize_text_field(wp_unslash($_GET['page'])) : '';
@@ -130,9 +130,9 @@ class Enqueue {
         wp_enqueue_script('gen-wave-plugin-streaming-client', GEN_WAVE_ASSETS_URL .'/js/streaming-client.js', ['jquery'], GEN_WAVE_VERSION, true);
 
         // Get user credentials from database
-        $license_key = \GenWavePlugin\Global\Config::get('license_key');
-        $uidd_encrypted = \GenWavePlugin\Global\Config::get('uidd');
-        $token_encrypted = \GenWavePlugin\Global\Config::get('token');
+        $license_key = \GenWavePlugin\Core\Config::get('license_key');
+        $uidd_encrypted = \GenWavePlugin\Core\Config::get('uidd');
+        $token_encrypted = \GenWavePlugin\Core\Config::get('token');
 
         // Decrypt token and uidd
         $encryption = new \GenWavePlugin\Services\EncryptionService();

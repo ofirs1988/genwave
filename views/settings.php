@@ -19,7 +19,7 @@ $tokens = $data['tokens'] ?? 0;
                         <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                    <span><?php esc_html_e('Gen Wave', 'gen-wave'); ?></span>
+                    <span><?php esc_html_e('Genwave', 'gen-wave'); ?></span>
                 </div>
                 <?php if ($is_connected && !$is_expired): ?>
                     <div class="gw-status gw-status-connected">
@@ -100,7 +100,7 @@ $tokens = $data['tokens'] ?? 0;
 
                 <!-- Quick Start Guide -->
                 <div class="gw-quickstart">
-                    <h4><?php esc_html_e('How to use Gen Wave', 'gen-wave'); ?></h4>
+                    <h4><?php esc_html_e('How to use Genwave', 'gen-wave'); ?></h4>
                     <div class="gw-quickstart-steps">
                         <div class="gw-step">
                             <div class="gw-step-number">1</div>
@@ -112,7 +112,7 @@ $tokens = $data['tokens'] ?? 0;
                         <div class="gw-step">
                             <div class="gw-step-number">2</div>
                             <div class="gw-step-content">
-                                <strong><?php esc_html_e('Click the Gen Wave button', 'gen-wave'); ?></strong>
+                                <strong><?php esc_html_e('Click the Genwave button', 'gen-wave'); ?></strong>
                                 <span><?php esc_html_e('Look for the AI icon in the editor toolbar', 'gen-wave'); ?></span>
                             </div>
                         </div>
@@ -210,7 +210,7 @@ $tokens = $data['tokens'] ?? 0;
                             <path d="M2 12L12 17L22 12"/>
                         </svg>
                     </div>
-                    <h2><?php esc_html_e('Welcome to Gen Wave', 'gen-wave'); ?></h2>
+                    <h2><?php esc_html_e('Welcome to Genwave', 'gen-wave'); ?></h2>
                     <p><?php esc_html_e('Connect your account to unlock AI-powered content generation for your WordPress site.', 'gen-wave'); ?></p>
                 </div>
 
@@ -295,7 +295,7 @@ $tokens = $data['tokens'] ?? 0;
                                         </div>
                                     </div>
                                     <p class="gw-input-hint">
-                                        <?php esc_html_e('Find your license key in your Gen Wave account dashboard', 'gen-wave'); ?>
+                                        <?php esc_html_e('Find your license key in your Genwave account dashboard', 'gen-wave'); ?>
                                     </p>
                                 </div>
 
@@ -319,7 +319,7 @@ $tokens = $data['tokens'] ?? 0;
                                 <span class="gw-setup-step-title"><?php esc_html_e('Connect your account', 'gen-wave'); ?></span>
                             </div>
                             <p class="gw-setup-step-desc">
-                                <?php esc_html_e('Click the button below to securely connect your Gen Wave account. You will be redirected to login and authorize this site.', 'gen-wave'); ?>
+                                <?php esc_html_e('Click the button below to securely connect your Genwave account. You will be redirected to login and authorize this site.', 'gen-wave'); ?>
                             </p>
                             <button type="button" id="verify_by_login" class="gw-btn gw-btn-primary gw-btn-lg gw-btn-full gw-btn-connect">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -327,7 +327,7 @@ $tokens = $data['tokens'] ?? 0;
                                     <polyline points="10 17 15 12 10 7"/>
                                     <line x1="15" y1="12" x2="3" y2="12"/>
                                 </svg>
-                                <?php esc_html_e('Connect to Gen Wave', 'gen-wave'); ?>
+                                <?php esc_html_e('Connect to Genwave', 'gen-wave'); ?>
                             </button>
                         </div>
                         <?php endif; ?>
@@ -377,14 +377,14 @@ $tokens = $data['tokens'] ?? 0;
 
         <!-- Footer -->
         <div class="gw-footer">
-            <span><?php esc_html_e('Gen Wave', 'gen-wave'); ?> v<?php echo esc_html(defined('GENWAVE_VERSION') ? GENWAVE_VERSION : '1.0.0'); ?></span>
+            <span><?php esc_html_e('Genwave', 'gen-wave'); ?> v<?php echo esc_html(defined('GENWAVE_VERSION') ? GENWAVE_VERSION : '1.0.0'); ?></span>
             <a href="<?php echo esc_url(GENWAVE_API_URL . '/support'); ?>" target="_blank"><?php esc_html_e('Support', 'gen-wave'); ?></a>
         </div>
     </div>
 </section>
 
 <style>
-/* Gen Wave Dashboard Styles */
+/* Genwave Dashboard Styles */
 .gw-dashboard {
     max-width: 600px;
     margin: 20px auto;

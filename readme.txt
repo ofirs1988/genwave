@@ -4,7 +4,7 @@ Tags: ai, authentication, license-management, api, content-generation
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -129,6 +129,16 @@ Yes, the plugin works on multisite installations. Each site needs its own Gen Wa
 
 == Changelog ==
 
+= 1.0.4 =
+**Improvements:**
+* Removed duplicate Global folder - consolidated code structure
+* Removed debug console.log statements from admin JavaScript
+* Code cleanup and optimization across multiple files
+* Improved code organization (Global → Core namespace)
+
+**Bug Fixes:**
+* Various code fixes and improvements
+
 = 1.0.3 =
 **New Features:**
 * New React-based Dashboard page with modern UI
@@ -168,6 +178,9 @@ Yes, the plugin works on multisite installations. Each site needs its own Gen Wa
 * Secure encrypted communication
 
 == Upgrade Notice ==
+
+= 1.0.4 =
+Minor update: Code cleanup and optimization.
 
 = 1.0.3 =
 Major update: New Dashboard & Generate pages, custom instructions, multi-language support, modern UI redesign.

@@ -6,13 +6,13 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-use GenWavePlugin\Global\AdminPageManager;
+use GenWavePlugin\Core\AdminPageManager;
 
 class Main {
     public function init(AdminPageManager $adminPageManager) {
         $adminPageManager->addPage(
-            'Gen Wave Plugin Settings',
-            'AI Settings',
+            'Genwave Plugin Settings',
+            'Genwave Settings',
             'manage_options',
             'gen-wave-plugin-settings',
             [$this, 'renderAdminPage'],
@@ -24,7 +24,7 @@ class Main {
         // Your custom logic here
         if (defined('WP_DEBUG') && WP_DEBUG) {
             // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-            error_log('Gen Wave Plugin is running!');
+            error_log('Genwave Plugin is running!');
         }
     }
 }
