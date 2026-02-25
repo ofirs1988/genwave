@@ -30,7 +30,7 @@ class MetaBox {
         // Add metabox for posts
         add_meta_box(
             'genwave_generate_box',
-            __('Genwave - AI Content Generation', 'gen-wave'),
+            __('Genwave - AI Generate', 'gen-wave'),
             [$this, 'render_meta_box'],
             'post',
             'side',
@@ -41,7 +41,7 @@ class MetaBox {
         if (class_exists('WooCommerce')) {
             add_meta_box(
                 'genwave_generate_box',
-                __('Genwave - AI Content Generation', 'gen-wave'),
+                __('Genwave - AI Generate', 'gen-wave'),
                 [$this, 'render_meta_box'],
                 'product',
                 'side',
@@ -79,7 +79,7 @@ class MetaBox {
                     <div style="font-size: 48px; margin-bottom: 15px;">🔒</div>
                     <h3 style="margin: 0 0 10px 0; color: #2d3748; font-size: 16px;"><?php esc_html_e('Connection Required', 'gen-wave'); ?></h3>
                     <p style="margin: 0 0 20px 0; color: #4a5568; font-size: 13px; line-height: 1.6;">
-                        <?php esc_html_e('Please connect your Genwave account to use AI content generation.', 'gen-wave'); ?>
+                        <?php esc_html_e('Please connect your Genwave account to start using AI features.', 'gen-wave'); ?>
                     </p>
                     <a href="<?php echo esc_url(admin_url('admin.php?page=gen-wave-plugin-settings')); ?>"
                        class="button button-primary"
@@ -237,9 +237,9 @@ class MetaBox {
                 <p style="margin: 0; font-size: 12px; color: #856404;">
                     <strong><?php esc_html_e('Note:', 'gen-wave'); ?></strong> <?php
                     printf(
-                        /* translators: %s: link to Genwave Pro */
-                        esc_html__('For advanced features like bulk generation, multiple AI providers, and real-time streaming, upgrade to %s.', 'gen-wave'),
-                        '<a href="https://genwave.ai" target="_blank" style="color: #856404; text-decoration: underline;">' . esc_html__('Genwave Pro', 'gen-wave') . '</a>'
+                        /* translators: %s: link to Genwave Agent */
+                        esc_html__('For the full AI Agent — build plugins, fix errors, manage WooCommerce, SEO & more through conversation — install %s.', 'gen-wave'),
+                        '<a href="https://genwave.ai" target="_blank" style="color: #856404; text-decoration: underline;">' . esc_html__('Genwave Agent', 'gen-wave') . '</a>'
                     ); ?>
                 </p>
             </div>
@@ -322,8 +322,8 @@ class MetaBox {
                             <div id="genwave-total-tokens" style="font-size: 20px; font-weight: bold; color: #f093fb;">-</div>
                         </div>
                         <div style="flex: 1; min-width: 150px;">
-                            <div style="font-size: 11px; color: #666; text-transform: uppercase; font-weight: 600; margin-bottom: 5px;"><?php esc_html_e('Token Cost', 'gen-wave'); ?></div>
-                            <div id="genwave-token-cost" style="font-size: 20px; font-weight: bold; color: #43e97b;">-</div>
+                            <div style="font-size: 11px; color: #666; text-transform: uppercase; font-weight: 600; margin-bottom: 5px;"><?php esc_html_e('Credit Cost', 'gen-wave'); ?></div>
+                            <div id="genwave-credit-cost" style="font-size: 20px; font-weight: bold; color: #43e97b;">-</div>
                         </div>
                     </div>
 

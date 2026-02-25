@@ -45,7 +45,7 @@ class Settings
                 // Check if license doesn't exist
                 $license_key = get_option('genwave_license_key');
                 if (!$license_key) {
-                    echo '<div class="notice notice-error is-dismissible"><p>' . esc_html__('You must enter a license to use the AI PRO Plugin.', 'gen-wave') . '</p></div>';
+                    echo '<div class="notice notice-error is-dismissible"><p>' . esc_html__('You must enter a license key to use Genwave.', 'gen-wave') . '</p></div>';
                 }
             }
         });
@@ -99,7 +99,7 @@ class Settings
                 // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Display-only, no state changes
                 $plan = isset($_GET['plan']) ? sanitize_text_field(wp_unslash($_GET['plan'])) : '';
                 // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Display-only, no state changes
-                $tokens = isset($_GET['tokens']) ? sanitize_text_field(wp_unslash($_GET['tokens'])) : '';
+                $tokens = isset($_GET['credits']) ? sanitize_text_field(wp_unslash($_GET['credits'])) : (isset($_GET['tokens']) ? sanitize_text_field(wp_unslash($_GET['tokens'])) : '');
                 if ($domain == get_site_url()) {
                     //$accessToken = sanitize_text_field($_GET['token']);
                     Config::set('uidd', $uuid);
@@ -108,7 +108,7 @@ class Settings
                     Config::set('domain', $domain);
                     Config::set('active', 1);
                     Config::set('plan', $plan);
-                    Config::set('tokens', $tokens);
+                    Config::set('credits', $tokens);
                     // Use WordPress inline script function instead of direct echo
                     wp_add_inline_script('jquery', 'history.replaceState({}, "", "/wp-admin/admin.php?page=gen-wave-plugin-settings");');
                     $view_manager = new ViewManager(plugin_dir_path(__FILE__) . '../../views');
@@ -157,7 +157,7 @@ class Settings
             'uidd' => Config::get('uidd') ?? null,
             'license_expired' => Config::get('license_expired') ?? '0',
             'expiration_date' => Config::get('expiration_date') ?? null,
-            'tokens' => Config::get('tokens') ?? 0,
+            'credits' => Config::get('credits') ?? 0,
         ];
 
 

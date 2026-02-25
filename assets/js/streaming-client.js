@@ -1,6 +1,6 @@
 /**
- * LiteLLM Streaming Client - Real-time AI content generation
- * Shows live progress and content generation as it happens
+ * LiteLLM Streaming Client - Real-time AI generation
+ * Shows live progress and AI generation as it happens
  */
 class LiteLLMStreamingClient {
     constructor() {
@@ -62,7 +62,7 @@ class LiteLLMStreamingClient {
             <div class="litellm-streaming-overlay">
                 <div class="litellm-streaming-modal">
                     <div class="litellm-streaming-header">
-                        <h3>🤖 AI Content Generation</h3>
+                        <h3>🤖 AI Generation</h3>
                         <button class="litellm-streaming-close" onclick="window.litellmStreamingClient.hideStreaming()">×</button>
                     </div>
                     <div class="litellm-streaming-content">

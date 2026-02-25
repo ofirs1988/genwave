@@ -1,17 +1,18 @@
-# Gen Wave
+# Genwave - AI Agent for WordPress
 
-**Free AI Content Generator for WordPress**
+**The #1 AI Agent for WordPress. Stop Clicking. Start Talking.**
 
-Gen Wave is a WordPress plugin that provides core authentication and licensing infrastructure for AI-powered content generation. It includes secure token-based authentication (AES-256-CBC), license management, domain verification, user balance tracking, and API gateway integration.
+Genwave is a WordPress plugin that provides core authentication and licensing infrastructure for the Genwave AI platform. It includes secure authentication (AES-256-CBC encryption), license management, domain verification, credit balance tracking, and API gateway integration for the Genwave Agent.
 
 ## Features
 
 - Secure token-based authentication (AES-256-CBC encryption)
 - License management and verification
 - Domain verification system
-- User token balance tracking
-- API gateway for Gen Wave Pro integration
-- Multi-language support
+- Credit balance tracking
+- API gateway for Genwave Agent integration
+- AI content generation for posts & products
+- Multi-language support (48+ languages)
 
 ## Requirements
 
@@ -33,43 +34,44 @@ Gen Wave is a WordPress plugin that provides core authentication and licensing i
 1. Download and unzip the plugin
 2. Upload the `gen-wave` folder to `/wp-content/plugins/`
 3. Go to **Plugins** in your WordPress admin
-4. Find **Gen Wave** and click **Activate**
+4. Find **Genwave** and click **Activate**
 
 ## Configuration
 
 After activation:
 
-1. Go to **Gen Wave** in the WordPress admin menu
+1. Go to **Genwave** in the WordPress admin menu
 2. Enter your license key (get one at [genwave.ai](https://genwave.ai))
-3. Configure your API settings
-4. Start generating AI content!
+3. Connect your account
+4. Install the Genwave Agent for the full AI-powered WordPress assistant
 
 ## Usage
 
-Gen Wave works as the foundation for AI content generation:
+Genwave works as the foundation for the AI Agent platform:
 
-1. **Authentication** - Securely connects your site to the Gen Wave API
-2. **Token Management** - Track and manage your AI generation tokens
-3. **API Gateway** - Routes requests to the AI generation backend
+1. **Authentication** - Securely connects your site to the Genwave API
+2. **Credit Management** - Track and manage your AI credits
+3. **API Gateway** - Routes requests to the AI Agent backend
+4. **Content Generation** - Generate AI content for posts & products
 
-For advanced features like bulk content generation, WooCommerce integration, and more, install [Gen Wave Pro](https://genwave.ai).
+For the full AI Agent with 250+ actions, plugin builder, error fixing, SEO optimization, and more — install [Genwave Agent](https://genwave.ai).
 
 ## Support
 
 - Website: [genwave.ai](https://genwave.ai)
-- Documentation: [docs.genwave.ai](https://docs.genwave.ai)
+- Email: support@genwave.ai
 
 ## License
 
-Gen Wave is licensed under the GPL v2 or later.
+Genwave is licensed under the GPL v2 or later.
 
 ```
-Gen Wave is free software: you can redistribute it and/or modify
+Genwave is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 2 of the License, or
 any later version.
 
-Gen Wave is distributed in the hope that it will be useful,
+Genwave is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.

@@ -17,7 +17,7 @@ import LockedFeature from '../../components/LockedFeature';
 
 const Dashboard = () => {
     const [stats, setStats] = useState({
-        tokenBalance: 0,
+        creditBalance: 0,
         totalRequests: 0,
         loading: true
     });
@@ -50,7 +50,7 @@ const Dashboard = () => {
             const data = await response.json();
             if (data.success) {
                 setStats({
-                    tokenBalance: data.data.token_balance || 0,
+                    creditBalance: data.data.credit_balance || data.data.token_balance || 0,
                     totalRequests: data.data.total_requests || 0,
                     loading: false
                 });
@@ -78,26 +78,26 @@ const Dashboard = () => {
             {/* Header */}
             <div className="gw-page__header">
                 <h1 className="gw-page__title">Dashboard</h1>
-                <p className="gw-page__subtitle">Overview of your AI content generation</p>
+                <p className="gw-page__subtitle">Overview of your AI Agent activity</p>
             </div>
 
             {/* Upgrade Banner */}
             <div className="gw-upgrade-banner">
                 <div className="gw-upgrade-banner__content">
-                    <h3>Unlock Full Power with Pro</h3>
-                    <p>Get unlimited access to all AI features</p>
+                    <h3>Unlock the Full AI Agent</h3>
+                    <p>250+ actions to manage your WordPress site through conversation</p>
                     <div className="gw-upgrade-banner__features">
                         <span className="gw-upgrade-banner__feature">
-                            <CheckCircleOutlined /> Bulk Generation
+                            <RocketOutlined /> Plugin Builder
+                        </span>
+                        <span className="gw-upgrade-banner__feature">
+                            <CheckCircleOutlined /> Auto Error Fix
                         </span>
                         <span className="gw-upgrade-banner__feature">
                             <PictureOutlined /> AI Images
                         </span>
                         <span className="gw-upgrade-banner__feature">
-                            <AudioOutlined /> AI Audio
-                        </span>
-                        <span className="gw-upgrade-banner__feature">
-                            <BarChartOutlined /> Analytics
+                            <BarChartOutlined /> SEO Optimization
                         </span>
                     </div>
                 </div>
@@ -113,14 +113,14 @@ const Dashboard = () => {
 
             {/* Stats Cards */}
             <div className="gw-cards-grid">
-                {/* Token Balance - Active */}
+                {/* Credit Balance - Active */}
                 <div className="gw-stat-card gw-stat-card--gradient">
                     <div className="gw-stat-card__icon">
                         <ThunderboltOutlined />
                     </div>
-                    <div className="gw-stat-card__label">Token Balance</div>
+                    <div className="gw-stat-card__label">Credit Balance</div>
                     <div className="gw-stat-card__value">
-                        {stats.loading ? <LoadingOutlined className="gw-spinner-icon" /> : formatNumber(stats.tokenBalance)}
+                        {stats.loading ? <LoadingOutlined className="gw-spinner-icon" /> : formatNumber(stats.creditBalance)}
                     </div>
                 </div>
 
@@ -137,15 +137,15 @@ const Dashboard = () => {
 
                 {/* Tokens Used - Locked */}
                 <LockedFeature
-                    title="Tokens Used"
-                    description="Track detailed token usage and consumption"
+                    title="Credits Used"
+                    description="Track detailed credit usage and consumption"
                     compact
                 >
                     <div className="gw-stat-card">
                         <div className="gw-stat-card__icon">
                             <LineChartOutlined />
                         </div>
-                        <div className="gw-stat-card__label">Tokens Used</div>
+                        <div className="gw-stat-card__label">Credits Used</div>
                         <div className="gw-stat-card__value">0</div>
                     </div>
                 </LockedFeature>

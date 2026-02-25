@@ -16,7 +16,7 @@ msgstr ""
 "X-Generator: Claude Code\n"
 
 #: genwave.php:29
-msgid "Gen Wave - AI Content Generation"
+msgid "Genwave - AI Agent for WordPress"
 msgstr ""
 
 #: src/MetaBox.php:62
@@ -32,7 +32,7 @@ msgid "Connection Required"
 msgstr ""
 
 #: src/MetaBox.php:78
-msgid "Please connect your Gen Wave account to use AI content generation."
+msgid "Please connect your Genwave account to start using AI features."
 msgstr ""
 
 #: src/MetaBox.php:84
@@ -49,7 +49,7 @@ msgstr ""
 
 #: src/MetaBox.php:117
 #, php-format
-msgid "Use Gen Wave to automatically generate content for this %s."
+msgid "Use Genwave to automatically generate content for this %s."
 msgstr ""
 
 #: src/MetaBox.php:125
@@ -126,11 +126,11 @@ msgstr ""
 
 #: src/MetaBox.php:227
 #, php-format
-msgid "For advanced features like bulk generation, multiple AI providers, and real-time streaming, upgrade to %s."
+msgid "For the full AI Agent — build plugins, fix errors, manage WooCommerce, SEO & more through conversation — install %s."
 msgstr ""
 
 #: src/MetaBox.php:229
-msgid "Gen Wave Pro"
+msgid "Genwave Agent"
 msgstr ""
 
 #: src/MetaBox.php:242

@@ -1,7 +1,7 @@
 {
   "name": "gen-wave-free",
   "version": "1.0.0",
-  "description": "Gen Wave Free - AI Content Generation",
+  "description": "Genwave - AI Agent for WordPress",
   "main": "views/src/index.js",
   "scripts": {
     "build": "webpack --mode production",

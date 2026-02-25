@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) {
 $is_connected = isset($data['uidd']) && !is_null($data['uidd']) && strlen($data['uidd']) > 3;
 $has_license = strlen($data['license_key'] ?? '') > 10;
 $is_expired = isset($data['license_expired']) && $data['license_expired'] === '1';
-$tokens = $data['tokens'] ?? 0;
+$credits = $data['credits'] ?? 0;
 ?>
 <section class="gen-wave">
     <div class="gw-dashboard">
@@ -61,7 +61,7 @@ $tokens = $data['tokens'] ?? 0;
                     </svg>
                     <div class="gw-alert-content">
                         <strong><?php esc_html_e('License Expired', 'gen-wave'); ?></strong>
-                        <p><?php esc_html_e('Your license has expired. Renew now to continue using AI content generation.', 'gen-wave'); ?></p>
+                        <p><?php esc_html_e('Your license has expired. Renew now to continue using the AI Agent.', 'gen-wave'); ?></p>
                         <div class="gw-alert-buttons">
                             <a href="<?php echo esc_url(GENWAVE_API_URL . '/user/billing'); ?>" target="_blank" class="gw-btn gw-btn-warning gw-btn-sm">
                                 <?php esc_html_e('Renew License', 'gen-wave'); ?>
@@ -94,43 +94,43 @@ $tokens = $data['tokens'] ?? 0;
                     </div>
                     <div class="gw-welcome-text">
                         <h3><?php esc_html_e('Your account is connected!', 'gen-wave'); ?></h3>
-                        <p><?php esc_html_e('You can now generate AI content for your products, pages, and posts.', 'gen-wave'); ?></p>
+                        <p><?php esc_html_e('You can now manage your WordPress site through natural conversation with the AI Agent.', 'gen-wave'); ?></p>
                     </div>
                 </div>
 
                 <!-- Quick Start Guide -->
                 <div class="gw-quickstart">
-                    <h4><?php esc_html_e('How to use Genwave', 'gen-wave'); ?></h4>
+                    <h4><?php esc_html_e('How to use Genwave Agent', 'gen-wave'); ?></h4>
                     <div class="gw-quickstart-steps">
                         <div class="gw-step">
                             <div class="gw-step-number">1</div>
                             <div class="gw-step-content">
-                                <strong><?php esc_html_e('Go to any product, page, or post', 'gen-wave'); ?></strong>
-                                <span><?php esc_html_e('Open the editor for the content you want to enhance', 'gen-wave'); ?></span>
+                                <strong><?php esc_html_e('Open the Genwave Agent chat', 'gen-wave'); ?></strong>
+                                <span><?php esc_html_e('Find Genwave Agent in your WordPress admin menu', 'gen-wave'); ?></span>
                             </div>
                         </div>
                         <div class="gw-step">
                             <div class="gw-step-number">2</div>
                             <div class="gw-step-content">
-                                <strong><?php esc_html_e('Click the Genwave button', 'gen-wave'); ?></strong>
-                                <span><?php esc_html_e('Look for the AI icon in the editor toolbar', 'gen-wave'); ?></span>
+                                <strong><?php esc_html_e('Tell the AI what you need', 'gen-wave'); ?></strong>
+                                <span><?php esc_html_e('Describe any task in natural language — build plugins, create pages, manage products & more', 'gen-wave'); ?></span>
                             </div>
                         </div>
                         <div class="gw-step">
                             <div class="gw-step-number">3</div>
                             <div class="gw-step-content">
-                                <strong><?php esc_html_e('Choose what to generate', 'gen-wave'); ?></strong>
-                                <span><?php esc_html_e('Select title, description, or other content options', 'gen-wave'); ?></span>
+                                <strong><?php esc_html_e('Review and approve', 'gen-wave'); ?></strong>
+                                <span><?php esc_html_e('The Agent shows you a preview before making any changes to your site', 'gen-wave'); ?></span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Token Balance Card -->
+                <!-- Credit Balance Card -->
                 <div class="gw-card gw-card-stats">
                     <div class="gw-stat-header">
-                        <span class="gw-stat-title"><?php esc_html_e('Your Token Balance', 'gen-wave'); ?></span>
-                        <button type="button" id="refresh_tokens" class="gw-btn-icon" title="<?php esc_attr_e('Refresh balance', 'gen-wave'); ?>">
+                        <span class="gw-stat-title"><?php esc_html_e('Your Credit Balance', 'gen-wave'); ?></span>
+                        <button type="button" id="refresh_credits" class="gw-btn-icon" title="<?php esc_attr_e('Refresh balance', 'gen-wave'); ?>">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M23 4v6h-6"/>
                                 <path d="M1 20v-6h6"/>
@@ -138,17 +138,17 @@ $tokens = $data['tokens'] ?? 0;
                             </svg>
                         </button>
                     </div>
-                    <div class="gw-stat-value-large" id="token-balance"><?php echo number_format((float)$tokens, 2); ?></div>
+                    <div class="gw-stat-value-large" id="credit-balance"><?php echo number_format((float)$credits, 2); ?></div>
                     <div class="gw-stat-hint">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="10"/>
                             <path d="M12 16v-4"/>
                             <path d="M12 8h.01"/>
                         </svg>
-                        <?php esc_html_e('Tokens are used each time you generate AI content', 'gen-wave'); ?>
+                        <?php esc_html_e('Credits are used each time you interact with the AI Agent', 'gen-wave'); ?>
                     </div>
                     <a href="<?php echo esc_url(GENWAVE_API_URL . '/user/plans'); ?>" target="_blank" class="gw-btn gw-btn-outline gw-btn-sm gw-mt-12">
-                        <?php esc_html_e('Buy More Tokens', 'gen-wave'); ?>
+                        <?php esc_html_e('Buy More Credits', 'gen-wave'); ?>
                     </a>
                 </div>
 
@@ -211,7 +211,7 @@ $tokens = $data['tokens'] ?? 0;
                         </svg>
                     </div>
                     <h2><?php esc_html_e('Welcome to Genwave', 'gen-wave'); ?></h2>
-                    <p><?php esc_html_e('Connect your account to unlock AI-powered content generation for your WordPress site.', 'gen-wave'); ?></p>
+                    <p><?php esc_html_e('Connect your account to unlock the #1 AI Agent for WordPress. Build plugins, fix errors, create pages & more — through conversation.', 'gen-wave'); ?></p>
                 </div>
 
                 <!-- Features Preview -->
@@ -219,39 +219,36 @@ $tokens = $data['tokens'] ?? 0;
                     <div class="gw-feature">
                         <div class="gw-feature-icon">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                             </svg>
                         </div>
                         <div class="gw-feature-text">
-                            <strong><?php esc_html_e('Product Descriptions', 'gen-wave'); ?></strong>
-                            <span><?php esc_html_e('Generate compelling WooCommerce product content', 'gen-wave'); ?></span>
+                            <strong><?php esc_html_e('Natural Conversation', 'gen-wave'); ?></strong>
+                            <span><?php esc_html_e('Manage your entire WordPress site by simply talking to the AI', 'gen-wave'); ?></span>
                         </div>
                     </div>
                     <div class="gw-feature">
                         <div class="gw-feature-icon">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                <polyline points="14 2 14 8 20 8"/>
-                                <line x1="16" y1="13" x2="8" y2="13"/>
-                                <line x1="16" y1="17" x2="8" y2="17"/>
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                <path d="M2 17l10 5 10-5"/>
+                                <path d="M2 12l10 5 10-5"/>
                             </svg>
                         </div>
                         <div class="gw-feature-text">
-                            <strong><?php esc_html_e('Blog Posts & Pages', 'gen-wave'); ?></strong>
-                            <span><?php esc_html_e('Create engaging content in seconds', 'gen-wave'); ?></span>
+                            <strong><?php esc_html_e('250+ Actions', 'gen-wave'); ?></strong>
+                            <span><?php esc_html_e('Build plugins, create pages, manage WooCommerce, fix errors & more', 'gen-wave'); ?></span>
                         </div>
                     </div>
                     <div class="gw-feature">
                         <div class="gw-feature-icon">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"/>
-                                <polygon points="10 8 16 12 10 16 10 8"/>
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                             </svg>
                         </div>
                         <div class="gw-feature-text">
-                            <strong><?php esc_html_e('One-Click Generation', 'gen-wave'); ?></strong>
-                            <span><?php esc_html_e('Simple AI button in every editor', 'gen-wave'); ?></span>
+                            <strong><?php esc_html_e('7-Layer Security', 'gen-wave'); ?></strong>
+                            <span><?php esc_html_e('Enterprise-grade protection with preview before every action', 'gen-wave'); ?></span>
                         </div>
                     </div>
                 </div>
@@ -358,13 +355,38 @@ $tokens = $data['tokens'] ?? 0;
             <?php endif; ?>
         </div>
 
-        <!-- Pro Upgrade Banner -->
+        <!-- Pro Banner -->
+        <?php
+        // Check if user has a paid plan
+        $plan_id = (int) get_option('genwavepro_plan', 0);
+        if ($plan_id === 0) {
+            $plan_id = (int) get_option('genwave_plan', 1);
+        }
+        $has_paid_plan = $plan_id > 1;
+        ?>
+        <?php if ($has_paid_plan): ?>
+        <div class="gw-pro-banner gw-pro-active">
+            <div class="gw-pro-content">
+                <div class="gw-pro-badge gw-pro-badge-active">PRO</div>
+                <div class="gw-pro-text">
+                    <h4><?php esc_html_e('Pro Plan Active', 'gen-wave'); ?></h4>
+                    <p><?php esc_html_e('You have access to all Pro features', 'gen-wave'); ?></p>
+                </div>
+            </div>
+            <a href="<?php echo esc_url(admin_url('admin.php?page=gen-wave-plugin-pro-dashboard')); ?>" class="gw-pro-btn gw-pro-btn-active">
+                <?php esc_html_e('Go to Pro Dashboard', 'gen-wave'); ?>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+        <?php else: ?>
         <div class="gw-pro-banner">
             <div class="gw-pro-content">
                 <div class="gw-pro-badge">PRO</div>
                 <div class="gw-pro-text">
-                    <h4><?php esc_html_e('Unlock More Power', 'gen-wave'); ?></h4>
-                    <p><?php esc_html_e('Bulk generation, custom prompts, SEO optimization & more', 'gen-wave'); ?></p>
+                    <h4><?php esc_html_e('Unlock the Full AI Agent', 'gen-wave'); ?></h4>
+                    <p><?php esc_html_e('Build plugins, auto-fix errors, SEO optimization, bulk generation & more', 'gen-wave'); ?></p>
                 </div>
             </div>
             <a href="<?php echo esc_url(GENWAVE_API_URL . '/pro'); ?>" target="_blank" class="gw-pro-btn">
@@ -374,10 +396,11 @@ $tokens = $data['tokens'] ?? 0;
                 </svg>
             </a>
         </div>
+        <?php endif; ?>
 
         <!-- Footer -->
         <div class="gw-footer">
-            <span><?php esc_html_e('Genwave', 'gen-wave'); ?> v<?php echo esc_html(defined('GENWAVE_VERSION') ? GENWAVE_VERSION : '1.0.0'); ?></span>
+            <span><?php esc_html_e('Genwave', 'gen-wave'); ?> v<?php echo esc_html(defined('GEN_WAVE_VERSION') ? GEN_WAVE_VERSION : '1.0.0'); ?></span>
             <a href="<?php echo esc_url(GENWAVE_API_URL . '/support'); ?>" target="_blank"><?php esc_html_e('Support', 'gen-wave'); ?></a>
         </div>
     </div>
@@ -1167,6 +1190,37 @@ $tokens = $data['tokens'] ?? 0;
     background: #92400e;
     color: #fff;
     border-color: #92400e;
+}
+
+/* Pro Banner Active (Green) */
+.gw-pro-banner.gw-pro-active {
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    border-left: 1px solid #34d399;
+    border-right: 1px solid #34d399;
+}
+
+.gw-pro-badge-active {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+}
+
+.gw-pro-active .gw-pro-text h4 {
+    color: #065f46;
+}
+
+.gw-pro-active .gw-pro-text p {
+    color: #047857;
+}
+
+.gw-pro-btn-active {
+    background: #fff;
+    color: #065f46;
+    border-color: #34d399;
+}
+
+.gw-pro-btn-active:hover {
+    background: #065f46;
+    color: #fff;
+    border-color: #065f46;
 }
 
 /* Footer */
