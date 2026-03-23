@@ -362,7 +362,7 @@ jQuery(document).ready(function($) {
                         $('#genwave-input-tokens').text((tokenUsage.input_tokens || 0).toLocaleString());
                         $('#genwave-output-tokens').text((tokenUsage.output_tokens || 0).toLocaleString());
                         $('#genwave-total-tokens').text((tokenUsage.total_tokens || 0).toLocaleString());
-                        $('#genwave-token-cost').text(parseFloat(tokenCost || 0).toFixed(6));
+                        $('#genwave-credit-cost').text(parseFloat(tokenCost || 0).toFixed(6));
 
                         // Get the right content based on generation method
                         var generatedText = '';

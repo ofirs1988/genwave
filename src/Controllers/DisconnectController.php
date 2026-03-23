@@ -53,7 +53,7 @@ class DisconnectController
             Config::delete('domain');
             Config::delete('active');
             Config::delete('plan');
-            Config::delete('tokens');
+            Config::delete('credits');
 
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only

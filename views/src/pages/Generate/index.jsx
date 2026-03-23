@@ -148,10 +148,10 @@ const Generate = () => {
                 setResult({
                     success: true,
                     message: 'Content generated successfully!',
-                    tokenUsage: {
+                    creditUsage: {
                         estimated: tokenUsage.estimated_total_tokens || 0,
-                        charged: tokenUsage.tokens_charged || tokenUsage.actual_total_tokens || 0,
-                        returned: tokenUsage.tokens_returned || 0,
+                        charged: tokenUsage.credits_charged_to_user || tokenUsage.tokens_charged || tokenUsage.actual_total_tokens || 0,
+                        returned: tokenUsage.credits_returned || tokenUsage.tokens_returned || 0,
                         balance: newBalance
                     }
                 });
@@ -617,8 +617,8 @@ const Generate = () => {
                         )}
                     </div>
 
-                    {/* Token Usage */}
-                    {result.success && result.tokenUsage && (
+                    {/* Credit Usage */}
+                    {result.success && result.creditUsage && (
                         <div style={{
                             display: 'flex',
                             gap: '24px',
@@ -629,13 +629,13 @@ const Generate = () => {
                             fontSize: '13px',
                             flexWrap: 'wrap'
                         }}>
-                            <span><strong>Estimated:</strong> {result.tokenUsage.estimated?.toFixed(6)} tokens</span>
-                            <span style={{ color: 'var(--gw-success)' }}><strong>Charged:</strong> {result.tokenUsage.charged?.toFixed(6)} tokens</span>
-                            {result.tokenUsage.returned > 0 && (
-                                <span style={{ color: 'var(--gw-primary)' }}><strong>Returned:</strong> {result.tokenUsage.returned?.toFixed(6)} tokens</span>
+                            <span><strong>Estimated:</strong> {result.creditUsage.estimated?.toFixed(6)} credits</span>
+                            <span style={{ color: 'var(--gw-success)' }}><strong>Charged:</strong> {result.creditUsage.charged?.toFixed(6)} credits</span>
+                            {result.creditUsage.returned > 0 && (
+                                <span style={{ color: 'var(--gw-primary)' }}><strong>Returned:</strong> {result.creditUsage.returned?.toFixed(6)} credits</span>
                             )}
                             <span style={{ marginLeft: 'auto', color: 'var(--gw-primary)', fontWeight: '600' }}>
-                                <strong>Balance:</strong> {result.tokenUsage.balance?.toFixed(2)} tokens
+                                <strong>Balance:</strong> {result.creditUsage.balance?.toFixed(2)} credits
                             </span>
                         </div>
                     )}

@@ -106,7 +106,7 @@ jQuery(document).ready(function($) {
     });
 
 
-    $('#refresh_tokens').on('click', function (e) {
+    $('#refresh_credits').on('click', function (e) {
         e.preventDefault();
 
         var button = $(this);
@@ -120,19 +120,19 @@ jQuery(document).ready(function($) {
         button.prop('disabled', true);
 
         var data = {
-            action: 'genwave_refresh_tokens',
-            security: genwave_admin_data.refresh_tokens_nonce,
+            action: 'genwave_refresh_credits',
+            security: genwave_admin_data.refresh_credits_nonce,
         };
 
         $.post(ajaxurl, data, function (response) {
             if (response.success) {
-                const tokens = response.data.tokens;
+                const credits = response.data.credits;
 
-                // Update the token balance display
-                $('#token-balance').text(parseFloat(tokens).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+                // Update the credit balance display
+                $('#credit-balance').text(parseFloat(credits).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
 
-                // Update token count in menu
-                $('li#wp-admin-bar-custom_text_with_icon').find('span').html(tokens);
+                // Update credit count in menu
+                $('li#wp-admin-bar-custom_text_with_icon').find('span').html(credits);
 
                 // Re-enable button after animation
                 setTimeout(() => {

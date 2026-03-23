@@ -15,7 +15,7 @@ class Config {
         'uidd' => '',
         'token' => '',
         'plan' => '',
-        'tokens' => '',
+        'credits' => '',
         'license_expired' => '0',
         'expiration_date' => '',
         'encryption_key' => 'ATW1kctl7zkJDLC7IRC8JDfPBrgREiLu', // Default encryption key (AES-256-CBC)

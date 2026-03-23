@@ -95,7 +95,7 @@ class IntegrationCallbackController
         Config::set('domain', $response['domain']);
         Config::set('active', $response['active']);
         Config::set('plan', $response['plan']);
-        Config::set('tokens', $response['tokens']);
+        Config::set('credits', $response['credits'] ?? $response['tokens'] ?? '');
 
         // Store expired status (check for truthy value - could be true, 1, or "1")
         $is_expired = !empty($response['expired']);

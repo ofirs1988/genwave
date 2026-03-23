@@ -1022,7 +1022,6 @@ class ApiManager {
             }
 
             // Prepare LiteLLM request payload (generateOptions already transformed in PostTypeController)
-            // DEBUG: Log selectedOptions being sent
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log,WordPress.PHP.DevelopmentFunctions.error_log_print_r -- Debug mode only
                 error_log("Genwave: Building LiteLLM payload, selectedOptions from request_data: " . print_r($request_data['selectedOptions'] ?? ['description'], true));
@@ -1059,7 +1058,6 @@ class ApiManager {
                 'businessContext' => $business_context
             ];
 
-            // DEBUG: Log the full payload
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log,WordPress.PHP.DevelopmentFunctions.error_log_print_r -- Debug mode only
                 error_log("Genwave: Full LiteLLM payload selectedOptions: " . print_r($litellm_payload['selectedOptions'], true));
@@ -1090,7 +1088,6 @@ class ApiManager {
             $decrypted_token = $this->decryptToken($encrypted_token);
             $decrypted_uidd = $this->decryptToken($encrypted_uidd);
 
-            // DEBUG: Log decryption results
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 error_log("Genwave Auth Debug:");
                 error_log("  Encrypted token (first 50): " . substr($encrypted_token, 0, 50));
@@ -1388,9 +1385,9 @@ class ApiManager {
                         if (isset($data['job_request_id'])) {
                             $job_request_id = $data['job_request_id'];
                         }
-                        if (isset($data['token_balance'])) {
+                        if (isset($data['credit_balance']) || isset($data['token_balance'])) {
                             if (!$token_usage) $token_usage = [];
-                            $token_usage['tokens_balance'] = $data['token_balance'];
+                            $token_usage['tokens_balance'] = $data['credit_balance'] ?? $data['token_balance'];
                         }
                     }
                 }
@@ -1402,7 +1399,7 @@ class ApiManager {
             'results' => !empty($results_array) ? $results_array : [['content' => $content_results]],
             'token_usage' => $token_usage,
             'job_request_id' => $job_request_id,
-            'token_balance' => $token_usage['tokens_balance'] ?? null
+            'credit_balance' => $token_usage['tokens_balance'] ?? null
         ];
     }
 }

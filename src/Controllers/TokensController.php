@@ -22,12 +22,21 @@ class TokensController{
         self::$api_manager = $manager;
     }
 
-    public  function RefreshTokens()
+    public  function RefreshCredits()
     {
-        $response = self::$api_manager->post('/refresh-tokens', [
+        // Try new endpoint first, fall back to old
+        $response = self::$api_manager->post('/refresh-credits', [
             // 'domain' => $domain,
         ], Config::get('token'), Config::get('uidd'));
 
-        return $response['tokens'] ?? $response;
+        return $response['credits'] ?? $response['tokens'] ?? $response;
+    }
+
+    /**
+     * @deprecated Use RefreshCredits() instead
+     */
+    public function RefreshTokens()
+    {
+        return $this->RefreshCredits();
     }
 }

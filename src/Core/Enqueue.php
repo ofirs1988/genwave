@@ -159,7 +159,7 @@ class Enqueue {
         wp_localize_script('gen-wave-plugin-admin-script', 'genwave_admin_data', [
             'ajaxurl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('verify_login_nonce'),
-            'refresh_tokens_nonce' => wp_create_nonce('refresh_tokens_nonce'),
+            'refresh_credits_nonce' => wp_create_nonce('refresh_credits_nonce'),
             'disconnect_account_nonce' => wp_create_nonce('disconnect_account_nonce'),
             'genwave_nonce' => wp_create_nonce('genwave_nonce'),
         ]);

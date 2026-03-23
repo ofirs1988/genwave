@@ -40,7 +40,7 @@ class AjaxManager
         add_action('wp_ajax_genwave_verify_login', [VerifyLoginController::class , 'verifyLogin']);
         add_action('wp_ajax_nopriv_genwave_verify_login', [VerifyLoginController::class , 'verifyLogin']);
 
-        // Note: Languages, Tokens, and PostTypeController features removed
+        // Note: Languages, Credits, and PostTypeController features removed
         // Free plugin is now fully independent
 
         // Product/Post handlers - delegated to ProductHandler
@@ -49,7 +49,8 @@ class AjaxManager
         add_action('wp_ajax_genwave_get_post_data', [$this->productHandler, 'handle_get_post_data']);
         add_action('wp_ajax_nopriv_genwave_get_post_data', [$this->productHandler, 'handle_get_post_data']);
 
-        add_action('wp_ajax_genwave_refresh_tokens', [$this, 'handle_refresh_tokens']);
+        add_action('wp_ajax_genwave_refresh_credits', [$this, 'handle_refresh_credits']);
+        add_action('wp_ajax_genwave_refresh_tokens', [$this, 'handle_refresh_credits']); // backward compat
         add_action('wp_ajax_genwave_disconnect_account', [$this, 'handle_disconnect_account']);
         add_action('wp_ajax_genwave_check_license_status', [$this, 'handle_check_license_status']);
 
@@ -61,8 +62,10 @@ class AjaxManager
         add_action('wp_ajax_nopriv_genwave_polling_results', [$this->pollingHandler, 'handle_ai_polling_results']);
         add_action('wp_ajax_genwave_poll_proxy', [$this->pollingHandler, 'handle_ai_poll_proxy']);
         add_action('wp_ajax_nopriv_genwave_poll_proxy', [$this->pollingHandler, 'handle_ai_poll_proxy']);
-        add_action('wp_ajax_genwave_update_token_balance', [$this->pollingHandler, 'handle_update_token_balance']);
-        add_action('wp_ajax_nopriv_genwave_update_token_balance', [$this->pollingHandler, 'handle_update_token_balance']);
+        add_action('wp_ajax_genwave_update_credit_balance', [$this->pollingHandler, 'handle_update_credit_balance']);
+        add_action('wp_ajax_nopriv_genwave_update_credit_balance', [$this->pollingHandler, 'handle_update_credit_balance']);
+        add_action('wp_ajax_genwave_update_token_balance', [$this->pollingHandler, 'handle_update_credit_balance']); // backward compat
+        add_action('wp_ajax_nopriv_genwave_update_token_balance', [$this->pollingHandler, 'handle_update_credit_balance']); // backward compat
 
         // Generation handlers - delegated to GenerationHandler
         add_action('wp_ajax_genwave_generate_single', [$this->generationHandler, 'handle_genwave_generate_single']);
@@ -73,13 +76,13 @@ class AjaxManager
         $this->uidd = Config::get('uidd');
     }
 
-    public function handle_refresh_tokens()
+    public function handle_refresh_credits()
     {
 
-        if (!isset($_POST['security']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['security'])), 'refresh_tokens_nonce')) {
+        if (!isset($_POST['security']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['security'])), 'refresh_credits_nonce')) {
             wp_send_json_error(['message' => 'Invalid nonce']);
         }
-        $response = (new TokensController())->RefreshTokens();
+        $response = (new TokensController())->RefreshCredits();
 
         // Check for error response
         if (is_array($response) && isset($response['error']) && $response['error'] === true) {
@@ -107,26 +110,32 @@ class AjaxManager
             ]);
         }
 
-        // Extract token balance from response
-        $token_balance = 0;
+        // Extract credit balance from response (support both old and new API response keys)
+        $credit_balance = 0;
         if (is_numeric($response)) {
-            $token_balance = $response;
+            $credit_balance = $response;
         } elseif (is_array($response)) {
-            if (isset($response['token_balance'])) {
-                $token_balance = $response['token_balance'];
+            if (isset($response['credit_balance'])) {
+                $credit_balance = $response['credit_balance'];
+            } elseif (isset($response['token_balance'])) {
+                $credit_balance = $response['token_balance'];
+            } elseif (isset($response['credits'])) {
+                $credit_balance = $response['credits'];
             } elseif (isset($response['tokens'])) {
-                $token_balance = $response['tokens'];
+                $credit_balance = $response['tokens'];
+            } elseif (isset($response['data']['credit_balance'])) {
+                $credit_balance = $response['data']['credit_balance'];
             } elseif (isset($response['data']['token_balance'])) {
-                $token_balance = $response['data']['token_balance'];
+                $credit_balance = $response['data']['token_balance'];
             }
         }
 
-        // Save token balance
-        Config::set('tokens', $token_balance);
+        // Save credit balance
+        Config::set('credits', $credit_balance);
 
         // Success - clear expired flag if it was set
         Config::set('license_expired', '0');
-        wp_send_json_success(['tokens' => $token_balance]);
+        wp_send_json_success(['credits' => $credit_balance]);
     }
 
     public function handle_disconnect_account()
@@ -284,8 +293,8 @@ class AjaxManager
 
         global $wpdb;
 
-        // Get token balance from config
-        $token_balance = floatval(Config::get('tokens') ?? 0);
+        // Get credit balance from config
+        $credit_balance = floatval(Config::get('credits') ?? 0);
 
         // Get total requests count
         $requests_table = $wpdb->prefix . 'gen_requests';
@@ -295,7 +304,7 @@ class AjaxManager
         );
 
         wp_send_json_success([
-            'token_balance' => $token_balance,
+            'credit_balance' => $credit_balance,
             'total_requests' => $total_requests
         ]);
     }
@@ -981,9 +990,9 @@ class AjaxManager
     }
     
     /**
-     * Handle token balance update requests from frontend JavaScript
+     * Handle credit balance update requests from frontend JavaScript
      */
-    public function handle_update_token_balance()
+    public function handle_update_credit_balance()
     {
         try {
             // SECURITY: Verify nonce FIRST (accept both admin and frontend nonces)
@@ -994,7 +1003,7 @@ class AjaxManager
             if (!$nonce_check) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('GenWave Token Balance Update: Invalid nonce');
+                    error_log('GenWave Credit Balance Update: Invalid nonce');
                 }
                 wp_send_json_error('Invalid nonce');
                 return;
@@ -1003,52 +1012,57 @@ class AjaxManager
             // Debug logging AFTER nonce verification
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Token Balance Update AJAX: Function called');
+                error_log('Credit Balance Update AJAX: Function called');
             }
 
-            // Verify required parameters
-            if (!isset($_POST['token_balance'])) {
+            // Verify required parameters (accept both old and new keys)
+            $creditBalance = null;
+            if (isset($_POST['credit_balance'])) {
+                $creditBalance = floatval($_POST['credit_balance']);
+            } elseif (isset($_POST['token_balance'])) {
+                $creditBalance = floatval($_POST['token_balance']);
+            }
+
+            if ($creditBalance === null) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Token Balance Update AJAX: No token_balance parameter provided');
+                    error_log('Credit Balance Update AJAX: No credit_balance parameter provided');
                 }
-                wp_send_json_error('Token balance parameter required');
+                wp_send_json_error('Credit balance parameter required');
                 return;
             }
-
-            $tokenBalance = floatval($_POST['token_balance']);
 
             // Basic validation
-            if ($tokenBalance < 0) {
+            if ($creditBalance < 0) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Token Balance Update AJAX: Invalid token balance value: ' . $tokenBalance);
+                    error_log('Credit Balance Update AJAX: Invalid credit balance value: ' . $creditBalance);
                 }
-                wp_send_json_error('Invalid token balance value');
+                wp_send_json_error('Invalid credit balance value');
                 return;
             }
 
-            // Update the token balance in wp_options
-            if (update_option('genwave_token_balance', $tokenBalance)) {
+            // Update the credit balance in wp_options
+            if (update_option('genwave_credit_balance', $creditBalance)) {
                 // Return success response
                 wp_send_json_success([
-                    'token_balance' => $tokenBalance,
-                    'formatted_balance' => number_format($tokenBalance, 2)
+                    'credit_balance' => $creditBalance,
+                    'formatted_balance' => number_format($creditBalance, 2)
                 ]);
             } else {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Token Balance Update AJAX: Failed to update token balance option');
+                    error_log('Credit Balance Update AJAX: Failed to update credit balance option');
                 }
-                wp_send_json_error('Failed to update token balance in WordPress');
+                wp_send_json_error('Failed to update credit balance in WordPress');
             }
 
         } catch (Exception $e) {
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Token Balance Update AJAX: Exception: ' . $e->getMessage());
+                error_log('Credit Balance Update AJAX: Exception: ' . $e->getMessage());
             }
-            wp_send_json_error('Error updating token balance: ' . $e->getMessage());
+            wp_send_json_error('Error updating credit balance: ' . $e->getMessage());
         }
     }
 
@@ -1501,10 +1515,10 @@ class AjaxManager
             );
 
 
-            // Update token balance in database if available
+            // Update credit balance in database if available
             if (isset($response['results']['token_usage']['tokens_balance'])) {
                 $new_balance = floatval($response['results']['token_usage']['tokens_balance']);
-                Config::set('tokens', $new_balance);
+                Config::set('credits', $new_balance);
             }
 
             // Save token usage data to wp_ai_pro_token_usage
