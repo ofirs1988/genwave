@@ -138,7 +138,7 @@ $credits = $data['credits'] ?? 0;
                             </svg>
                         </button>
                     </div>
-                    <div class="gw-stat-value-large" id="credit-balance"><?php echo number_format((float)$credits, 2); ?></div>
+                    <div class="gw-stat-value-large" id="credit-balance"><?php echo number_format(floor((float)$credits * 100) / 100, 2); ?></div>
                     <div class="gw-stat-hint">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="10"/>
@@ -364,6 +364,9 @@ $credits = $data['credits'] ?? 0;
         }
         $has_paid_plan = $plan_id > 1;
         ?>
+        <?php
+        $pro_plugin_active = is_plugin_active('gen-wave-pro/gen-wave-pro.php');
+        ?>
         <?php if ($has_paid_plan): ?>
         <div class="gw-pro-banner gw-pro-active">
             <div class="gw-pro-content">
@@ -373,12 +376,21 @@ $credits = $data['credits'] ?? 0;
                     <p><?php esc_html_e('You have access to all Pro features', 'gen-wave'); ?></p>
                 </div>
             </div>
+            <?php if ($pro_plugin_active): ?>
             <a href="<?php echo esc_url(admin_url('admin.php?page=gen-wave-plugin-pro-dashboard')); ?>" class="gw-pro-btn gw-pro-btn-active">
                 <?php esc_html_e('Go to Pro Dashboard', 'gen-wave'); ?>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M5 12h14M12 5l7 7-7 7"/>
                 </svg>
             </a>
+            <?php else: ?>
+            <a href="https://account.genwave.ai/user/downloads" target="_blank" class="gw-pro-btn gw-pro-btn-active">
+                <?php esc_html_e('Download Pro Plugin', 'gen-wave'); ?>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+            <?php endif; ?>
         </div>
         <?php else: ?>
         <div class="gw-pro-banner">

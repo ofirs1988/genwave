@@ -102,7 +102,7 @@ const Dashboard = () => {
                     </div>
                 </div>
                 <a
-                    href="https://genwave.ai/plans"
+                    href="https://account.genwave.ai/user/plans"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="gw-upgrade-banner__btn"

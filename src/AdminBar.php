@@ -21,7 +21,7 @@ class AdminBar {
         $icon = '💎';
 
         // Format the credits to show 2 decimal places
-        $formatted_credits = $credits > 0 ? number_format((float)$credits, 2, '.', '') : '0.00';
+        $formatted_credits = $credits > 0 ? number_format(floor((float)$credits * 100) / 100, 2, '.', '') : '0.00';
 
         // Format the text display
         $text = '<span>' . $formatted_credits . '</span>' . ' Credits';

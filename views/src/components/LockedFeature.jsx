@@ -5,7 +5,7 @@ const LockedFeature = ({
     title,
     description,
     children,
-    upgradeUrl = 'https://genwave.ai/plans',
+    upgradeUrl = 'https://account.genwave.ai/user/plans',
     compact = false
 }) => {
     if (compact) {

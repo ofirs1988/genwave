@@ -144,7 +144,7 @@ const Generate = () => {
 
                 setGeneratedContent(generatedText);
 
-                const newBalance = tokenUsage.tokens_balance || 0;
+                const newBalance = tokenUsage.credits_balance || tokenUsage.tokens_balance || 0;
                 setResult({
                     success: true,
                     message: 'Content generated successfully!',
@@ -160,6 +160,12 @@ const Generate = () => {
                 const adminBarTokens = document.querySelector('#wp-admin-bar-custom_text_with_icon span');
                 if (adminBarTokens) {
                     adminBarTokens.textContent = parseFloat(newBalance).toFixed(2);
+                }
+
+                // Update settings page credit balance if visible
+                const creditBalanceEl = document.getElementById('credit-balance');
+                if (creditBalanceEl) {
+                    creditBalanceEl.textContent = parseFloat(newBalance).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
                 }
             } else {
                 const errorMessage = data.data?.data?.message
@@ -457,7 +463,7 @@ const Generate = () => {
                     gap: '6px'
                 }}>
                     <CrownOutlined style={{ color: 'var(--gw-warning)' }} />
-                    Want to generate multiple fields at once? <a href="https://genwave.ai/plans" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gw-primary)' }}>Upgrade to Pro</a>
+                    Want to generate multiple fields at once? <a href="https://account.genwave.ai/user/plans" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gw-primary)' }}>Upgrade to Pro</a>
                 </p>
 
                 {/* Language Selector */}
@@ -738,7 +744,7 @@ const Generate = () => {
                     </div>
                 </div>
                 <a
-                    href="https://genwave.ai/plans"
+                    href="https://account.genwave.ai/user/plans"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="gw-upgrade-banner__btn"

@@ -284,6 +284,11 @@ class GenerationHandler
                 $this->save_token_usage($job_id, $result['tokens_used'], $result['token_charge_id'] ?? 0);
             }
 
+            // Update local credit balance from server response
+            if (isset($result['token_usage']['credits_balance'])) {
+                Config::set('credits', $result['token_usage']['credits_balance']);
+            }
+
             // Return success with results
             wp_send_json_success([
                 'data' => $result,
