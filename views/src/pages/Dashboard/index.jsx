@@ -11,7 +11,13 @@ import {
     RocketOutlined,
     PictureOutlined,
     AudioOutlined,
-    LoadingOutlined
+    LoadingOutlined,
+    MessageOutlined,
+    ToolOutlined,
+    BugOutlined,
+    ShopOutlined,
+    DownloadOutlined,
+    ArrowRightOutlined
 } from '@ant-design/icons';
 import LockedFeature from '../../components/LockedFeature';
 
@@ -109,6 +115,77 @@ const Dashboard = () => {
                 >
                     <CrownOutlined /> Upgrade Now
                 </a>
+            </div>
+
+            {/* AI Agent Section */}
+            <div className="gw-agent-section">
+                <div className="gw-agent-section__header">
+                    <div className="gw-agent-section__icon">
+                        <MessageOutlined />
+                    </div>
+                    <div>
+                        <h3 className="gw-agent-section__title">AI Agent for WordPress</h3>
+                        <p className="gw-agent-section__subtitle">Your personal AI assistant — manage your entire site through conversation</p>
+                    </div>
+                </div>
+
+                <div className="gw-agent-features">
+                    <div className="gw-agent-feature">
+                        <div className="gw-agent-feature__icon gw-agent-feature__icon--blue">
+                            <RocketOutlined />
+                        </div>
+                        <div className="gw-agent-feature__text">
+                            <strong>Build Plugins</strong>
+                            <span>Create custom plugins from a simple description</span>
+                        </div>
+                    </div>
+                    <div className="gw-agent-feature">
+                        <div className="gw-agent-feature__icon gw-agent-feature__icon--green">
+                            <BugOutlined />
+                        </div>
+                        <div className="gw-agent-feature__text">
+                            <strong>Auto-Fix Errors</strong>
+                            <span>Detect and fix PHP errors automatically</span>
+                        </div>
+                    </div>
+                    <div className="gw-agent-feature">
+                        <div className="gw-agent-feature__icon gw-agent-feature__icon--purple">
+                            <ToolOutlined />
+                        </div>
+                        <div className="gw-agent-feature__text">
+                            <strong>Elementor Widgets</strong>
+                            <span>Create custom widgets through conversation</span>
+                        </div>
+                    </div>
+                    <div className="gw-agent-feature">
+                        <div className="gw-agent-feature__icon gw-agent-feature__icon--orange">
+                            <ShopOutlined />
+                        </div>
+                        <div className="gw-agent-feature__text">
+                            <strong>WooCommerce</strong>
+                            <span>Manage products, orders, and store settings</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="gw-agent-section__cta">
+                    <a
+                        href="https://account.genwave.ai/user/downloads"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="gw-agent-section__btn"
+                    >
+                        <DownloadOutlined /> Download AI Agent
+                    </a>
+                    <a
+                        href="https://genwave.ai/ai-agent"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="gw-agent-section__link"
+                    >
+                        Learn more <ArrowRightOutlined />
+                    </a>
+                </div>
             </div>
 
             {/* Stats Cards */}
