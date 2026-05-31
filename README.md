@@ -1,6 +1,6 @@
-# Genwave - AI Agent for WordPress
+# Genwave - AI Agent
 
-**The #1 AI Agent for WordPress. Stop Clicking. Start Talking.**
+**The #1 AI Agent for your website. Stop Clicking. Start Talking.**
 
 Genwave is a WordPress plugin that provides core authentication and licensing infrastructure for the Genwave AI platform. It includes secure authentication (AES-256-CBC encryption), license management, domain verification, credit balance tracking, and API gateway integration for the Genwave Agent.
 

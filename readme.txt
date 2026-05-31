@@ -1,14 +1,14 @@
-=== Genwave - AI Agent for WordPress ===
+=== Genwave - AI Agent ===
 Contributors: ofirs1988
-Tags: ai, ai-agent, wordpress-automation, woocommerce, seo
+Tags: ai, ai-agent, chatbot, content-generation, ecommerce
 Requires at least: 5.0
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.0.5
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-The #1 AI Agent for WordPress. Build plugins, fix errors, create pages, manage WooCommerce & optimize SEO — all through natural conversation.
+The #1 AI Agent for your website. Build plugins, fix errors, create pages, manage WooCommerce & optimize SEO — all through natural conversation.
 
 == Description ==
 
@@ -28,7 +28,7 @@ This free plugin connects your site to the Genwave platform and includes AI cont
 
 = Genwave Agent Features =
 
-Install the Genwave Agent to unlock the full power of AI for WordPress:
+Install the Genwave Agent to unlock the full power of AI for your website:
 
 * **AI Chat Assistant** – Manage your WordPress site through natural conversation
 * **Plugin Builder** – Build custom WordPress plugins from a simple description
@@ -152,6 +152,21 @@ Yes, the plugin works on multisite installations. Each site needs its own Genwav
 
 == Changelog ==
 
+= 1.1.0 =
+**New:**
+* New "Plugins" admin page — browse and install GenWave plugins (Agent, Pro, Chatbot, SEO, Elements, Site Transfer) directly from inside WordPress with a single click
+* WordPress 7.0 compatibility verified
+
+**Improvements:**
+* Faster bundle build pipeline
+* Refreshed dashboard styles
+
+= 1.0.6 =
+**New:**
+* Added AI Agent section to dashboard — download the full AI Agent directly from your account
+* Feature highlights: Build Plugins, Auto-Fix Errors, Elementor Widgets, WooCommerce management
+* Direct download link to account.genwave.ai/user/downloads
+
 = 1.0.5 =
 **Rebranding:**
 * Plugin renamed from "Genwave - AI Generate" to "Genwave - AI Agent for WordPress"
@@ -210,6 +225,9 @@ Yes, the plugin works on multisite installations. Each site needs its own Genwav
 * Secure encrypted communication
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+New "Plugins" admin page — install GenWave Agent, Pro, Chatbot, SEO, Elements, and Site Transfer from inside WordPress with one click. Tested up to WordPress 7.0.
 
 = 1.0.5 =
 Rebranding update: Plugin now focuses on AI Agent capabilities — build plugins, fix errors, manage WooCommerce & more through conversation.

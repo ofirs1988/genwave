@@ -3,10 +3,10 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-$is_connected = isset($data['uidd']) && !is_null($data['uidd']) && strlen($data['uidd']) > 3;
-$has_license = strlen($data['license_key'] ?? '') > 10;
-$is_expired = isset($data['license_expired']) && $data['license_expired'] === '1';
-$credits = $data['credits'] ?? 0;
+$genwave_is_connected = isset($data['uidd']) && !is_null($data['uidd']) && strlen($data['uidd']) > 3;
+$genwave_has_license = strlen($data['license_key'] ?? '') > 10;
+$genwave_is_expired = isset($data['license_expired']) && $data['license_expired'] === '1';
+$genwave_credits = $data['credits'] ?? 0;
 ?>
 <section class="gen-wave">
     <div class="gw-dashboard">
@@ -21,12 +21,12 @@ $credits = $data['credits'] ?? 0;
                     </svg>
                     <span><?php esc_html_e('Genwave', 'gen-wave'); ?></span>
                 </div>
-                <?php if ($is_connected && !$is_expired): ?>
+                <?php if ($genwave_is_connected && !$genwave_is_expired): ?>
                     <div class="gw-status gw-status-connected">
                         <span class="gw-status-dot"></span>
                         <?php esc_html_e('Connected', 'gen-wave'); ?>
                     </div>
-                <?php elseif ($is_connected && $is_expired): ?>
+                <?php elseif ($genwave_is_connected && $genwave_is_expired): ?>
                     <div class="gw-status gw-status-expired">
                         <span class="gw-status-dot"></span>
                         <?php esc_html_e('License Expired', 'gen-wave'); ?>
@@ -52,7 +52,7 @@ $credits = $data['credits'] ?? 0;
                 </div>
             <?php endif; ?>
 
-            <?php if ($is_expired): ?>
+            <?php if ($genwave_is_expired): ?>
                 <div class="gw-alert gw-alert-warning">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
@@ -82,7 +82,7 @@ $credits = $data['credits'] ?? 0;
 
         <!-- Main Content -->
         <div class="gw-content">
-            <?php if ($is_connected): ?>
+            <?php if ($genwave_is_connected): ?>
                 <!-- Connected State - Show Dashboard -->
 
                 <!-- Welcome Section -->
@@ -138,7 +138,7 @@ $credits = $data['credits'] ?? 0;
                             </svg>
                         </button>
                     </div>
-                    <div class="gw-stat-value-large" id="credit-balance"><?php echo number_format(floor((float)$credits * 100) / 100, 2); ?></div>
+                    <div class="gw-stat-value-large" id="credit-balance"><?php echo number_format(floor((float)$genwave_credits * 100) / 100, 2); ?></div>
                     <div class="gw-stat-hint">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="10"/>
@@ -162,15 +162,15 @@ $credits = $data['credits'] ?? 0;
                             <span class="gw-info-label"><?php esc_html_e('License Key', 'gen-wave'); ?></span>
                             <span class="gw-info-value gw-license-key">
                                 <?php
-                                $key = $data['license_key'];
-                                echo esc_html(substr($key, 0, 8) . '••••••••' . substr($key, -4));
+                                $genwave_license_key = $data['license_key'];
+                                echo esc_html(substr($genwave_license_key, 0, 8) . '••••••••' . substr($genwave_license_key, -4));
                                 ?>
                             </span>
                         </div>
                         <div class="gw-info-row">
                             <span class="gw-info-label"><?php esc_html_e('Status', 'gen-wave'); ?></span>
                             <span class="gw-info-value">
-                                <?php if ($is_expired): ?>
+                                <?php if ($genwave_is_expired): ?>
                                     <span class="gw-badge gw-badge-warning"><?php esc_html_e('Expired', 'gen-wave'); ?></span>
                                 <?php else: ?>
                                     <span class="gw-badge gw-badge-success"><?php esc_html_e('Active', 'gen-wave'); ?></span>
@@ -211,7 +211,7 @@ $credits = $data['credits'] ?? 0;
                         </svg>
                     </div>
                     <h2><?php esc_html_e('Welcome to Genwave', 'gen-wave'); ?></h2>
-                    <p><?php esc_html_e('Connect your account to unlock the #1 AI Agent for WordPress. Build plugins, fix errors, create pages & more — through conversation.', 'gen-wave'); ?></p>
+                    <p><?php esc_html_e('Connect your account to unlock the #1 AI Agent for your website. Build plugins, fix errors, create pages & more — through conversation.', 'gen-wave'); ?></p>
                 </div>
 
                 <!-- Features Preview -->
@@ -259,10 +259,10 @@ $credits = $data['credits'] ?? 0;
 
                     <div class="gw-setup-steps">
                         <!-- Step 1: Enter License -->
-                        <div class="gw-setup-step <?php echo $has_license ? 'completed' : 'active'; ?>">
+                        <div class="gw-setup-step <?php echo $genwave_has_license ? 'completed' : 'active'; ?>">
                             <div class="gw-setup-step-header">
                                 <div class="gw-setup-step-number">
-                                    <?php if ($has_license): ?>
+                                    <?php if ($genwave_has_license): ?>
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                                             <polyline points="20 6 9 17 4 12"/>
                                         </svg>
@@ -296,7 +296,7 @@ $credits = $data['credits'] ?? 0;
                                     </p>
                                 </div>
 
-                                <?php if (!$has_license): ?>
+                                <?php if (!$genwave_has_license): ?>
                                     <button type="submit" name="save_settings" class="gw-btn gw-btn-primary gw-btn-full">
                                         <?php esc_html_e('Save License Key', 'gen-wave'); ?>
                                     </button>
@@ -309,7 +309,7 @@ $credits = $data['credits'] ?? 0;
                         </div>
 
                         <!-- Step 2: Connect Account -->
-                        <?php if ($has_license): ?>
+                        <?php if ($genwave_has_license): ?>
                         <div class="gw-setup-step active">
                             <div class="gw-setup-step-header">
                                 <div class="gw-setup-step-number">2</div>
@@ -358,16 +358,16 @@ $credits = $data['credits'] ?? 0;
         <!-- Pro Banner -->
         <?php
         // Check if user has a paid plan
-        $plan_id = (int) get_option('genwavepro_plan', 0);
-        if ($plan_id === 0) {
-            $plan_id = (int) get_option('genwave_plan', 1);
+        $genwave_plan_id = (int) get_option('genwavepro_plan', 0);
+        if ($genwave_plan_id === 0) {
+            $genwave_plan_id = (int) get_option('genwave_plan', 1);
         }
-        $has_paid_plan = $plan_id > 1;
+        $genwave_has_paid_plan = $genwave_plan_id > 1;
         ?>
         <?php
-        $pro_plugin_active = is_plugin_active('gen-wave-pro/gen-wave-pro.php');
+        $genwave_pro_plugin_active = is_plugin_active('gen-wave-pro/gen-wave-pro.php');
         ?>
-        <?php if ($has_paid_plan): ?>
+        <?php if ($genwave_has_paid_plan): ?>
         <div class="gw-pro-banner gw-pro-active">
             <div class="gw-pro-content">
                 <div class="gw-pro-badge gw-pro-badge-active">PRO</div>
@@ -376,7 +376,7 @@ $credits = $data['credits'] ?? 0;
                     <p><?php esc_html_e('You have access to all Pro features', 'gen-wave'); ?></p>
                 </div>
             </div>
-            <?php if ($pro_plugin_active): ?>
+            <?php if ($genwave_pro_plugin_active): ?>
             <a href="<?php echo esc_url(admin_url('admin.php?page=gen-wave-plugin-pro-dashboard')); ?>" class="gw-pro-btn gw-pro-btn-active">
                 <?php esc_html_e('Go to Pro Dashboard', 'gen-wave'); ?>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

@@ -14,6 +14,7 @@ use GenWavePlugin\Core\Config;
 use GenWavePlugin\Handlers\GenerationHandler;
 use GenWavePlugin\Handlers\ProductHandler;
 use GenWavePlugin\Handlers\PollingHandler;
+use GenWavePlugin\Handlers\PluginsHandler;
 
 /**
  * AjaxManager - AJAX request router (REFACTORED)
@@ -29,6 +30,7 @@ class AjaxManager
     private $generationHandler;
     private $productHandler;
     private $pollingHandler;
+    private $pluginsHandler;
 
     public function __construct()
     {
@@ -36,6 +38,7 @@ class AjaxManager
         $this->generationHandler = new GenerationHandler();
         $this->productHandler = new ProductHandler();
         $this->pollingHandler = new PollingHandler();
+        $this->pluginsHandler = new PluginsHandler();
 
         add_action('wp_ajax_genwave_verify_login', [VerifyLoginController::class , 'verifyLogin']);
         add_action('wp_ajax_nopriv_genwave_verify_login', [VerifyLoginController::class , 'verifyLogin']);
@@ -56,6 +59,10 @@ class AjaxManager
 
         // Dashboard stats endpoint
         add_action('wp_ajax_genwave_get_dashboard_stats', [$this, 'handle_get_dashboard_stats']);
+
+        // Plugin marketplace (install paid GenWave plugins from inside WP)
+        add_action('wp_ajax_genwave_list_plugins', [$this->pluginsHandler, 'handle_list_plugins']);
+        add_action('wp_ajax_genwave_install_plugin', [$this->pluginsHandler, 'handle_install_plugin']);
 
         // Polling handlers - delegated to PollingHandler
         add_action('wp_ajax_genwave_polling_results', [$this->pollingHandler, 'handle_ai_polling_results']);
@@ -298,10 +305,11 @@ class AjaxManager
 
         // Get total requests count
         $requests_table = $wpdb->prefix . 'gen_requests';
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table query for dashboard stats
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name built from $wpdb->prefix (not user input); prepare() does not support identifier placeholders pre-WP 6.2
         $total_requests = (int) $wpdb->get_var(
             "SELECT COUNT(*) FROM {$requests_table} WHERE deleted_at IS NULL"
         );
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 
         wp_send_json_success([
             'credit_balance' => $credit_balance,

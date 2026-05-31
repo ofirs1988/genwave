@@ -1,0 +1,137 @@
+title = "GenWave Gitleaks Config"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "openai-project-key"
+description = "OpenAI project API key (modern sk-proj- format)"
+regex = '''\bsk-proj-[A-Za-z0-9_-]{60,}\b'''
+keywords = ["sk-proj-"]
+entropy = 3.5
+
+[[rules]]
+id = "anthropic-api-key"
+description = "Anthropic Claude API key"
+regex = '''\bsk-ant-api03-[A-Za-z0-9_-]{80,}\b'''
+keywords = ["sk-ant-api"]
+entropy = 3.5
+
+[[rules]]
+id = "anthropic-admin-key"
+description = "Anthropic admin API key"
+regex = '''\bsk-ant-admin01-[A-Za-z0-9_-]{80,}\b'''
+keywords = ["sk-ant-admin"]
+entropy = 3.5
+
+[[rules]]
+id = "xai-api-key"
+description = "xAI Grok API key"
+regex = '''\bxai-[A-Za-z0-9]{80,}\b'''
+keywords = ["xai-"]
+entropy = 3.5
+
+[[rules]]
+id = "perplexity-api-key"
+description = "Perplexity API key"
+regex = '''\bpplx-[A-Za-z0-9]{40,}\b'''
+keywords = ["pplx-"]
+entropy = 3.5
+
+[[rules]]
+id = "replicate-api-token"
+description = "Replicate API token"
+regex = '''\br8_[A-Za-z0-9]{37,}\b'''
+keywords = ["r8_"]
+entropy = 3.5
+
+[[rules]]
+id = "github-personal-access-token"
+description = "GitHub personal access token"
+regex = '''\bghp_[A-Za-z0-9]{36,}\b'''
+keywords = ["ghp_"]
+entropy = 3.5
+
+[[rules]]
+id = "github-oauth-access-token"
+description = "GitHub OAuth access token"
+regex = '''\bgho_[A-Za-z0-9]{36,}\b'''
+keywords = ["gho_"]
+entropy = 3.5
+
+[[rules]]
+id = "github-fine-grained-pat"
+description = "GitHub fine-grained personal access token"
+regex = '''\bgithub_pat_[A-Za-z0-9_]{80,}\b'''
+keywords = ["github_pat_"]
+entropy = 3.5
+
+[[rules]]
+id = "slack-webhook-url"
+description = "Slack incoming webhook URL"
+regex = '''https://hooks\.slack\.com/services/T[A-Z0-9]{8,}/B[A-Z0-9]{8,}/[A-Za-z0-9]{20,}'''
+keywords = ["hooks.slack.com"]
+
+[[rules]]
+id = "supabase-service-role-jwt"
+description = "Supabase JWT (likely service_role — bypasses RLS)"
+regex = '''\beyJ[A-Za-z0-9_-]{20,}\.eyJ[A-Za-z0-9_-]{50,}\.[A-Za-z0-9_-]{20,}\b'''
+keywords = ["eyJ"]
+entropy = 4.5
+
+[[rules]]
+id = "paypal-client-secret"
+description = "PayPal client secret (long alphanumeric with dashes)"
+regex = '''(?i)paypal[_-]?(?:client[_-]?)?secret\s*[:=]\s*['"]?([A-Za-z0-9_-]{60,90})['"]?'''
+keywords = ["paypal"]
+
+[[rules]]
+id = "tranzila-app-key"
+description = "Tranzila app key"
+regex = '''(?i)tranzila[_-]?app[_-]?key\s*[:=]\s*['"]?([A-Za-z0-9]{60,80})['"]?'''
+keywords = ["tranzila"]
+
+[[rules]]
+id = "morning-api-key-uuid"
+description = "Morning (Green Invoice) API key UUID"
+regex = '''(?i)morning[_-]?api[_-]?(?:key|secret)\s*[:=]\s*['"]?([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})['"]?'''
+keywords = ["morning"]
+
+[[rules]]
+id = "vultr-api-key"
+description = "Vultr API key (36 uppercase alphanumeric)"
+regex = '''(?i)vultr[_-]?api[_-]?key\s*[:=]\s*['"]?([A-Z0-9]{36})['"]?'''
+keywords = ["vultr"]
+
+# ---------------------------------------------------------------------------
+# Global allowlist — placeholders, dummy values, public test keys
+# ---------------------------------------------------------------------------
+
+[allowlist]
+description = "Allow common placeholders and known-safe values"
+
+regexes = [
+  '''YOUR_TOKEN''',
+  '''YOUR[_-]API[_-]KEY''',
+  '''your[_-]?[a-z0-9_-]*[_-]?(?:key|token|secret)[_-]?(?:here|placeholder)?''',
+  '''REPLACE[_-]?ME''',
+  '''CHANGE[_-]?ME''',
+  '''xxxxx+''',
+  '''example[_-]?(?:key|token|secret)''',
+  '''sk-[a-zA-Z]{0,5}-?(?:REPLACE_ME|XXXX|example|placeholder|test|dummy)''',
+  '''placeholder''',
+  '''dummy[_-]?(?:key|token|secret)''',
+]
+
+paths = [
+  '''\.git/.*''',
+  '''node_modules/.*''',
+  '''vendor/.*''',
+  '''venv/.*''',
+  '''__pycache__/.*''',
+  '''\.cache/.*''',
+  '''package-lock\.json''',
+  '''composer\.lock''',
+  '''poetry\.lock''',
+  '''yarn\.lock''',
+]

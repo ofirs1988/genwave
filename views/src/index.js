@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Dashboard from './pages/Dashboard';
 import Generate from './pages/Generate';
+import Plugins from './pages/Plugins';
 import './styles/main.css';
 
 // Mount Dashboard
@@ -16,4 +17,11 @@ const generateRoot = document.getElementById('genwave-generate-app');
 if (generateRoot) {
     const root = ReactDOM.createRoot(generateRoot);
     root.render(<Generate />);
+}
+
+// Mount Plugins
+const pluginsRoot = document.getElementById('genwave-plugins-app');
+if (pluginsRoot) {
+    const root = ReactDOM.createRoot(pluginsRoot);
+    root.render(<Plugins />);
 }

@@ -16,7 +16,7 @@ msgstr ""
 "X-Generator: Claude Code\n"
 
 #: genwave.php:29
-msgid "Genwave - AI Agent for WordPress"
+msgid "Genwave - AI Agent"
 msgstr ""
 
 #: src/MetaBox.php:62

@@ -124,7 +124,7 @@ const Dashboard = () => {
                         <MessageOutlined />
                     </div>
                     <div>
-                        <h3 className="gw-agent-section__title">AI Agent for WordPress</h3>
+                        <h3 className="gw-agent-section__title">AI Agent for your website</h3>
                         <p className="gw-agent-section__subtitle">Your personal AI assistant — manage your entire site through conversation</p>
                     </div>
                 </div>

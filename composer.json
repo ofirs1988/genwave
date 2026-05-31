@@ -1,6 +1,6 @@
 {
     "name": "ofir/gen-wave-plugin",
-    "description": "Genwave - AI Agent for WordPress. Core authentication, licensing, and AI integration layer. Provides secure AES-256-CBC encryption, license management, domain verification, credit balance tracking, and API gateway for Genwave Agent.",
+    "description": "Genwave - AI Agent. Core authentication, licensing, and AI integration layer. Provides secure AES-256-CBC encryption, license management, domain verification, credit balance tracking, and API gateway for Genwave Agent.",
     "type": "wordpress-plugin",
     "autoload": {
         "psr-4": {

@@ -1089,10 +1089,15 @@ class ApiManager {
             $decrypted_uidd = $this->decryptToken($encrypted_uidd);
 
             if (defined('WP_DEBUG') && WP_DEBUG) {
+                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
                 error_log("Genwave Auth Debug:");
+                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
                 error_log("  Encrypted token (first 50): " . substr($encrypted_token, 0, 50));
+                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
                 error_log("  Decrypted token (first 50): " . ($decrypted_token ? substr($decrypted_token, 0, 50) : 'EMPTY/FAILED'));
+                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
                 error_log("  Encrypted UIDD (first 50): " . substr($encrypted_uidd, 0, 50));
+                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
                 error_log("  Decrypted UIDD: " . ($decrypted_uidd ?: 'EMPTY/FAILED'));
             }
 

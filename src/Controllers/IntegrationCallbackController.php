@@ -62,6 +62,7 @@ class IntegrationCallbackController
 
         // Debug log the response
         if (defined('WP_DEBUG') && WP_DEBUG) {
+            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log, WordPress.PHP.DevelopmentFunctions.error_log_print_r -- Debug mode only
             error_log('IntegrationCallback response: ' . print_r($response, true));
         }
 
@@ -106,6 +107,7 @@ class IntegrationCallbackController
 
         // Debug log
         if (defined('WP_DEBUG') && WP_DEBUG) {
+            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
             error_log('IntegrationCallback: expired=' . ($is_expired ? 'true' : 'false') . ', expiration_date=' . ($response['expiration_date'] ?? 'null'));
         }
 

@@ -66,8 +66,8 @@ class Enqueue {
         $is_genwave_page = strpos($current_page, 'gen-wave') !== false;
         $is_edit_screen = $screen && in_array($screen->base, ['post', 'page']) && in_array($screen->post_type, ['post', 'page', 'product']);
 
-        // Check if we're on Dashboard or Generate pages (need React bundle)
-        $is_react_page = in_array($current_page, ['gen-wave-dashboard', 'gen-wave-generate']);
+        // Check if we're on Dashboard, Generate, or Plugins pages (need React bundle)
+        $is_react_page = in_array($current_page, ['gen-wave-dashboard', 'gen-wave-generate', 'gen-wave-plugins']);
 
         // Exit early if not on a relevant page
         if (!$is_genwave_page && !$is_edit_screen) {
@@ -284,6 +284,7 @@ class Enqueue {
                     'ajaxurl'        => admin_url('admin-ajax.php'),
                     'nonce'          => wp_create_nonce('genwave_nonce'),
                     'generateNonce'  => wp_create_nonce('genwave_generate_nonce'),
+                    'pluginsNonce'   => wp_create_nonce('genwave_plugins_nonce'),
                     'isPro'          => '0',
                     'hasWooCommerce' => class_exists('WooCommerce') ? '1' : '0',
                 ]

@@ -13,6 +13,7 @@ use GenWavePlugin\Pages\Settings;
 use GenWavePlugin\Pages\Tools;
 use GenWavePlugin\Pages\Dashboard;
 use GenWavePlugin\Pages\Generate;
+use GenWavePlugin\Pages\Plugins;
 
 class Plugin {
     protected $adminPageManager;
@@ -51,6 +52,7 @@ class Plugin {
         new Dashboard($this->adminPageManager);
         new Generate($this->adminPageManager);
         new Tools($this->adminPageManager);
+        new Plugins($this->adminPageManager);
 
         // Register MetaBox for posts and products (only if Pro is not active)
         new MetaBox();
