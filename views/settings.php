@@ -6,1348 +6,430 @@ if (!defined('ABSPATH')) {
 $genwave_is_connected = isset($data['uidd']) && !is_null($data['uidd']) && strlen($data['uidd']) > 3;
 $genwave_has_license = strlen($data['license_key'] ?? '') > 10;
 $genwave_is_expired = isset($data['license_expired']) && $data['license_expired'] === '1';
-$genwave_credits = $data['credits'] ?? 0;
+// Balance is synced with the agent: prefer the shared `aiaw_credits` option
+// (written by both the agent and the anchor's RefreshCredits), fall back to the
+// anchor's own copy.
+$genwave_credits = get_option('aiaw_credits', $data['credits'] ?? 0);
 ?>
-<section class="gen-wave">
-    <div class="gw-dashboard">
+<section class="gw-acct">
+    <div class="gw-acct__shell">
+
         <!-- Header -->
-        <div class="gw-header">
-            <div class="gw-header-content">
-                <div class="gw-logo">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <header class="gw-acct__head">
+            <div class="gw-acct__brand">
+                <span class="gw-acct__mark">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+                        <path d="M2 17L12 22L22 17"/>
+                        <path d="M2 12L12 17L22 12"/>
                     </svg>
-                    <span><?php esc_html_e('Genwave', 'gen-wave'); ?></span>
+                </span>
+                <div>
+                    <span class="gw-acct__brand-name"><?php esc_html_e('GenWave', 'gen-wave'); ?></span>
+                    <span class="gw-acct__brand-sub"><?php esc_html_e('Account', 'gen-wave'); ?></span>
                 </div>
-                <?php if ($genwave_is_connected && !$genwave_is_expired): ?>
-                    <div class="gw-status gw-status-connected">
-                        <span class="gw-status-dot"></span>
-                        <?php esc_html_e('Connected', 'gen-wave'); ?>
+            </div>
+            <?php if ($genwave_is_connected && !$genwave_is_expired): ?>
+                <span class="gw-acct__status is-ok"><span class="gw-acct__dot"></span><?php esc_html_e('Connected', 'gen-wave'); ?></span>
+            <?php elseif ($genwave_is_connected && $genwave_is_expired): ?>
+                <span class="gw-acct__status is-warn"><span class="gw-acct__dot"></span><?php esc_html_e('License Expired', 'gen-wave'); ?></span>
+            <?php else: ?>
+                <span class="gw-acct__status is-off"><span class="gw-acct__dot"></span><?php esc_html_e('Not Connected', 'gen-wave'); ?></span>
+            <?php endif; ?>
+        </header>
+
+        <div class="gw-acct__body">
+
+            <!-- Alerts -->
+            <div id="gw-alerts">
+                <?php if (isset($message) && strlen($message) > 0) : ?>
+                    <div class="gw-note gw-note--ok">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        <span><?php echo esc_html($message); ?></span>
                     </div>
-                <?php elseif ($genwave_is_connected && $genwave_is_expired): ?>
-                    <div class="gw-status gw-status-expired">
-                        <span class="gw-status-dot"></span>
-                        <?php esc_html_e('License Expired', 'gen-wave'); ?>
-                    </div>
-                <?php else: ?>
-                    <div class="gw-status gw-status-disconnected">
-                        <span class="gw-status-dot"></span>
-                        <?php esc_html_e('Not Connected', 'gen-wave'); ?>
+                <?php endif; ?>
+
+                <?php if ($genwave_is_expired): ?>
+                    <div class="gw-note gw-note--warn gw-alert gw-alert-warning">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        <div class="gw-note__body gw-alert-content">
+                            <strong><?php esc_html_e('License expired', 'gen-wave'); ?></strong>
+                            <p><?php esc_html_e('Renew now to keep using the AI Agent.', 'gen-wave'); ?></p>
+                            <div class="gw-note__actions gw-alert-buttons">
+                                <a href="<?php echo esc_url(GENWAVE_API_URL . '/user/billing'); ?>" target="_blank" class="gw-b gw-b--warn gw-b--sm"><?php esc_html_e('Renew License', 'gen-wave'); ?></a>
+                                <button type="button" id="refresh_license" class="gw-b gw-b--ghost gw-b--sm"><?php esc_html_e('Check again', 'gen-wave'); ?></button>
+                            </div>
+                        </div>
                     </div>
                 <?php endif; ?>
             </div>
-        </div>
 
-        <!-- Alerts Container -->
-        <div id="gw-alerts">
-            <?php if (isset($message) && strlen($message) > 0) : ?>
-                <div class="gw-alert gw-alert-success">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                        <polyline points="22 4 12 14.01 9 11.01"/>
-                    </svg>
-                    <span><?php echo esc_html($message); ?></span>
+            <?php if ($genwave_is_connected): ?>
+                <!-- ===== Connected ===== -->
+
+                <div class="gw-acct__confirm">
+                    <span class="gw-acct__confirm-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    </span>
+                    <?php esc_html_e('Your account is connected. Manage your site through the GenWave Agent chat.', 'gen-wave'); ?>
                 </div>
-            <?php endif; ?>
 
-            <?php if ($genwave_is_expired): ?>
-                <div class="gw-alert gw-alert-warning">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                        <line x1="12" y1="9" x2="12" y2="13"/>
-                        <line x1="12" y1="17" x2="12.01" y2="17"/>
-                    </svg>
-                    <div class="gw-alert-content">
-                        <strong><?php esc_html_e('License Expired', 'gen-wave'); ?></strong>
-                        <p><?php esc_html_e('Your license has expired. Renew now to continue using the AI Agent.', 'gen-wave'); ?></p>
-                        <div class="gw-alert-buttons">
-                            <a href="<?php echo esc_url(GENWAVE_API_URL . '/user/billing'); ?>" target="_blank" class="gw-btn gw-btn-warning gw-btn-sm">
-                                <?php esc_html_e('Renew License', 'gen-wave'); ?>
-                            </a>
-                            <button type="button" id="refresh_license" class="gw-btn gw-btn-outline gw-btn-sm">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M23 4v6h-6"/>
-                                    <path d="M1 20v-6h6"/>
-                                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
-                                </svg>
-                                <?php esc_html_e('Check Again', 'gen-wave'); ?>
+                <div class="gw-acct__cols">
+                    <!-- Credit balance -->
+                    <div class="gw-panel gw-panel--accent gw-card-stats">
+                        <div class="gw-panel__row">
+                            <span class="gw-panel__label"><?php esc_html_e('Credit balance', 'gen-wave'); ?></span>
+                            <button type="button" id="refresh_credits" class="gw-iconbtn" title="<?php esc_attr_e('Refresh balance', 'gen-wave'); ?>">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
                             </button>
                         </div>
+                        <div class="gw-panel__value" id="credit-balance"><?php echo number_format(floor((float)$genwave_credits * 100) / 100, 2); ?></div>
+                        <a href="<?php echo esc_url(GENWAVE_API_URL . '/user/plans'); ?>" target="_blank" class="gw-b gw-b--soft gw-b--sm gw-b--block"><?php esc_html_e('Buy more credits', 'gen-wave'); ?></a>
                     </div>
-                </div>
-            <?php endif; ?>
-        </div>
 
-        <!-- Main Content -->
-        <div class="gw-content">
-            <?php if ($genwave_is_connected): ?>
-                <!-- Connected State - Show Dashboard -->
-
-                <!-- Welcome Section -->
-                <div class="gw-welcome-connected">
-                    <div class="gw-check-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                            <polyline points="20 6 9 17 4 12"/>
-                        </svg>
-                    </div>
-                    <div class="gw-welcome-text">
-                        <h3><?php esc_html_e('Your account is connected!', 'gen-wave'); ?></h3>
-                        <p><?php esc_html_e('You can now manage your WordPress site through natural conversation with the AI Agent.', 'gen-wave'); ?></p>
-                    </div>
-                </div>
-
-                <!-- Quick Start Guide -->
-                <div class="gw-quickstart">
-                    <h4><?php esc_html_e('How to use Genwave Agent', 'gen-wave'); ?></h4>
-                    <div class="gw-quickstart-steps">
-                        <div class="gw-step">
-                            <div class="gw-step-number">1</div>
-                            <div class="gw-step-content">
-                                <strong><?php esc_html_e('Open the Genwave Agent chat', 'gen-wave'); ?></strong>
-                                <span><?php esc_html_e('Find Genwave Agent in your WordPress admin menu', 'gen-wave'); ?></span>
+                    <!-- Account details -->
+                    <div class="gw-panel gw-card">
+                        <span class="gw-panel__label"><?php esc_html_e('Account details', 'gen-wave'); ?></span>
+                        <dl class="gw-kv">
+                            <div class="gw-kv__row">
+                                <dt><?php esc_html_e('License key', 'gen-wave'); ?></dt>
+                                <dd><code><?php $genwave_license_key = $data['license_key']; echo esc_html(substr($genwave_license_key, 0, 8) . '••••' . substr($genwave_license_key, -4)); ?></code></dd>
                             </div>
-                        </div>
-                        <div class="gw-step">
-                            <div class="gw-step-number">2</div>
-                            <div class="gw-step-content">
-                                <strong><?php esc_html_e('Tell the AI what you need', 'gen-wave'); ?></strong>
-                                <span><?php esc_html_e('Describe any task in natural language — build plugins, create pages, manage products & more', 'gen-wave'); ?></span>
+                            <div class="gw-kv__row">
+                                <dt><?php esc_html_e('Status', 'gen-wave'); ?></dt>
+                                <dd>
+                                    <?php if ($genwave_is_expired): ?>
+                                        <span class="gw-tag gw-tag--warn"><?php esc_html_e('Expired', 'gen-wave'); ?></span>
+                                    <?php else: ?>
+                                        <span class="gw-tag gw-tag--ok"><?php esc_html_e('Active', 'gen-wave'); ?></span>
+                                    <?php endif; ?>
+                                </dd>
                             </div>
-                        </div>
-                        <div class="gw-step">
-                            <div class="gw-step-number">3</div>
-                            <div class="gw-step-content">
-                                <strong><?php esc_html_e('Review and approve', 'gen-wave'); ?></strong>
-                                <span><?php esc_html_e('The Agent shows you a preview before making any changes to your site', 'gen-wave'); ?></span>
-                            </div>
+                        </dl>
+                        <div class="gw-panel__foot gw-card-footer">
+                            <a href="<?php echo esc_url(GENWAVE_API_URL); ?>" target="_blank" class="gw-b gw-b--primary gw-b--sm"><?php esc_html_e('Manage account', 'gen-wave'); ?></a>
+                            <button type="button" id="disconnect_account" class="gw-b gw-b--danger gw-b--sm"><span class="gw-btn-text"><?php esc_html_e('Disconnect', 'gen-wave'); ?></span></button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Credit Balance Card -->
-                <div class="gw-card gw-card-stats">
-                    <div class="gw-stat-header">
-                        <span class="gw-stat-title"><?php esc_html_e('Your Credit Balance', 'gen-wave'); ?></span>
-                        <button type="button" id="refresh_credits" class="gw-btn-icon" title="<?php esc_attr_e('Refresh balance', 'gen-wave'); ?>">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M23 4v6h-6"/>
-                                <path d="M1 20v-6h6"/>
-                                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="gw-stat-value-large" id="credit-balance"><?php echo number_format(floor((float)$genwave_credits * 100) / 100, 2); ?></div>
-                    <div class="gw-stat-hint">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <path d="M12 16v-4"/>
-                            <path d="M12 8h.01"/>
-                        </svg>
-                        <?php esc_html_e('Credits are used each time you interact with the AI Agent', 'gen-wave'); ?>
-                    </div>
-                    <a href="<?php echo esc_url(GENWAVE_API_URL . '/user/plans'); ?>" target="_blank" class="gw-btn gw-btn-outline gw-btn-sm gw-mt-12">
-                        <?php esc_html_e('Buy More Credits', 'gen-wave'); ?>
-                    </a>
-                </div>
-
-                <!-- Account Info Card -->
-                <div class="gw-card">
-                    <div class="gw-card-header">
-                        <h3><?php esc_html_e('Account Details', 'gen-wave'); ?></h3>
-                    </div>
-                    <div class="gw-card-body">
-                        <div class="gw-info-row">
-                            <span class="gw-info-label"><?php esc_html_e('License Key', 'gen-wave'); ?></span>
-                            <span class="gw-info-value gw-license-key">
-                                <?php
-                                $genwave_license_key = $data['license_key'];
-                                echo esc_html(substr($genwave_license_key, 0, 8) . '••••••••' . substr($genwave_license_key, -4));
-                                ?>
-                            </span>
-                        </div>
-                        <div class="gw-info-row">
-                            <span class="gw-info-label"><?php esc_html_e('Status', 'gen-wave'); ?></span>
-                            <span class="gw-info-value">
-                                <?php if ($genwave_is_expired): ?>
-                                    <span class="gw-badge gw-badge-warning"><?php esc_html_e('Expired', 'gen-wave'); ?></span>
-                                <?php else: ?>
-                                    <span class="gw-badge gw-badge-success"><?php esc_html_e('Active', 'gen-wave'); ?></span>
-                                <?php endif; ?>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="gw-card-footer">
-                        <a href="<?php echo esc_url(GENWAVE_API_URL); ?>" target="_blank" class="gw-btn gw-btn-primary">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                                <polyline points="15 3 21 3 21 9"/>
-                                <line x1="10" y1="14" x2="21" y2="3"/>
-                            </svg>
-                            <?php esc_html_e('Manage Account', 'gen-wave'); ?>
-                        </a>
-                        <button type="button" id="disconnect_account" class="gw-btn gw-btn-outline-danger">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                                <polyline points="16 17 21 12 16 7"/>
-                                <line x1="21" y1="12" x2="9" y2="12"/>
-                            </svg>
-                            <?php esc_html_e('Disconnect', 'gen-wave'); ?>
-                        </button>
-                    </div>
+                <!-- Quick start (secondary) -->
+                <div class="gw-panel gw-panel--muted">
+                    <span class="gw-panel__label"><?php esc_html_e('Getting started', 'gen-wave'); ?></span>
+                    <ol class="gw-steps">
+                        <li><strong><?php esc_html_e('Open the GenWave Agent', 'gen-wave'); ?></strong><span><?php esc_html_e('Find it in your WordPress admin menu.', 'gen-wave'); ?></span></li>
+                        <li><strong><?php esc_html_e('Describe what you need', 'gen-wave'); ?></strong><span><?php esc_html_e('Plain language — build pages, manage products, fix errors.', 'gen-wave'); ?></span></li>
+                        <li><strong><?php esc_html_e('Review &amp; approve', 'gen-wave'); ?></strong><span><?php esc_html_e('You see a preview before anything changes.', 'gen-wave'); ?></span></li>
+                    </ol>
                 </div>
 
             <?php else: ?>
-                <!-- Not Connected State - Show Setup Wizard -->
+                <!-- ===== Not connected ===== -->
 
-                <!-- Welcome Section -->
-                <div class="gw-welcome">
-                    <div class="gw-welcome-icon">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
-                            <path d="M2 17L12 22L22 17"/>
-                            <path d="M2 12L12 17L22 12"/>
-                        </svg>
-                    </div>
-                    <h2><?php esc_html_e('Welcome to Genwave', 'gen-wave'); ?></h2>
-                    <p><?php esc_html_e('Connect your account to unlock the #1 AI Agent for your website. Build plugins, fix errors, create pages & more — through conversation.', 'gen-wave'); ?></p>
+                <div class="gw-acct__hero">
+                    <h2><?php esc_html_e('Connect your GenWave account', 'gen-wave'); ?></h2>
+                    <p><?php esc_html_e('Add the AI Agent to your site to build pages, fix errors, and manage everything through conversation.', 'gen-wave'); ?></p>
                 </div>
 
-                <!-- Features Preview -->
-                <div class="gw-features">
-                    <div class="gw-feature">
-                        <div class="gw-feature-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                            </svg>
-                        </div>
-                        <div class="gw-feature-text">
-                            <strong><?php esc_html_e('Natural Conversation', 'gen-wave'); ?></strong>
-                            <span><?php esc_html_e('Manage your entire WordPress site by simply talking to the AI', 'gen-wave'); ?></span>
-                        </div>
-                    </div>
-                    <div class="gw-feature">
-                        <div class="gw-feature-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                                <path d="M2 17l10 5 10-5"/>
-                                <path d="M2 12l10 5 10-5"/>
-                            </svg>
-                        </div>
-                        <div class="gw-feature-text">
-                            <strong><?php esc_html_e('250+ Actions', 'gen-wave'); ?></strong>
-                            <span><?php esc_html_e('Build plugins, create pages, manage WooCommerce, fix errors & more', 'gen-wave'); ?></span>
-                        </div>
-                    </div>
-                    <div class="gw-feature">
-                        <div class="gw-feature-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                            </svg>
-                        </div>
-                        <div class="gw-feature-text">
-                            <strong><?php esc_html_e('7-Layer Security', 'gen-wave'); ?></strong>
-                            <span><?php esc_html_e('Enterprise-grade protection with preview before every action', 'gen-wave'); ?></span>
-                        </div>
-                    </div>
+                <div class="gw-acct__features">
+                    <div class="gw-feat"><span class="gw-feat__ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><div><strong><?php esc_html_e('Natural conversation', 'gen-wave'); ?></strong><span><?php esc_html_e('Run your whole site by talking to the AI.', 'gen-wave'); ?></span></div></div>
+                    <div class="gw-feat"><span class="gw-feat__ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span><div><strong><?php esc_html_e('250+ actions', 'gen-wave'); ?></strong><span><?php esc_html_e('Pages, WooCommerce, plugins and error fixing.', 'gen-wave'); ?></span></div></div>
+                    <div class="gw-feat"><span class="gw-feat__ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><div><strong><?php esc_html_e('Safe by design', 'gen-wave'); ?></strong><span><?php esc_html_e('A preview before every change to your site.', 'gen-wave'); ?></span></div></div>
                 </div>
 
-                <!-- Setup Steps -->
-                <div class="gw-setup">
-                    <h4><?php esc_html_e('Quick Setup', 'gen-wave'); ?></h4>
+                <div class="gw-panel">
+                    <span class="gw-panel__label"><?php esc_html_e('Quick setup', 'gen-wave'); ?></span>
 
-                    <div class="gw-setup-steps">
-                        <!-- Step 1: Enter License -->
-                        <div class="gw-setup-step <?php echo $genwave_has_license ? 'completed' : 'active'; ?>">
-                            <div class="gw-setup-step-header">
-                                <div class="gw-setup-step-number">
+                    <div class="gw-wiz">
+                        <!-- Step 1 -->
+                        <div class="gw-wiz__step <?php echo $genwave_has_license ? 'is-done' : 'is-active'; ?>">
+                            <div class="gw-wiz__head">
+                                <span class="gw-wiz__num">
                                     <?php if ($genwave_has_license): ?>
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                            <polyline points="20 6 9 17 4 12"/>
-                                        </svg>
-                                    <?php else: ?>
-                                        1
-                                    <?php endif; ?>
-                                </div>
-                                <span class="gw-setup-step-title"><?php esc_html_e('Enter your license key', 'gen-wave'); ?></span>
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                    <?php else: ?>1<?php endif; ?>
+                                </span>
+                                <span class="gw-wiz__title"><?php esc_html_e('Enter your license key', 'gen-wave'); ?></span>
                             </div>
-
-                            <form method="post" action="" class="gw-form">
+                            <form method="post" action="" class="gw-wiz__form">
                                 <?php wp_nonce_field('save_ai_settings', 'ai_settings_nonce'); ?>
-
-                                <div class="gw-form-group">
-                                    <div class="gw-input-wrapper">
-                                        <input type="hidden" id="hiddenLicenseKey" value="<?php echo esc_attr($data['license_key']); ?>" />
-                                        <input type="text"
-                                               name="ai_license_key"
-                                               id="licenseKey"
-                                               class="gw-input"
-                                               placeholder="<?php esc_attr_e('XXXX-XXXX-XXXX-XXXX', 'gen-wave'); ?>"
-                                               value="<?php echo esc_attr($data['license_key']); ?>" />
-                                        <div id="input-loader" class="gw-input-loader" style="display: none;">
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-                                            </svg>
-                                        </div>
+                                <div class="gw-field">
+                                    <input type="hidden" id="hiddenLicenseKey" value="<?php echo esc_attr($data['license_key']); ?>" />
+                                    <input type="text" name="ai_license_key" id="licenseKey" class="gw-input" placeholder="XXXX-XXXX-XXXX-XXXX" value="<?php echo esc_attr($data['license_key']); ?>" />
+                                    <div id="input-loader" class="gw-input-loader" style="display:none;">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
                                     </div>
-                                    <p class="gw-input-hint">
-                                        <?php esc_html_e('Find your license key in your Genwave account dashboard', 'gen-wave'); ?>
-                                    </p>
                                 </div>
-
+                                <p class="gw-field__hint"><?php esc_html_e('Find your license key in your GenWave account.', 'gen-wave'); ?></p>
                                 <?php if (!$genwave_has_license): ?>
-                                    <button type="submit" name="save_settings" class="gw-btn gw-btn-primary gw-btn-full">
-                                        <?php esc_html_e('Save License Key', 'gen-wave'); ?>
-                                    </button>
+                                    <button type="submit" name="save_settings" class="gw-b gw-b--primary gw-b--block"><?php esc_html_e('Save license key', 'gen-wave'); ?></button>
                                 <?php else: ?>
-                                    <button type="submit" name="save_settings" class="gw-btn gw-btn-outline gw-btn-sm">
-                                        <?php esc_html_e('Update Key', 'gen-wave'); ?>
-                                    </button>
+                                    <button type="submit" name="save_settings" class="gw-b gw-b--ghost gw-b--sm"><?php esc_html_e('Update key', 'gen-wave'); ?></button>
                                 <?php endif; ?>
                             </form>
                         </div>
 
-                        <!-- Step 2: Connect Account -->
+                        <!-- Step 2 -->
                         <?php if ($genwave_has_license): ?>
-                        <div class="gw-setup-step active">
-                            <div class="gw-setup-step-header">
-                                <div class="gw-setup-step-number">2</div>
-                                <span class="gw-setup-step-title"><?php esc_html_e('Connect your account', 'gen-wave'); ?></span>
+                        <div class="gw-wiz__step is-active">
+                            <div class="gw-wiz__head">
+                                <span class="gw-wiz__num">2</span>
+                                <span class="gw-wiz__title"><?php esc_html_e('Connect your account', 'gen-wave'); ?></span>
                             </div>
-                            <p class="gw-setup-step-desc">
-                                <?php esc_html_e('Click the button below to securely connect your Genwave account. You will be redirected to login and authorize this site.', 'gen-wave'); ?>
-                            </p>
-                            <button type="button" id="verify_by_login" class="gw-btn gw-btn-primary gw-btn-lg gw-btn-full gw-btn-connect">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
-                                    <polyline points="10 17 15 12 10 7"/>
-                                    <line x1="15" y1="12" x2="3" y2="12"/>
-                                </svg>
-                                <?php esc_html_e('Connect to Genwave', 'gen-wave'); ?>
+                            <p class="gw-wiz__desc"><?php esc_html_e('You will be redirected to log in and authorize this site.', 'gen-wave'); ?></p>
+                            <button type="button" id="verify_by_login" class="gw-b gw-b--primary gw-b--block gw-b--lg">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                                <?php esc_html_e('Connect to GenWave', 'gen-wave'); ?>
                             </button>
                         </div>
                         <?php endif; ?>
                     </div>
                 </div>
 
-                <!-- Help Section -->
-                <div class="gw-help-section">
-                    <div class="gw-help-item">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-                            <line x1="12" y1="17" x2="12.01" y2="17"/>
-                        </svg>
-                        <a href="<?php echo esc_url(GENWAVE_API_URL . '/register'); ?>" target="_blank">
-                            <?php esc_html_e("Don't have an account? Sign up free", 'gen-wave'); ?>
-                        </a>
-                    </div>
-                    <div class="gw-help-item">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                        </svg>
-                        <a href="<?php echo esc_url(GENWAVE_API_URL . '/support'); ?>" target="_blank">
-                            <?php esc_html_e('Need help? Contact support', 'gen-wave'); ?>
-                        </a>
-                    </div>
+                <div class="gw-acct__help">
+                    <a href="<?php echo esc_url(GENWAVE_API_URL . '/register'); ?>" target="_blank"><?php esc_html_e("Don't have an account? Sign up free", 'gen-wave'); ?></a>
+                    <a href="<?php echo esc_url(GENWAVE_API_URL . '/support'); ?>" target="_blank"><?php esc_html_e('Need help? Contact support', 'gen-wave'); ?></a>
                 </div>
-            <?php endif; ?>
-        </div>
 
-        <!-- Pro Banner -->
-        <?php
-        // Check if user has a paid plan
-        $genwave_plan_id = (int) get_option('genwavepro_plan', 0);
-        if ($genwave_plan_id === 0) {
-            $genwave_plan_id = (int) get_option('genwave_plan', 1);
-        }
-        $genwave_has_paid_plan = $genwave_plan_id > 1;
-        ?>
-        <?php
-        $genwave_pro_plugin_active = is_plugin_active('gen-wave-pro/gen-wave-pro.php');
-        ?>
-        <?php if ($genwave_has_paid_plan): ?>
-        <div class="gw-pro-banner gw-pro-active">
-            <div class="gw-pro-content">
-                <div class="gw-pro-badge gw-pro-badge-active">PRO</div>
-                <div class="gw-pro-text">
-                    <h4><?php esc_html_e('Pro Plan Active', 'gen-wave'); ?></h4>
-                    <p><?php esc_html_e('You have access to all Pro features', 'gen-wave'); ?></p>
-                </div>
-            </div>
-            <?php if ($genwave_pro_plugin_active): ?>
-            <a href="<?php echo esc_url(admin_url('admin.php?page=gen-wave-plugin-pro-dashboard')); ?>" class="gw-pro-btn gw-pro-btn-active">
-                <?php esc_html_e('Go to Pro Dashboard', 'gen-wave'); ?>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-            </a>
-            <?php else: ?>
-            <a href="https://account.genwave.ai/user/downloads" target="_blank" class="gw-pro-btn gw-pro-btn-active">
-                <?php esc_html_e('Download Pro Plugin', 'gen-wave'); ?>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-            </a>
             <?php endif; ?>
         </div>
-        <?php else: ?>
-        <div class="gw-pro-banner">
-            <div class="gw-pro-content">
-                <div class="gw-pro-badge">PRO</div>
-                <div class="gw-pro-text">
-                    <h4><?php esc_html_e('Unlock the Full AI Agent', 'gen-wave'); ?></h4>
-                    <p><?php esc_html_e('Build plugins, auto-fix errors, SEO optimization, bulk generation & more', 'gen-wave'); ?></p>
-                </div>
-            </div>
-            <a href="<?php echo esc_url(GENWAVE_API_URL . '/pro'); ?>" target="_blank" class="gw-pro-btn">
-                <?php esc_html_e('Learn More', 'gen-wave'); ?>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-            </a>
-        </div>
-        <?php endif; ?>
 
         <!-- Footer -->
-        <div class="gw-footer">
-            <span><?php esc_html_e('Genwave', 'gen-wave'); ?> v<?php echo esc_html(defined('GEN_WAVE_VERSION') ? GEN_WAVE_VERSION : '1.0.0'); ?></span>
+        <footer class="gw-acct__foot">
+            <span><?php esc_html_e('GenWave', 'gen-wave'); ?> · v<?php echo esc_html(defined('GEN_WAVE_VERSION') ? GEN_WAVE_VERSION : '1.0.0'); ?></span>
             <a href="<?php echo esc_url(GENWAVE_API_URL . '/support'); ?>" target="_blank"><?php esc_html_e('Support', 'gen-wave'); ?></a>
-        </div>
+        </footer>
     </div>
 </section>
 
 <style>
-/* Genwave Dashboard Styles */
-.gw-dashboard {
-    max-width: 600px;
-    margin: 20px auto;
+/* ===== GenWave Account — clean, professional layout ===== */
+.gw-acct {
+    --a1: #06b6d4;
+    --a2: #3b82f6;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --line: #e6e8ec;
+    --bg: #f8fafc;
+    --radius: 14px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+}
+.gw-acct * { box-sizing: border-box; }
+
+.gw-acct__shell {
+    max-width: 680px;
+    margin: 22px auto;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 20px 45px -30px rgba(15, 23, 42, 0.35);
 }
 
 /* Header */
-.gw-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 16px 16px 0 0;
-    padding: 20px 24px;
-    color: #fff;
-}
-
-.gw-header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.gw-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 18px;
-    font-weight: 700;
-}
-
-.gw-logo svg {
-    opacity: 0.9;
-}
-
-/* Status Badge */
-.gw-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 500;
-    background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(10px);
-}
-
-.gw-status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    animation: pulse-dot 2s infinite;
-}
-
-.gw-status-connected .gw-status-dot { background: #4ade80; }
-.gw-status-expired .gw-status-dot { background: #fbbf24; animation: none; }
-.gw-status-disconnected .gw-status-dot { background: #f87171; animation: none; }
-
-@keyframes pulse-dot {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.7; transform: scale(1.2); }
-}
-
-/* Content Area */
-.gw-content {
-    background: #fff;
-    padding: 28px;
-    border-left: 1px solid #e5e7eb;
-    border-right: 1px solid #e5e7eb;
-}
-
-/* Alerts */
-#gw-alerts {
-    background: #fff;
-    border-left: 1px solid #e5e7eb;
-    border-right: 1px solid #e5e7eb;
-}
-
-.gw-alert {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 16px 24px;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.gw-alert svg {
-    flex-shrink: 0;
-    margin-top: 2px;
-}
-
-.gw-alert-success {
-    background: #ecfdf5;
-    color: #065f46;
-}
-
-.gw-alert-success svg { stroke: #10b981; }
-
-.gw-alert-warning {
-    background: #fffbeb;
-    color: #92400e;
-}
-
-.gw-alert-warning svg { stroke: #f59e0b; }
-
-.gw-alert-content {
-    flex: 1;
-}
-
-.gw-alert-content strong {
-    display: block;
-    margin-bottom: 4px;
-}
-
-.gw-alert-content p {
-    margin: 0 0 12px 0;
-    font-size: 14px;
-    opacity: 0.9;
-}
-
-.gw-alert-buttons {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-/* Welcome Section (Not Connected) */
-.gw-welcome {
-    text-align: center;
-    padding: 10px 0 30px;
-}
-
-.gw-welcome-icon {
-    width: 72px;
-    height: 72px;
-    margin: 0 auto 16px;
-    border-radius: 16px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-}
-
-.gw-welcome h2 {
-    margin: 0 0 8px;
-    font-size: 22px;
-    font-weight: 700;
-    color: #1f2937;
-}
-
-.gw-welcome p {
-    margin: 0;
-    color: #6b7280;
-    font-size: 15px;
-    line-height: 1.5;
-}
-
-/* Welcome Connected */
-.gw-welcome-connected {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 16px 20px;
-    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-    border-radius: 12px;
-    margin-bottom: 20px;
-}
-
-.gw-check-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: #10b981;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.gw-welcome-text h3 {
-    margin: 0 0 2px;
-    font-size: 16px;
-    font-weight: 600;
-    color: #065f46;
-}
-
-.gw-welcome-text p {
-    margin: 0;
-    font-size: 13px;
-    color: #047857;
-}
-
-/* Quick Start Guide */
-.gw-quickstart {
-    background: #f9fafb;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-.gw-quickstart h4 {
-    margin: 0 0 16px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #374151;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.gw-quickstart-steps {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.gw-step {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-}
-
-.gw-step-number {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #fff;
-    font-size: 12px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.gw-step-content {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.gw-step-content strong {
-    font-size: 14px;
-    font-weight: 600;
-    color: #1f2937;
-}
-
-.gw-step-content span {
-    font-size: 13px;
-    color: #6b7280;
-}
-
-/* Features */
-.gw-features {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 28px;
-}
-
-.gw-feature {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 14px 16px;
-    background: #f9fafb;
-    border-radius: 10px;
-    transition: all 0.2s;
-}
-
-.gw-feature:hover {
-    background: #f3f4f6;
-}
-
-.gw-feature-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.gw-feature-text {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.gw-feature-text strong {
-    font-size: 14px;
-    font-weight: 600;
-    color: #1f2937;
-}
-
-.gw-feature-text span {
-    font-size: 13px;
-    color: #6b7280;
-}
-
-/* Setup Steps */
-.gw-setup {
-    background: #fff;
-    border: 2px solid #e5e7eb;
-    border-radius: 14px;
-    padding: 24px;
-    margin-bottom: 24px;
-}
-
-.gw-setup h4 {
-    margin: 0 0 20px;
-    font-size: 16px;
-    font-weight: 700;
-    color: #1f2937;
-}
-
-.gw-setup-steps {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
-
-.gw-setup-step {
-    padding-left: 0;
-}
-
-.gw-setup-step.completed {
-    opacity: 0.7;
-}
-
-.gw-setup-step-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
-}
-
-.gw-setup-step-number {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    font-weight: 700;
-    flex-shrink: 0;
-}
-
-.gw-setup-step.active .gw-setup-step-number {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #fff;
-}
-
-.gw-setup-step.completed .gw-setup-step-number {
-    background: #10b981;
-    color: #fff;
-}
-
-.gw-setup-step-title {
-    font-size: 15px;
-    font-weight: 600;
-    color: #1f2937;
-}
-
-.gw-setup-step-desc {
-    margin: 0 0 16px;
-    padding-left: 40px;
-    font-size: 14px;
-    color: #6b7280;
-    line-height: 1.5;
-}
-
-.gw-setup-step .gw-form {
-    padding-left: 40px;
-}
-
-/* Cards */
-.gw-card {
-    background: #f9fafb;
-    border-radius: 12px;
-    margin-bottom: 16px;
-    overflow: hidden;
-}
-
-.gw-card:last-child {
-    margin-bottom: 0;
-}
-
-.gw-card-header {
-    padding: 16px 20px;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.gw-card-header h3 {
-    margin: 0;
-    font-size: 15px;
-    font-weight: 600;
-    color: #374151;
-}
-
-.gw-card-body {
-    padding: 16px 20px;
-}
-
-.gw-card-footer {
-    padding: 16px 20px;
-    background: #fff;
-    border-top: 1px solid #e5e7eb;
-    display: flex;
-    gap: 12px;
-}
-
-/* Stats Card */
-.gw-card-stats {
-    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-    padding: 20px;
-    text-align: center;
-}
-
-.gw-stat-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-}
-
-.gw-stat-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: #6b7280;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.gw-stat-value-large {
-    font-size: 42px;
-    font-weight: 800;
-    color: #1f2937;
-    line-height: 1;
-    margin-bottom: 8px;
-}
-
-.gw-stat-hint {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    font-size: 12px;
-    color: #6b7280;
-    margin-bottom: 0;
-}
-
-.gw-mt-12 {
-    margin-top: 12px;
-}
-
-.gw-btn-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    border: 1px solid #d1d5db;
-    background: #fff;
-    color: #6b7280;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-}
-
-.gw-btn-icon:hover {
-    background: #f3f4f6;
-    color: #374151;
-}
-
-.gw-btn-icon.loading svg {
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Info Rows */
-.gw-info-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.gw-info-row:last-child {
-    border-bottom: none;
-}
-
-.gw-info-label {
-    font-size: 14px;
-    color: #6b7280;
-}
-
-.gw-info-value {
-    font-size: 14px;
-    font-weight: 500;
-    color: #1f2937;
-}
-
-.gw-license-key {
-    font-family: 'SF Mono', Monaco, monospace;
-    font-size: 13px;
-    background: #f3f4f6;
-    padding: 4px 10px;
-    border-radius: 6px;
-}
-
-/* Badges */
-.gw-badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.gw-badge-success {
-    background: #dcfce7;
-    color: #166534;
-}
-
-.gw-badge-warning {
-    background: #fef3c7;
-    color: #92400e;
-}
-
-/* Form */
-.gw-form {
-    text-align: left;
-}
-
-.gw-form-group {
-    margin-bottom: 16px;
-}
-
-.gw-form-label {
-    display: block;
-    font-size: 14px;
-    font-weight: 500;
-    color: #374151;
-    margin-bottom: 8px;
-}
-
-.gw-input-wrapper {
-    position: relative;
-}
-
-.gw-input {
-    width: 100%;
-    padding: 12px 16px;
-    font-size: 15px;
-    border: 2px solid #e5e7eb;
-    border-radius: 10px;
-    transition: all 0.2s;
-    box-sizing: border-box;
-}
-
-.gw-input:focus {
-    outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-.gw-input-hint {
-    margin: 8px 0 0;
-    font-size: 12px;
-    color: #9ca3af;
-}
-
-.gw-input-loader {
-    position: absolute;
-    right: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #667eea;
-}
-
-.gw-input-loader svg {
-    animation: spin 1s linear infinite;
-}
-
-/* Buttons */
-.gw-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 10px 20px;
-    font-size: 14px;
-    font-weight: 600;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-decoration: none;
-}
-
-.gw-btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #fff;
-    box-shadow: 0 4px 14px rgba(102, 126, 234, 0.3);
-}
-
-.gw-btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-    color: #fff;
-}
-
-.gw-btn-connect {
-    padding: 16px 28px;
-    font-size: 16px;
-}
-
-.gw-btn-outline {
-    background: #fff;
-    color: #374151;
-    border: 2px solid #e5e7eb;
-}
-
-.gw-btn-outline:hover {
-    background: #f9fafb;
-    border-color: #d1d5db;
-    color: #374151;
-}
-
-.gw-btn-outline-danger {
-    background: #fff;
-    color: #dc2626;
-    border: 2px solid #fecaca;
-}
-
-.gw-btn-outline-danger:hover {
-    background: #fef2f2;
-    border-color: #f87171;
-    color: #dc2626;
-}
-
-.gw-btn-warning {
-    background: #f59e0b;
-    color: #fff;
-}
-
-.gw-btn-warning:hover {
-    background: #d97706;
-    color: #fff;
-}
-
-.gw-btn-lg {
-    padding: 14px 28px;
-    font-size: 15px;
-}
-
-.gw-btn-sm {
-    padding: 8px 16px;
-    font-size: 13px;
-}
-
-.gw-btn-full {
-    width: 100%;
-}
-
-.gw-btn-group {
-    display: flex;
-    gap: 12px;
-}
-
-.gw-btn-group .gw-btn {
-    flex: 1;
-}
-
-.gw-btn.loading {
-    opacity: 0.7;
-    pointer-events: none;
-}
-
-/* Help Section */
-.gw-help-section {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.gw-help-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 16px;
-    background: #f9fafb;
-    border-radius: 8px;
-}
-
-.gw-help-item svg {
-    color: #9ca3af;
-    flex-shrink: 0;
-}
-
-.gw-help-item a {
-    color: #667eea;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.gw-help-item a:hover {
-    text-decoration: underline;
-}
-
-/* Pro Banner */
-.gw-pro-banner {
+.gw-acct__head {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    padding: 16px 24px;
-    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-    border-left: 1px solid #fbbf24;
-    border-right: 1px solid #fbbf24;
+    padding: 18px 24px;
+    color: #fff;
+    background:
+        radial-gradient(120% 180% at 100% 0%, rgba(255,255,255,0.18), transparent 55%),
+        linear-gradient(120deg, #0e7490 0%, var(--a1) 45%, var(--a2) 100%);
+}
+.gw-acct__brand { display: flex; align-items: center; gap: 12px; }
+.gw-acct__mark {
+    width: 40px; height: 40px; border-radius: 11px;
+    display: grid; place-items: center;
+    background: rgba(255,255,255,0.16);
+    border: 1px solid rgba(255,255,255,0.25);
+}
+.gw-acct__brand-name { display: block; font-size: 16px; font-weight: 700; line-height: 1.1; }
+.gw-acct__brand-sub { display: block; font-size: 12px; opacity: 0.85; }
+
+.gw-acct__status {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 6px 12px; border-radius: 999px;
+    font-size: 12.5px; font-weight: 600;
+    background: rgba(255,255,255,0.16);
+    border: 1px solid rgba(255,255,255,0.25);
+}
+.gw-acct__dot { width: 7px; height: 7px; border-radius: 50%; background: #fff; }
+.gw-acct__status.is-ok .gw-acct__dot { background: #4ade80; box-shadow: 0 0 0 3px rgba(74,222,128,0.3); }
+.gw-acct__status.is-warn .gw-acct__dot { background: #fbbf24; }
+.gw-acct__status.is-off .gw-acct__dot { background: #f87171; }
+
+/* Body */
+.gw-acct__body { padding: 24px; display: flex; flex-direction: column; gap: 16px; background: var(--bg); }
+
+/* Notes / alerts */
+.gw-note {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 13px 15px; border-radius: 11px; font-size: 13.5px;
+    border: 1px solid transparent;
+}
+.gw-note svg { flex-shrink: 0; margin-top: 1px; }
+.gw-note--ok { background: #ecfdf5; color: #065f46; border-color: #a7f3d0; }
+.gw-note--ok svg { stroke: #10b981; }
+.gw-note--warn { background: #fffbeb; color: #92400e; border-color: #fde68a; }
+.gw-note--warn svg { stroke: #f59e0b; }
+.gw-note__body { flex: 1; }
+.gw-note__body strong { display: block; margin-bottom: 2px; }
+.gw-note__body p { margin: 0 0 10px; font-size: 13px; opacity: 0.9; }
+.gw-note__actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* Connected confirm strip */
+.gw-acct__confirm {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 15px; border-radius: 11px;
+    font-size: 13.5px; color: var(--ink);
+    background: #fff; border: 1px solid var(--line);
+}
+.gw-acct__confirm-icon {
+    width: 26px; height: 26px; border-radius: 8px; flex-shrink: 0;
+    display: grid; place-items: center; color: #fff;
+    background: linear-gradient(135deg, #10b981, #059669);
 }
 
-.gw-pro-content {
+/* Two-column card row */
+.gw-acct__cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+/* Panels (unified card) */
+.gw-panel {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 12px;
 }
-
-.gw-pro-badge {
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 4px 8px;
-    border-radius: 4px;
-    letter-spacing: 0.5px;
+.gw-panel--muted { background: #fff; }
+.gw-panel__label {
+    font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--muted);
 }
-
-.gw-pro-text h4 {
-    margin: 0 0 2px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #92400e;
+.gw-panel__row { display: flex; align-items: center; justify-content: space-between; }
+.gw-panel--accent {
+    position: relative; overflow: hidden;
+    background:
+        radial-gradient(120% 130% at 100% 0%, rgba(59,130,246,0.10), transparent 60%),
+        linear-gradient(180deg, #fff, #f6fbff);
+    border-color: rgba(59,130,246,0.22);
 }
-
-.gw-pro-text p {
-    margin: 0;
-    font-size: 12px;
-    color: #a16207;
+.gw-panel__value {
+    font-size: 40px; font-weight: 800; line-height: 1; letter-spacing: -0.02em;
+    color: var(--ink);
+    background: linear-gradient(120deg, var(--ink), #155e75 70%, var(--a1));
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
 }
+.gw-panel__foot { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
 
-.gw-pro-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 16px;
-    background: #fff;
-    color: #92400e;
-    font-size: 13px;
-    font-weight: 600;
-    border-radius: 8px;
-    text-decoration: none;
-    border: 1px solid #fbbf24;
-    transition: all 0.2s;
-    white-space: nowrap;
-}
+/* Key/value list */
+.gw-kv { margin: 0; display: flex; flex-direction: column; }
+.gw-kv__row { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--line); }
+.gw-kv__row:last-child { border-bottom: 0; }
+.gw-kv dt { font-size: 13px; color: var(--muted); margin: 0; }
+.gw-kv dd { margin: 0; font-size: 13px; font-weight: 600; color: var(--ink); }
+.gw-kv code { font-family: ui-monospace, 'SF Mono', Monaco, monospace; font-size: 12px; background: var(--bg); padding: 3px 8px; border-radius: 6px; border: 1px solid var(--line); }
 
-.gw-pro-btn:hover {
-    background: #92400e;
-    color: #fff;
-    border-color: #92400e;
-}
+.gw-tag { display: inline-flex; padding: 3px 9px; border-radius: 7px; font-size: 11.5px; font-weight: 700; }
+.gw-tag--ok { background: #dcfce7; color: #166534; }
+.gw-tag--warn { background: #fef3c7; color: #92400e; }
 
-/* Pro Banner Active (Green) */
-.gw-pro-banner.gw-pro-active {
-    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-    border-left: 1px solid #34d399;
-    border-right: 1px solid #34d399;
+/* Steps (getting started) */
+.gw-steps { margin: 0; padding: 0; list-style: none; counter-reset: gw; display: flex; flex-direction: column; gap: 11px; }
+.gw-steps li { position: relative; padding-left: 34px; counter-increment: gw; }
+.gw-steps li::before {
+    content: counter(gw); position: absolute; left: 0; top: 0;
+    width: 22px; height: 22px; border-radius: 7px;
+    display: grid; place-items: center; font-size: 11px; font-weight: 700; color: #0e7490;
+    background: rgba(6,182,212,0.12);
 }
+.gw-steps strong { display: block; font-size: 13.5px; color: var(--ink); }
+.gw-steps span { font-size: 12.5px; color: var(--muted); }
 
-.gw-pro-badge-active {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
-}
+/* Not-connected hero */
+.gw-acct__hero { text-align: center; padding: 6px 0 2px; }
+.gw-acct__hero h2 { margin: 0 0 6px; font-size: 21px; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); }
+.gw-acct__hero p { margin: 0 auto; max-width: 46ch; font-size: 14px; line-height: 1.55; color: var(--muted); }
 
-.gw-pro-active .gw-pro-text h4 {
-    color: #065f46;
-}
+.gw-acct__features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.gw-feat { display: flex; flex-direction: column; gap: 8px; padding: 15px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); }
+.gw-feat__ic { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, var(--a1), var(--a2)); }
+.gw-feat strong { display: block; font-size: 13.5px; color: var(--ink); }
+.gw-feat span { font-size: 12.5px; line-height: 1.45; color: var(--muted); }
 
-.gw-pro-active .gw-pro-text p {
-    color: #047857;
-}
+/* Setup wizard */
+.gw-wiz { display: flex; flex-direction: column; gap: 18px; }
+.gw-wiz__step.is-done { opacity: 0.65; }
+.gw-wiz__head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.gw-wiz__num { width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; font-size: 12px; font-weight: 700; color: var(--muted); background: var(--bg); border: 1px solid var(--line); }
+.gw-wiz__step.is-active .gw-wiz__num { color: #fff; background: linear-gradient(135deg, var(--a1), var(--a2)); border-color: transparent; }
+.gw-wiz__step.is-done .gw-wiz__num { color: #fff; background: #10b981; border-color: transparent; }
+.gw-wiz__title { font-size: 14.5px; font-weight: 700; color: var(--ink); }
+.gw-wiz__desc { margin: 0 0 12px; padding-left: 36px; font-size: 13px; color: var(--muted); }
+.gw-wiz__form { padding-left: 36px; }
 
-.gw-pro-btn-active {
-    background: #fff;
-    color: #065f46;
-    border-color: #34d399;
-}
+.gw-field { position: relative; }
+.gw-input { width: 100%; padding: 11px 14px; font-size: 14px; color: var(--ink); border: 1px solid var(--line); border-radius: 10px; transition: border-color 0.15s, box-shadow 0.15s; }
+.gw-input:focus { outline: none; border-color: var(--a1); box-shadow: 0 0 0 3px rgba(6,182,212,0.14); }
+.gw-field__hint { margin: 8px 0 12px; padding-left: 0; font-size: 12px; color: #94a3b8; }
+.gw-input-loader { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--a1); }
+.gw-input-loader svg { animation: gwspin 1s linear infinite; }
 
-.gw-pro-btn-active:hover {
-    background: #065f46;
-    color: #fff;
-    border-color: #065f46;
-}
+/* Help */
+.gw-acct__help { display: flex; flex-direction: column; gap: 8px; }
+.gw-acct__help a { font-size: 13px; color: #0e7490; text-decoration: none; }
+.gw-acct__help a:hover { text-decoration: underline; }
 
 /* Footer */
-.gw-footer {
-    background: #f9fafb;
-    border: 1px solid #e5e7eb;
-    border-top: none;
-    border-radius: 0 0 16px 16px;
-    padding: 16px 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 13px;
-    color: #6b7280;
-}
+.gw-acct__foot { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; font-size: 12.5px; color: var(--muted); background: #fff; border-top: 1px solid var(--line); }
+.gw-acct__foot a { color: #0e7490; text-decoration: none; }
+.gw-acct__foot a:hover { text-decoration: underline; }
 
-.gw-footer a {
-    color: #667eea;
-    text-decoration: none;
-}
+/* Buttons */
+.gw-b { display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 9px 16px; font-size: 13.5px; font-weight: 600; border-radius: 10px; border: 1px solid transparent; cursor: pointer; text-decoration: none; transition: transform 0.1s, box-shadow 0.2s, background 0.15s, filter 0.2s; }
+.gw-b--block { width: 100%; }
+.gw-b--sm { padding: 8px 13px; font-size: 12.5px; }
+.gw-b--lg { padding: 13px 18px; font-size: 14.5px; }
+.gw-b--primary { color: #fff; background: linear-gradient(135deg, var(--a1), var(--a2)); box-shadow: 0 10px 20px -12px rgba(59,130,246,0.7); }
+.gw-b--primary:hover { filter: brightness(1.05); transform: translateY(-1px); color: #fff; }
+.gw-b--soft { color: #0e7490; background: rgba(6,182,212,0.10); border-color: rgba(6,182,212,0.28); }
+.gw-b--soft:hover { background: rgba(6,182,212,0.16); color: #0e7490; }
+.gw-b--ghost { color: var(--ink); background: #fff; border-color: var(--line); }
+.gw-b--ghost:hover { background: var(--bg); }
+.gw-b--danger { color: #dc2626; background: #fff; border-color: #fecaca; }
+.gw-b--danger:hover { background: #fef2f2; border-color: #f87171; color: #dc2626; }
+.gw-b--warn { color: #fff; background: #f59e0b; }
+.gw-b--warn:hover { background: #d97706; color: #fff; }
+.gw-b.loading, .gw-b:disabled { opacity: 0.7; pointer-events: none; }
+.gw-b.confirming { background: #dc2626 !important; border-color: #dc2626 !important; color: #fff !important; }
 
-.gw-footer a:hover {
-    text-decoration: underline;
-}
+.gw-iconbtn { width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--line); background: #fff; color: var(--muted); cursor: pointer; display: grid; place-items: center; transition: background 0.15s, color 0.15s; }
+.gw-iconbtn:hover { background: var(--bg); color: var(--ink); }
+.gw-iconbtn.loading svg { animation: gwspin 1s linear infinite; }
 
-/* Action Messages */
-.gw-action-message {
-    margin-top: 16px;
-    padding: 14px 16px;
-    border-radius: 10px;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    animation: slideIn 0.3s ease;
-}
+/* Action messages (JS-injected) */
+.gw-action-message { margin-top: 14px; padding: 12px 15px; border-radius: 10px; font-size: 13.5px; display: flex; align-items: center; gap: 9px; animation: gwslide 0.25s ease; }
+.gw-action-message.loading { background: #eff6ff; color: #1e40af; }
+.gw-action-message.success { background: #ecfdf5; color: #065f46; }
+.gw-action-message.error { background: #fef2f2; color: #991b1b; }
+.gw-action-message.warning { background: #fffbeb; color: #92400e; }
+.gw-action-message.warning a { color: #0e7490; text-decoration: underline; margin-left: 4px; }
 
-@keyframes slideIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.gw-action-message.loading {
-    background: #eff6ff;
-    color: #1e40af;
-}
-
-.gw-action-message.success {
-    background: #ecfdf5;
-    color: #065f46;
-}
-
-.gw-action-message.error {
-    background: #fef2f2;
-    color: #991b1b;
-}
-
-.gw-action-message.warning {
-    background: #fffbeb;
-    color: #92400e;
-}
-
-.gw-action-message.warning a {
-    color: #667eea;
-    text-decoration: underline;
-    margin-left: 4px;
-}
-
-.gw-btn.confirming {
-    background: #dc2626 !important;
-    border-color: #dc2626 !important;
-    color: #fff !important;
-    box-shadow: 0 4px 14px rgba(220, 38, 38, 0.3);
-}
+@keyframes gwspin { to { transform: translateY(-50%) rotate(360deg); } }
+.gw-iconbtn.loading svg, .gw-b .anticon-spin { animation: gwspin2 1s linear infinite; }
+@keyframes gwspin2 { to { transform: rotate(360deg); } }
+@keyframes gwslide { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
 
 /* Responsive */
-@media (max-width: 600px) {
-    .gw-dashboard {
-        margin: 10px;
-    }
-
-    .gw-header {
-        padding: 16px 20px;
-    }
-
-    .gw-content {
-        padding: 20px;
-    }
-
-    .gw-btn-group {
-        flex-direction: column;
-    }
-
-    .gw-card-footer {
-        flex-direction: column;
-    }
-
-    .gw-card-footer .gw-btn {
-        width: 100%;
-    }
-
-    .gw-setup-step .gw-form,
-    .gw-setup-step-desc {
-        padding-left: 0;
-    }
-
-    .gw-pro-banner {
-        flex-direction: column;
-        text-align: center;
-        gap: 12px;
-    }
-
-    .gw-pro-content {
-        flex-direction: column;
-        gap: 8px;
-    }
+@media (max-width: 640px) {
+    .gw-acct__shell { margin: 12px; }
+    .gw-acct__body { padding: 18px; }
+    .gw-acct__cols { grid-template-columns: 1fr; }
+    .gw-acct__features { grid-template-columns: 1fr; }
+    .gw-wiz__form, .gw-wiz__desc { padding-left: 0; }
 }
 </style>

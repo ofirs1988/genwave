@@ -11,9 +11,12 @@ class ViewManager {
 
     public function __construct($views_dir = '',$proPlugin = false) {
         // Set the directory where views are located
-        if($proPlugin){
+        // The Pro views path only exists when gen-wave-pro is active. Guard the
+        // constant so a stray $proPlugin=true never fatals on a free-only site
+        // (gen-wave-pro is retired; this branch is effectively dead but safe now).
+        if ($proPlugin && defined('GEN_WAVE_PRO_PATH')) {
             $this->views_dir = GEN_WAVE_PRO_PATH . 'views/';
-        }else{
+        } else {
             $this->views_dir = GEN_WAVE_PATH . 'views/';
         }
 

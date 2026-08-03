@@ -2,34 +2,23 @@ import React, { useState, useEffect } from 'react';
 import {
     ThunderboltOutlined,
     FileTextOutlined,
-    LineChartOutlined,
-    ClockCircleOutlined,
-    PieChartOutlined,
-    BarChartOutlined,
-    CrownOutlined,
-    CheckCircleOutlined,
-    RocketOutlined,
-    PictureOutlined,
-    AudioOutlined,
     LoadingOutlined,
     MessageOutlined,
-    ToolOutlined,
+    RocketOutlined,
     BugOutlined,
+    ToolOutlined,
     ShopOutlined,
-    DownloadOutlined,
-    ArrowRightOutlined
+    ArrowRightOutlined,
 } from '@ant-design/icons';
-import LockedFeature from '../../components/LockedFeature';
 
 const Dashboard = () => {
     const [stats, setStats] = useState({
         creditBalance: 0,
         totalRequests: 0,
-        loading: true
+        loading: true,
     });
 
     useEffect(() => {
-        // Wait for settings to be available
         const checkAndFetch = () => {
             if (window.genwaveFreeSettings?.ajaxurl) {
                 fetchStats();
@@ -44,260 +33,97 @@ const Dashboard = () => {
         try {
             const response = await fetch(window.genwaveFreeSettings.ajaxurl, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: new URLSearchParams({
                     action: 'genwave_get_dashboard_stats',
-                    security: window.genwaveFreeSettings.nonce
-                })
+                    security: window.genwaveFreeSettings.nonce,
+                }),
             });
-
             const data = await response.json();
             if (data.success) {
                 setStats({
                     creditBalance: data.data.credit_balance || data.data.token_balance || 0,
                     totalRequests: data.data.total_requests || 0,
-                    loading: false
+                    loading: false,
                 });
             } else {
-                setStats(prev => ({ ...prev, loading: false }));
+                setStats((prev) => ({ ...prev, loading: false }));
             }
         } catch (error) {
             console.error('Failed to fetch stats:', error);
-            setStats(prev => ({ ...prev, loading: false }));
+            setStats((prev) => ({ ...prev, loading: false }));
         }
     };
 
     const formatNumber = (num) => {
-        if (num >= 1000000) {
-            return (num / 1000000).toFixed(1) + 'M';
-        }
-        if (num >= 1000) {
-            return (num / 1000).toFixed(1) + 'K';
-        }
-        return num.toLocaleString();
+        if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+        if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+        return Number(num).toLocaleString(undefined, { maximumFractionDigits: 2 });
     };
 
+    const agentUrl = '/wp-admin/admin.php?page=genwave-agent';
+
     return (
-        <div className="gw-page">
-            {/* Header */}
-            <div className="gw-page__header">
-                <h1 className="gw-page__title">Dashboard</h1>
-                <p className="gw-page__subtitle">Overview of your AI Agent activity</p>
-            </div>
+        <div className="gw-page gw-dash">
+            <header className="gw-dash__head">
+                <h1 className="gw-dash__title">Dashboard</h1>
+                <p className="gw-dash__subtitle">An overview of your GenWave activity.</p>
+            </header>
 
-            {/* Upgrade Banner */}
-            <div className="gw-upgrade-banner">
-                <div className="gw-upgrade-banner__content">
-                    <h3>Unlock the Full AI Agent</h3>
-                    <p>250+ actions to manage your WordPress site through conversation</p>
-                    <div className="gw-upgrade-banner__features">
-                        <span className="gw-upgrade-banner__feature">
-                            <RocketOutlined /> Plugin Builder
-                        </span>
-                        <span className="gw-upgrade-banner__feature">
-                            <CheckCircleOutlined /> Auto Error Fix
-                        </span>
-                        <span className="gw-upgrade-banner__feature">
-                            <PictureOutlined /> AI Images
-                        </span>
-                        <span className="gw-upgrade-banner__feature">
-                            <BarChartOutlined /> SEO Optimization
+            {/* Real stats */}
+            <div className="gw-dash__stats">
+                <div className="gw-dash-stat gw-dash-stat--accent">
+                    <span className="gw-dash-stat__ic"><ThunderboltOutlined /></span>
+                    <div className="gw-dash-stat__body">
+                        <span className="gw-dash-stat__label">Credit balance</span>
+                        <span className="gw-dash-stat__value">
+                            {stats.loading ? <LoadingOutlined /> : formatNumber(stats.creditBalance)}
                         </span>
                     </div>
                 </div>
-                <a
-                    href="https://account.genwave.ai/user/plans"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="gw-upgrade-banner__btn"
-                >
-                    <CrownOutlined /> Upgrade Now
-                </a>
-            </div>
-
-            {/* AI Agent Section */}
-            <div className="gw-agent-section">
-                <div className="gw-agent-section__header">
-                    <div className="gw-agent-section__icon">
-                        <MessageOutlined />
+                <div className="gw-dash-stat">
+                    <span className="gw-dash-stat__ic"><FileTextOutlined /></span>
+                    <div className="gw-dash-stat__body">
+                        <span className="gw-dash-stat__label">Total requests</span>
+                        <span className="gw-dash-stat__value">
+                            {stats.loading ? <LoadingOutlined /> : formatNumber(stats.totalRequests)}
+                        </span>
                     </div>
-                    <div>
-                        <h3 className="gw-agent-section__title">AI Agent for your website</h3>
-                        <p className="gw-agent-section__subtitle">Your personal AI assistant — manage your entire site through conversation</p>
-                    </div>
-                </div>
-
-                <div className="gw-agent-features">
-                    <div className="gw-agent-feature">
-                        <div className="gw-agent-feature__icon gw-agent-feature__icon--blue">
-                            <RocketOutlined />
-                        </div>
-                        <div className="gw-agent-feature__text">
-                            <strong>Build Plugins</strong>
-                            <span>Create custom plugins from a simple description</span>
-                        </div>
-                    </div>
-                    <div className="gw-agent-feature">
-                        <div className="gw-agent-feature__icon gw-agent-feature__icon--green">
-                            <BugOutlined />
-                        </div>
-                        <div className="gw-agent-feature__text">
-                            <strong>Auto-Fix Errors</strong>
-                            <span>Detect and fix PHP errors automatically</span>
-                        </div>
-                    </div>
-                    <div className="gw-agent-feature">
-                        <div className="gw-agent-feature__icon gw-agent-feature__icon--purple">
-                            <ToolOutlined />
-                        </div>
-                        <div className="gw-agent-feature__text">
-                            <strong>Elementor Widgets</strong>
-                            <span>Create custom widgets through conversation</span>
-                        </div>
-                    </div>
-                    <div className="gw-agent-feature">
-                        <div className="gw-agent-feature__icon gw-agent-feature__icon--orange">
-                            <ShopOutlined />
-                        </div>
-                        <div className="gw-agent-feature__text">
-                            <strong>WooCommerce</strong>
-                            <span>Manage products, orders, and store settings</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="gw-agent-section__cta">
-                    <a
-                        href="https://account.genwave.ai/user/downloads"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="gw-agent-section__btn"
-                    >
-                        <DownloadOutlined /> Download AI Agent
-                    </a>
-                    <a
-                        href="https://genwave.ai/ai-agent"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="gw-agent-section__link"
-                    >
-                        Learn more <ArrowRightOutlined />
-                    </a>
                 </div>
             </div>
 
-            {/* Stats Cards */}
-            <div className="gw-cards-grid">
-                {/* Credit Balance - Active */}
-                <div className="gw-stat-card gw-stat-card--gradient">
-                    <div className="gw-stat-card__icon">
-                        <ThunderboltOutlined />
+            {/* Agent hero */}
+            <section className="gw-dash-agent">
+                <span className="gw-dash-agent__glow" aria-hidden="true" />
+                <div className="gw-dash-agent__inner">
+                    <span className="gw-dash-agent__badge"><MessageOutlined /> AI Agent</span>
+                    <h2 className="gw-dash-agent__title">Manage your site through conversation</h2>
+                    <p className="gw-dash-agent__lead">
+                        Build plugins, fix errors, and edit your site by chatting with it.
+                    </p>
+
+                    <div className="gw-dash-agent__feats">
+                        <span className="gw-dash-agent__feat"><RocketOutlined /> Build plugins</span>
+                        <span className="gw-dash-agent__feat"><BugOutlined /> Auto-fix errors</span>
+                        <span className="gw-dash-agent__feat"><ToolOutlined /> Elementor widgets</span>
+                        <span className="gw-dash-agent__feat"><ShopOutlined /> WooCommerce</span>
                     </div>
-                    <div className="gw-stat-card__label">Credit Balance</div>
-                    <div className="gw-stat-card__value">
-                        {stats.loading ? <LoadingOutlined className="gw-spinner-icon" /> : formatNumber(stats.creditBalance)}
+
+                    <div className="gw-dash-agent__actions">
+                        <a className="gw-dash-agent__cta" href={agentUrl}>
+                            Open the Agent <ArrowRightOutlined />
+                        </a>
+                        <a
+                            className="gw-dash-agent__link"
+                            href="https://genwave.ai/ai-agent"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Learn more
+                        </a>
                     </div>
                 </div>
-
-                {/* Total Requests - Active */}
-                <div className="gw-stat-card">
-                    <div className="gw-stat-card__icon">
-                        <FileTextOutlined />
-                    </div>
-                    <div className="gw-stat-card__label">Total Requests</div>
-                    <div className="gw-stat-card__value">
-                        {stats.loading ? <LoadingOutlined className="gw-spinner-icon" /> : formatNumber(stats.totalRequests)}
-                    </div>
-                </div>
-
-                {/* Tokens Used - Locked */}
-                <LockedFeature
-                    title="Credits Used"
-                    description="Track detailed credit usage and consumption"
-                    compact
-                >
-                    <div className="gw-stat-card">
-                        <div className="gw-stat-card__icon">
-                            <LineChartOutlined />
-                        </div>
-                        <div className="gw-stat-card__label">Credits Used</div>
-                        <div className="gw-stat-card__value">0</div>
-                    </div>
-                </LockedFeature>
-
-                {/* AI Products - Locked */}
-                <LockedFeature
-                    title="AI Products"
-                    description="View all products enhanced with AI"
-                    compact
-                >
-                    <div className="gw-stat-card">
-                        <div className="gw-stat-card__icon">
-                            <RocketOutlined />
-                        </div>
-                        <div className="gw-stat-card__label">AI Products</div>
-                        <div className="gw-stat-card__value">0</div>
-                    </div>
-                </LockedFeature>
-            </div>
-
-            {/* Locked Sections */}
-            <div className="gw-cards-grid">
-                {/* Usage Chart - Locked */}
-                <LockedFeature
-                    title="Usage Analytics"
-                    description="View detailed charts of your AI usage over time"
-                >
-                    <div className="gw-section" style={{ minHeight: '300px' }}>
-                        <h3 className="gw-section__title">
-                            <LineChartOutlined /> Usage Over Time
-                        </h3>
-                        <div style={{ height: '200px', background: 'var(--gw-gray-100)', borderRadius: '8px' }}></div>
-                    </div>
-                </LockedFeature>
-
-                {/* Activity Log - Locked */}
-                <LockedFeature
-                    title="Recent Activity"
-                    description="Track all your AI generation activities"
-                >
-                    <div className="gw-section" style={{ minHeight: '300px' }}>
-                        <h3 className="gw-section__title">
-                            <ClockCircleOutlined /> Recent Activity
-                        </h3>
-                        <div style={{ height: '200px', background: 'var(--gw-gray-100)', borderRadius: '8px' }}></div>
-                    </div>
-                </LockedFeature>
-            </div>
-
-            {/* More Locked Analytics */}
-            <div className="gw-cards-grid">
-                <LockedFeature
-                    title="Content Types"
-                    description="See distribution of generated content types"
-                >
-                    <div className="gw-section" style={{ minHeight: '250px' }}>
-                        <h3 className="gw-section__title">
-                            <PieChartOutlined /> Content Types
-                        </h3>
-                        <div style={{ height: '160px', background: 'var(--gw-gray-100)', borderRadius: '8px' }}></div>
-                    </div>
-                </LockedFeature>
-
-                <LockedFeature
-                    title="Models Used"
-                    description="Analytics on AI models usage"
-                >
-                    <div className="gw-section" style={{ minHeight: '250px' }}>
-                        <h3 className="gw-section__title">
-                            <BarChartOutlined /> Models Used
-                        </h3>
-                        <div style={{ height: '160px', background: 'var(--gw-gray-100)', borderRadius: '8px' }}></div>
-                    </div>
-                </LockedFeature>
-            </div>
+            </section>
         </div>
     );
 };

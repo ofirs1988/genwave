@@ -7,6 +7,7 @@ if (!defined('ABSPATH')) {
 }
 
 use GenWavePlugin\Core\ApiManager;
+use GenWavePlugin\Core\Config;
 use Exception;
 
 /**
@@ -254,42 +255,65 @@ class GenerationHandler
                 error_log("Genwave: Has UIDD: " . ($encrypted_uidd ? 'YES' : 'NO'));
             }
 
-            $result = $api_manager->callLiteLLMStreaming(
-                [$post_data],
-                $language,
-                $generation_method,
-                $length,
-                'single',
-                false,
-                $custom_instructions // Pass custom instructions to API
-            );
+            // Generate on the AGENT backend (8002), NOT the retired liteLLM (8001).
+            // The anchor holds the credentials, so this works even when the agent
+            // plugin isn't active. Charging happens on the backend (shared billing).
+            $agent_base = defined('GENWAVE_AGENT_API_URL') && GENWAVE_AGENT_API_URL
+                ? GENWAVE_AGENT_API_URL
+                : 'https://agent.genwave.ai';
+            $agent_is_local = preg_match('#(localhost|127\.0\.0\.1|\.local)#', $agent_base) === 1;
 
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log("=== GEN WAVE: LITELLM RESPONSE ===");
-                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log,WordPress.PHP.DevelopmentFunctions.error_log_print_r -- Debug mode only
-                error_log("Genwave: Response: " . print_r($result, true));
-                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log("Genwave: Has Error: " . (isset($result['error']) && $result['error'] ? 'YES' : 'NO'));
-                if (isset($result['error']) && $result['error']) {
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Genwave: Error Message: " . ($result['message'] ?? 'Unknown'));
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Genwave: Response Code: " . ($result['response_code'] ?? 'N/A'));
-                }
+            $agent_response = wp_remote_post(rtrim($agent_base, '/') . '/generate-single', [
+                'headers' => [
+                    'Content-Type'  => 'application/json',
+                    'Accept'        => 'application/json',
+                    'Authorization' => 'Bearer ' . \GenWavePlugin\Core\Config::get('token'),
+                    'uidd'          => \GenWavePlugin\Core\Config::get('uidd'),
+                    'license-key'   => $license_key,
+                    'from-domain'   => ApiManager::getFromDomain(),
+                ],
+                'body' => wp_json_encode([
+                    'field'        => $generation_method,
+                    'language'     => $language,
+                    'instructions' => $custom_instructions,
+                    'post'         => [
+                        'title'     => $post_data['title'] ?? '',
+                        'content'   => $post_data['content'] ?? '',
+                        'excerpt'   => $post_data['excerpt'] ?? '',
+                        'post_type' => $post_data['post_type'] ?? 'post',
+                    ],
+                ]),
+                'timeout'   => 60,
+                'sslverify' => !$agent_is_local,
+            ]);
+
+            if (is_wp_error($agent_response)) {
+                wp_send_json_error([
+                    /* translators: %s: error message */
+                    'message' => sprintf(__('Error generating content: %s', 'gen-wave'), $agent_response->get_error_message()),
+                ]);
+                return;
             }
 
-            // Save token usage if available
-            if (isset($result['tokens_used'])) {
-                $this->save_token_usage($job_id, $result['tokens_used'], $result['token_charge_id'] ?? 0);
+            $code = wp_remote_retrieve_response_code($agent_response);
+            $result = json_decode(wp_remote_retrieve_body($agent_response), true);
+
+            if ($code !== 200 || !is_array($result) || empty($result['success'])) {
+                // FastAPI puts errors under `detail`; our handler uses {error,message}.
+                $msg = $result['detail']['message'] ?? ($result['message'] ?? __('Generation failed', 'gen-wave'));
+                wp_send_json_error(['message' => $msg]);
+                return;
             }
 
-            // Update local credit balance from server response
-            if (isset($result['token_usage']['credits_balance'])) {
-                Config::set('credits', $result['token_usage']['credits_balance']);
+            // Sync the balance everywhere: the shared option the agent uses + the
+            // anchor's own copy, so admin bar / dashboard / account all agree.
+            $new_balance = $result['results']['token_usage']['credits_balance'] ?? null;
+            if ($new_balance !== null) {
+                update_option('aiaw_credits', (float) $new_balance);
+                Config::set('credits', (float) $new_balance);
             }
 
-            // Return success with results
+            // Return success with results (shape unchanged for the React UI).
             wp_send_json_success([
                 'data' => $result,
                 'job_id' => $job_id,

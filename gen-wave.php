@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Genwave - AI Agent
  * Description: The #1 AI Agent for your website. Build plugins, fix errors, create pages, manage WooCommerce & optimize SEO — all through natural conversation. 250+ actions, 7-layer security, 48+ languages.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: Genwave.ai
  * Author URI: https://genwave.ai
  * Text Domain: gen-wave
@@ -28,7 +28,7 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
-define( 'GEN_WAVE_VERSION', '1.1.0' );
+define( 'GEN_WAVE_VERSION', '1.1.1' );
 
 define( 'GEN_WAVE__FILE__', __FILE__ );
 define( 'GEN_WAVE_PLUGIN_BASE', plugin_basename( GEN_WAVE__FILE__ ) );
@@ -88,8 +88,12 @@ if (!defined('GENWAVE_API_URL')) {
     define('GENWAVE_API_URL', 'https://account.genwave.ai');
 }
 
-if (!defined('GEN_WAVE_SMART_API')) {
-    define('GEN_WAVE_SMART_API', 'https://api.genwave.ai');
+// The agent backend — where the anchor reads the credit balance and runs content
+// generation. Replaces the retired liteLLM "smart API". Defined here so the free
+// plugin works on its own; if wp-config or the agent plugin already set it, that
+// value is kept.
+if (!defined('GENWAVE_AGENT_API_URL')) {
+    define('GENWAVE_AGENT_API_URL', 'https://agent.genwave.ai');
 }
 
 
@@ -108,17 +112,20 @@ if (!defined('GEN_WAVE_SMART_API')) {
  *    - Shared secret for service-to-service authentication
  *    - Backward compatibility with existing installations
  *
- * 3. Key rotation is supported through the Genwave dashboard
- * 4. All three services must use the same key for encryption/decryption to work
- *
- * This is intentional security-by-design, not a vulnerability.
+ * REMOVED (findings F1/F9): this plugin previously shipped a shared AES-256-CBC
+ * key in source and used it to encrypt the SSO token/uidd. Because the plugin is
+ * public, that key was public, so the encryption protected nothing. Credentials
+ * are now delivered in plaintext over the authenticated, one-time
+ * credentials_session channel (server-to-server HTTPS) and stored as-is. No key.
  */
-$gen_wave_encryption_key = get_option('genwave_encryption_key');
-if (!$gen_wave_encryption_key) {
-    // Default shared secret - synchronized with Genwave backend services
-    $gen_wave_encryption_key = 'ATW1kctl7zkJDLC7IRC8JDfPBrgREiLu';
+// The former shared AES secret is gone (findings F1/F9): credentials now travel
+// in plaintext over the authenticated one-time credentials_session channel, so no
+// key is shipped in source. The constant is still defined — resolved only from an
+// out-of-band value if one exists — so any lingering reference degrades to "" and
+// never fatals.
+if (!defined('GEN_WAVE_SECRET_KEY')) {
+    define('GEN_WAVE_SECRET_KEY', (string) get_option('genwave_encryption_key', ''));
 }
-define('GEN_WAVE_SECRET_KEY', $gen_wave_encryption_key);
 
 // Include Composer's autoload file
 require_once __DIR__ . '/vendor/autoload.php';
@@ -136,18 +143,8 @@ $plugin = new Plugin();
  * Plugin activation hook - saves encryption key and creates database tables
  */
 function genwave_plugin_activation() {
-    // Check if encryption key already exists
-    $existing_key = get_option('genwave_encryption_key');
-
-    if (!$existing_key) {
-        // Save default key to wp_options on first activation
-        $default_key = 'ATW1kctl7zkJDLC7IRC8JDfPBrgREiLu';
-        update_option('genwave_encryption_key', $default_key, false); // false = don't autoload
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-            error_log('Genwave: Encryption key saved to wp_options on activation');
-        }
-    }
+    // No encryption key is provisioned on activation anymore — the shared-key AES
+    // layer was removed (findings F1/F9).
 
     // Create database tables
     require_once GEN_WAVE_PATH . 'src/InstallationManager.php';

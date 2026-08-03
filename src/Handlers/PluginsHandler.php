@@ -21,6 +21,16 @@ class PluginsHandler
     private const LIST_CACHE_TTL = 300; // 5 minutes
 
     /**
+     * Slugs to hide from the marketplace page. These products are retired, so we
+     * filter them out locally regardless of what the dashboard still lists.
+     */
+    private const HIDDEN_SLUGS = [
+        'gen-wave-pro',
+        'genwave-seo',
+        'genwave-transfer',
+    ];
+
+    /**
      * AJAX: return list of available GenWave plugins augmented with local status.
      */
     public function handle_list_plugins(): void
@@ -29,6 +39,7 @@ class PluginsHandler
             return;
         }
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce is verified in verify_admin_request() above.
         $force_refresh = isset($_POST['force_refresh']) && $_POST['force_refresh'] === '1';
         $remote = $this->fetch_remote_list($force_refresh);
 
@@ -39,7 +50,14 @@ class PluginsHandler
             return;
         }
 
-        $augmented = array_map([$this, 'augment_with_local_status'], $remote['plugins']);
+        $visible = array_filter(
+            $remote['plugins'],
+            static function ($p) {
+                return ! in_array($p['slug'] ?? '', self::HIDDEN_SLUGS, true);
+            }
+        );
+
+        $augmented = array_map([$this, 'augment_with_local_status'], array_values($visible));
 
         wp_send_json_success([
             'plugins' => $augmented,
@@ -55,6 +73,7 @@ class PluginsHandler
             return;
         }
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce is verified in verify_admin_request() above.
         $slug = isset($_POST['slug']) ? sanitize_key(wp_unslash($_POST['slug'])) : '';
         if ($slug === '') {
             wp_send_json_error(['message' => __('Missing plugin slug', 'gen-wave')]);
@@ -165,6 +184,7 @@ class PluginsHandler
         if ($code !== 200 || ! is_array($body) || empty($body['plugins'])) {
             $msg = is_array($body) && ! empty($body['message'])
                 ? $body['message']
+                // translators: %d is the HTTP status code returned by the GenWave dashboard.
                 : sprintf(__('Dashboard returned HTTP %d', 'gen-wave'), $code);
             return ['ok' => false, 'message' => $msg];
         }

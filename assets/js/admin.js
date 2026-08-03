@@ -131,8 +131,8 @@ jQuery(document).ready(function($) {
                 // Update the credit balance display
                 $('#credit-balance').text(parseFloat(credits).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
 
-                // Update credit count in menu
-                $('li#wp-admin-bar-custom_text_with_icon').find('span').html(credits);
+                // Update credit count in menu (formatted to 2 decimals)
+                $('li#wp-admin-bar-custom_text_with_icon').find('span').html(parseFloat(credits).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
 
                 // Re-enable button after animation
                 setTimeout(() => {
