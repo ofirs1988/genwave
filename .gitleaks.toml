@@ -110,6 +110,16 @@ keywords = ["vultr"]
 [allowlist]
 description = "Allow common placeholders and known-safe values"
 
+# Historical commits that introduced the old hardcoded shared encryption key.
+# It was removed in the auth-code migration (v1.1.1). The key is already public in
+# history and on WordPress.org, so it cannot be un-leaked by a rewrite — it MUST be
+# rotated. These known historical findings are allowlisted so CI passes; any NEW
+# secret is still caught.
+commits = [
+  "222587d7c7d227c8017dc140fcb9dc822cbe1a27",
+  "78ea2460796baf5b3d49fafcf29b5532b4e7983a",
+]
+
 regexes = [
   '''YOUR_TOKEN''',
   '''YOUR[_-]API[_-]KEY''',
