@@ -6,6 +6,7 @@ import {
     ReloadOutlined,
     LinkOutlined,
     AppstoreOutlined,
+    ThunderboltOutlined,
 } from '@ant-design/icons';
 
 /**
@@ -90,7 +91,6 @@ const Plugins = () => {
             const json = await res.json();
 
             if (json && json.success) {
-                // Refresh the list to update install/active status
                 await fetchPlugins({ forceRefresh: true });
                 setInstalling((cur) => {
                     const next = { ...cur };
@@ -106,51 +106,62 @@ const Plugins = () => {
         }
     };
 
+    const header = (
+        <header className="gw-mkt__hero">
+            <div className="gw-mkt__hero-glow" aria-hidden="true" />
+            <div className="gw-mkt__hero-content">
+                <div className="gw-mkt__hero-text">
+                    <span className="gw-mkt__eyebrow">
+                        <ThunderboltOutlined /> Marketplace
+                    </span>
+                    <h1 className="gw-mkt__title">GenWave Plugins</h1>
+                    <p className="gw-mkt__subtitle">
+                        Extend your site with the GenWave suite — installed in one click, right from here.
+                    </p>
+                </div>
+                <button
+                    type="button"
+                    className="gw-mkt__refresh"
+                    onClick={() => fetchPlugins({ forceRefresh: true })}
+                    disabled={refreshing || loading}
+                >
+                    <ReloadOutlined spin={refreshing} /> {refreshing ? 'Refreshing' : 'Refresh'}
+                </button>
+            </div>
+        </header>
+    );
+
     if (loading) {
         return (
-            <div className="gw-page gw-plugins">
-                <h1 className="gw-page__title">
-                    <AppstoreOutlined /> Genwave Plugins
-                </h1>
-                <div className="gw-loading-state">
-                    <LoadingOutlined /> Loading available plugins…
+            <div className="gw-page gw-mkt">
+                {header}
+                <div className="gw-mkt__grid">
+                    {[0, 1, 2].map((i) => (
+                        <div className="gw-mkt-card gw-mkt-card--skeleton" key={i}>
+                            <div className="gw-sk gw-sk__icon" />
+                            <div className="gw-sk gw-sk__line gw-sk__line--title" />
+                            <div className="gw-sk gw-sk__line" />
+                            <div className="gw-sk gw-sk__line gw-sk__line--short" />
+                            <div className="gw-sk gw-sk__btn" />
+                        </div>
+                    ))}
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="gw-page gw-plugins">
-            <div className="gw-plugins__header">
-                <div>
-                    <h1 className="gw-page__title">
-                        <AppstoreOutlined /> Genwave Plugins
-                    </h1>
-                    <p className="gw-page__subtitle">
-                        Install GenWave plugins directly from your dashboard.
-                    </p>
-                </div>
-                <button
-                    type="button"
-                    className="gw-btn gw-btn--ghost"
-                    onClick={() => fetchPlugins({ forceRefresh: true })}
-                    disabled={refreshing}
-                >
-                    {refreshing ? <LoadingOutlined /> : <ReloadOutlined />} Refresh
-                </button>
-            </div>
+        <div className="gw-page gw-mkt">
+            {header}
 
-            {error && (
-                <div className="gw-alert gw-alert--error">
-                    {error}
-                </div>
-            )}
+            {error && <div className="gw-mkt__alert">{error}</div>}
 
-            <div className="gw-plugins__grid">
-                {plugins.map((p) => (
+            <div className="gw-mkt__grid">
+                {plugins.map((p, i) => (
                     <PluginCard
                         key={p.slug}
                         plugin={p}
+                        index={i}
                         installing={installing[p.slug]}
                         onInstall={() => handleInstall(p.slug)}
                     />
@@ -158,98 +169,102 @@ const Plugins = () => {
             </div>
 
             {!error && plugins.length === 0 && (
-                <div className="gw-empty-state">No plugins available.</div>
+                <div className="gw-mkt__empty">
+                    <AppstoreOutlined />
+                    <p>No plugins available right now.</p>
+                </div>
             )}
         </div>
     );
 };
 
-const PluginCard = ({ plugin, installing, onInstall }) => {
+const initialsFor = (name = '') =>
+    name.replace(/[^a-zA-Z0-9 ]/g, '').trim().split(/\s+/).slice(0, 2).map((w) => w[0]).join('').toUpperCase() || 'GW';
+
+const PluginCard = ({ plugin, index, installing, onInstall }) => {
     const isInstalling = installing === true;
     const installError = typeof installing === 'string' ? installing : null;
+    const [iconFailed, setIconFailed] = useState(false);
+    const showIcon = plugin.icon && !iconFailed;
 
     const renderAction = () => {
         if (isInstalling) {
             return (
-                <button type="button" className="gw-btn gw-btn--primary" disabled>
+                <button type="button" className="gw-mkt-btn gw-mkt-btn--primary" disabled>
                     <LoadingOutlined /> Installing…
                 </button>
             );
         }
-
         if (plugin.active) {
             return (
-                <span className="gw-pill gw-pill--success">
-                    <CheckCircleOutlined /> Active &middot; v{plugin.installed_version}
+                <span className="gw-mkt-btn gw-mkt-btn--active" aria-disabled="true">
+                    <CheckCircleOutlined /> Active · v{plugin.installed_version}
                 </span>
             );
         }
-
         if (plugin.installed) {
             return (
-                <button type="button" className="gw-btn gw-btn--primary" onClick={onInstall}>
-                    Activate v{plugin.installed_version}
+                <button type="button" className="gw-mkt-btn gw-mkt-btn--primary" onClick={onInstall}>
+                    <ThunderboltOutlined /> Activate v{plugin.installed_version}
                 </button>
             );
         }
-
         return (
-            <button type="button" className="gw-btn gw-btn--primary" onClick={onInstall}>
+            <button type="button" className="gw-mkt-btn gw-mkt-btn--primary" onClick={onInstall}>
                 <DownloadOutlined /> Install v{plugin.version}
             </button>
         );
     };
 
     return (
-        <div className="gw-plugin-card">
-            <div className="gw-plugin-card__head">
-                {plugin.icon && (
-                    <img
-                        src={plugin.icon}
-                        alt={plugin.name}
-                        className="gw-plugin-card__icon"
-                        onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                    />
-                )}
-                <div className="gw-plugin-card__title-block">
-                    <h3 className="gw-plugin-card__title">{plugin.name}</h3>
-                    {plugin.tagline && (
-                        <p className="gw-plugin-card__tagline">{plugin.tagline}</p>
+        <article
+            className={`gw-mkt-card${plugin.active ? ' is-active' : ''}`}
+            style={{ animationDelay: `${Math.min(index, 8) * 60}ms` }}
+        >
+            <span className="gw-mkt-card__accent" aria-hidden="true" />
+
+            <div className="gw-mkt-card__top">
+                <div className={`gw-mkt-card__icon${showIcon ? '' : ' gw-mkt-card__icon--fallback'}`}>
+                    {showIcon ? (
+                        <img src={plugin.icon} alt="" onError={() => setIconFailed(true)} />
+                    ) : (
+                        <span>{initialsFor(plugin.name)}</span>
                     )}
-                    <span className={`gw-pill ${plugin.is_free ? 'gw-pill--neutral' : 'gw-pill--paid'}`}>
-                        {plugin.is_free ? 'Free' : 'Paid'}
-                    </span>
                 </div>
-            </div>
-
-            <p className="gw-plugin-card__description">
-                {plugin.description}
-            </p>
-
-            <div className="gw-plugin-card__meta">
-                <span>WP {plugin.requires_wp}+</span>
-                <span>&middot;</span>
-                <span>PHP {plugin.requires_php}+</span>
-                {plugin.homepage && (
-                    <>
-                        <span>&middot;</span>
-                        <a href={plugin.homepage} target="_blank" rel="noopener noreferrer">
-                            <LinkOutlined /> Homepage
-                        </a>
-                    </>
+                <div className="gw-mkt-card__heading">
+                    <h3 className="gw-mkt-card__title">{plugin.name}</h3>
+                    {plugin.tagline && <p className="gw-mkt-card__tagline">{plugin.tagline}</p>}
+                </div>
+                {plugin.active && (
+                    <span className="gw-mkt-card__flag" title="Active">
+                        <CheckCircleOutlined />
+                    </span>
                 )}
             </div>
 
-            {installError && (
-                <div className="gw-alert gw-alert--error">
-                    {installError}
-                </div>
+            {plugin.description && (
+                <p className="gw-mkt-card__desc">{plugin.description}</p>
             )}
 
-            <div className="gw-plugin-card__action">
-                {renderAction()}
+            <div className="gw-mkt-card__meta">
+                <span className="gw-mkt-chip">WP {plugin.requires_wp}+</span>
+                <span className="gw-mkt-chip">PHP {plugin.requires_php}+</span>
+                {plugin.active && plugin.update_available && (
+                    <span className="gw-mkt-chip gw-mkt-chip--update">
+                        <ReloadOutlined /> Update ready
+                    </span>
+                )}
+                {plugin.homepage && (
+                    <a className="gw-mkt-card__link" href={plugin.homepage} target="_blank" rel="noopener noreferrer">
+                        <LinkOutlined /> Learn more
+                    </a>
+                )}
             </div>
-        </div>
+
+            {installError && <div className="gw-mkt__alert gw-mkt__alert--inline">{installError}</div>}
+
+            <div className="gw-mkt-card__foot">{renderAction()}</div>
+        </article>
     );
 };
 

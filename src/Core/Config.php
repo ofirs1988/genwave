@@ -18,7 +18,7 @@ class Config {
         'credits' => '',
         'license_expired' => '0',
         'expiration_date' => '',
-        'encryption_key' => 'ATW1kctl7zkJDLC7IRC8JDfPBrgREiLu', // Default encryption key (AES-256-CBC)
+        'encryption_key' => '', // Removed: shared AES key no longer used (F1/F9); credentials travel plaintext over the authenticated credentials_session channel
     ];
 
     public static function get($key) {

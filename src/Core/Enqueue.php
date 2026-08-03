@@ -129,15 +129,17 @@ class Enqueue {
         // Always enqueue streaming client for LiteLLM functionality
         wp_enqueue_script('gen-wave-plugin-streaming-client', GEN_WAVE_ASSETS_URL .'/js/streaming-client.js', ['jquery'], GEN_WAVE_VERSION, true);
 
-        // Get user credentials from database
-        $license_key = \GenWavePlugin\Core\Config::get('license_key');
-        $uidd_encrypted = \GenWavePlugin\Core\Config::get('uidd');
-        $token_encrypted = \GenWavePlugin\Core\Config::get('token');
-
-        // Decrypt token and uidd
-        $encryption = new \GenWavePlugin\Services\EncryptionService();
-        $uidd = $uidd_encrypted ? $encryption->decrypt($uidd_encrypted) : '';
-        $token = $token_encrypted ? $encryption->decrypt($token_encrypted) : '';
+        // Credentials are stored in plaintext (the shared-key AES layer was removed
+        // — findings F1/F9). Only expose them to users who may operate the agent.
+        // This method also enqueues on post/page/product edit screens, which
+        // authors/editors can reach, so gating on manage_options keeps the SSO
+        // token, uidd and license key out of window.genwaveConfig for low-privilege
+        // roles (finding F2). Server-side API calls read the credentials from
+        // Config directly and are unaffected.
+        $can_use_agent = current_user_can('manage_options');
+        $license_key = $can_use_agent ? \GenWavePlugin\Core\Config::get('license_key') : '';
+        $uidd        = $can_use_agent ? \GenWavePlugin\Core\Config::get('uidd') : '';
+        $token       = $can_use_agent ? \GenWavePlugin\Core\Config::get('token') : '';
 
         // Add config for streaming client
         wp_localize_script('gen-wave-plugin-streaming-client', 'genwaveConfig', [

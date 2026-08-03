@@ -1267,44 +1267,17 @@ class ApiManager {
     /**
      * 🔐 Decrypt AES-256-CBC encrypted token (same as Laravel ModifyToken middleware)
      */
-    private function decryptToken($encrypted_base64) {
-        if (empty($encrypted_base64)) {
-            return '';
-        }
-
-        // Use the same secret key as Laravel and Python (from Config class)
-        $secretKey = Config::get('encryption_key');
-        if (!$secretKey) {
-            return '';
-        }
-
-
-        // Generate IV the same way as Laravel: substr(hash('sha256', $secretKey), 0, 16)
-        $iv = substr(hash('sha256', $secretKey), 0, 16);
-
-        // Decode base64
-        $encrypted_data = base64_decode($encrypted_base64);
-        if ($encrypted_data === false) {
-            return '';
-        }
-
-
-        // Decrypt using AES-256-CBC with OPENSSL_RAW_DATA flag (input is raw binary from base64_decode)
-        $decrypted_base64 = openssl_decrypt($encrypted_data, 'AES-256-CBC', $secretKey, OPENSSL_RAW_DATA, $iv);
-
-        if ($decrypted_base64 === false) {
-            $error = openssl_error_string();
-            return '';
-        }
-
-
-        // Laravel encrypts base64_encode($token), so we need to decode it to get the actual token
-        $actual_token = base64_decode($decrypted_base64);
-        if ($actual_token === false) {
-            return '';
-        }
-
-        return $actual_token;
+    /**
+     * Historically this AES-decrypted the token/uidd that the dashboard shipped
+     * encrypted with a shared key. That key shipped in the public plugin source
+     * (findings F1/F9), so the encryption added no real protection. Credentials
+     * now arrive in plaintext over the authenticated one-time credentials_session
+     * channel and are stored in plaintext, so this is a pass-through. Kept as a
+     * single choke point so every caller keeps working and a future transport
+     * transform (if ever needed) has one home.
+     */
+    private function decryptToken($token) {
+        return empty($token) ? '' : $token;
     }
 
     /**

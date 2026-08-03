@@ -41,7 +41,8 @@ class AjaxManager
         $this->pluginsHandler = new PluginsHandler();
 
         add_action('wp_ajax_genwave_verify_login', [VerifyLoginController::class , 'verifyLogin']);
-        add_action('wp_ajax_nopriv_genwave_verify_login', [VerifyLoginController::class , 'verifyLogin']);
+        // No nopriv hook (F3): the auto-login URL carries the owner's SaaS session
+        // and must never be issued to an unauthenticated caller.
 
         // Note: Languages, Credits, and PostTypeController features removed
         // Free plugin is now fully independent
@@ -69,10 +70,11 @@ class AjaxManager
         add_action('wp_ajax_nopriv_genwave_polling_results', [$this->pollingHandler, 'handle_ai_polling_results']);
         add_action('wp_ajax_genwave_poll_proxy', [$this->pollingHandler, 'handle_ai_poll_proxy']);
         add_action('wp_ajax_nopriv_genwave_poll_proxy', [$this->pollingHandler, 'handle_ai_poll_proxy']);
-        add_action('wp_ajax_genwave_update_credit_balance', [$this->pollingHandler, 'handle_update_credit_balance']);
-        add_action('wp_ajax_nopriv_genwave_update_credit_balance', [$this->pollingHandler, 'handle_update_credit_balance']);
-        add_action('wp_ajax_genwave_update_token_balance', [$this->pollingHandler, 'handle_update_credit_balance']); // backward compat
-        add_action('wp_ajax_nopriv_genwave_update_token_balance', [$this->pollingHandler, 'handle_update_credit_balance']); // backward compat
+        // REMOVED (F11): the genwave_update_credit_balance / _token_balance actions
+        // and their handler are gone. Nothing called them (no JS caller anywhere),
+        // they let the client dictate the displayed balance, and were even exposed
+        // on nopriv. The authoritative balance is fetched from the server via
+        // handle_refresh_credits.
 
         // Generation handlers - delegated to GenerationHandler
         add_action('wp_ajax_genwave_generate_single', [$this->generationHandler, 'handle_genwave_generate_single']);
@@ -93,20 +95,18 @@ class AjaxManager
 
         // Check for error response
         if (is_array($response) && isset($response['error']) && $response['error'] === true) {
-            // Only delete credentials if authentication failed (auth: false)
-            // If auth: true, it means credentials are valid but license expired - don't delete
+            // Only clear credentials when authentication explicitly failed
+            // (auth: false = the token was rejected). Transient/network errors
+            // report auth: true and must change NOTHING — never wipe credentials
+            // and never mark the license expired off a failed balance refresh.
             $auth_valid = isset($response['auth']) && $response['auth'] === true;
 
             if (!$auth_valid) {
-                // Authentication failed - credentials are invalid, delete them
                 Config::delete('uidd');
                 Config::delete('token');
                 Config::delete('domain');
                 Config::delete('active');
                 Config::delete('plan');
-            } else {
-                // License expired but auth is valid - mark as expired, don't delete credentials
-                Config::set('license_expired', '1');
             }
 
             wp_send_json_error([
@@ -149,6 +149,14 @@ class AjaxManager
     {
         if (!isset($_POST['security']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['security'])), 'disconnect_account_nonce')) {
             wp_send_json_error(['message' => 'Invalid nonce']);
+        }
+
+        // Only an administrator may disconnect the site (F8): the nonce is exposed
+        // to any admin-area role (incl. contributors on edit screens), so without a
+        // capability check a low-privilege user could wipe the site's GenWave
+        // credentials and break the agent for everyone.
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(['message' => 'Unauthorized'], 403);
         }
 
         $result = \GenWavePlugin\Controllers\DisconnectController::disconnect();
@@ -300,8 +308,9 @@ class AjaxManager
 
         global $wpdb;
 
-        // Get credit balance from config
-        $credit_balance = floatval(Config::get('credits') ?? 0);
+        // Get credit balance from the SHARED option (synced with the agent),
+        // falling back to the anchor's own copy.
+        $credit_balance = floatval(get_option('aiaw_credits', Config::get('credits') ?? 0));
 
         // Get total requests count
         $requests_table = $wpdb->prefix . 'gen_requests';
@@ -997,82 +1006,6 @@ class AjaxManager
         return 'https://account.genwave.ai/api';
     }
     
-    /**
-     * Handle credit balance update requests from frontend JavaScript
-     */
-    public function handle_update_credit_balance()
-    {
-        try {
-            // SECURITY: Verify nonce FIRST (accept both admin and frontend nonces)
-            $nonce = isset($_POST['security']) ? sanitize_text_field(wp_unslash($_POST['security'])) : (isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '');
-            $nonce_check = wp_verify_nonce($nonce, 'genwave_admin_nonce') ||
-                          wp_verify_nonce($nonce, 'genwave_frontend_nonce');
-
-            if (!$nonce_check) {
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('GenWave Credit Balance Update: Invalid nonce');
-                }
-                wp_send_json_error('Invalid nonce');
-                return;
-            }
-
-            // Debug logging AFTER nonce verification
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Credit Balance Update AJAX: Function called');
-            }
-
-            // Verify required parameters (accept both old and new keys)
-            $creditBalance = null;
-            if (isset($_POST['credit_balance'])) {
-                $creditBalance = floatval($_POST['credit_balance']);
-            } elseif (isset($_POST['token_balance'])) {
-                $creditBalance = floatval($_POST['token_balance']);
-            }
-
-            if ($creditBalance === null) {
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Credit Balance Update AJAX: No credit_balance parameter provided');
-                }
-                wp_send_json_error('Credit balance parameter required');
-                return;
-            }
-
-            // Basic validation
-            if ($creditBalance < 0) {
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Credit Balance Update AJAX: Invalid credit balance value: ' . $creditBalance);
-                }
-                wp_send_json_error('Invalid credit balance value');
-                return;
-            }
-
-            // Update the credit balance in wp_options
-            if (update_option('genwave_credit_balance', $creditBalance)) {
-                // Return success response
-                wp_send_json_success([
-                    'credit_balance' => $creditBalance,
-                    'formatted_balance' => number_format($creditBalance, 2)
-                ]);
-            } else {
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Credit Balance Update AJAX: Failed to update credit balance option');
-                }
-                wp_send_json_error('Failed to update credit balance in WordPress');
-            }
-
-        } catch (Exception $e) {
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Credit Balance Update AJAX: Exception: ' . $e->getMessage());
-            }
-            wp_send_json_error('Error updating credit balance: ' . $e->getMessage());
-        }
-    }
 
     /**
      * Handle saving streaming results to database
@@ -1144,590 +1077,6 @@ class AjaxManager
         }
     }
 
-    /**
-     * Handle single content generation from metabox (Free plugin)
-     */
-    public function handle_genwave_generate_single() {
-        global $wpdb;
-        $wp_request_id = null;
-        $post_request_id = null;
-
-        try {
-            // SECURITY: Verify nonce for CSRF protection
-            if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'genwave_generate_nonce')) {
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Genwave Generate Single: Invalid nonce');
-                }
-                wp_send_json_error(['message' => 'Security verification failed. Please refresh the page and try again.']);
-                return;
-            }
-
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Genwave Generate Single: Function called');
-            }
-
-            // VALIDATION: Get and validate post ID
-            $post_id = intval($_POST['post_id'] ?? 0);
-            if (!$post_id || $post_id < 1) {
-                wp_send_json_error(['message' => 'Valid Post ID is required']);
-                return;
-            }
-
-            // VALIDATION: Get and validate generation method
-            $generation_method = isset($_POST['generation_method']) ? sanitize_text_field(wp_unslash($_POST['generation_method'])) : 'title';
-            $allowed_methods = ['title', 'short_description', 'description'];
-            if (!in_array($generation_method, $allowed_methods, true)) {
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Genwave: Invalid generation_method: {$generation_method}");
-                }
-                wp_send_json_error(['message' => 'Invalid generation method. Allowed: ' . implode(', ', $allowed_methods)]);
-                return;
-            }
-
-            // VALIDATION: Get and validate language
-            $language_code = isset($_POST['language']) ? sanitize_text_field(wp_unslash($_POST['language'])) : 'en';
-
-            // Map language codes to full names
-            $language_map = [
-                'en' => 'English',
-                'he' => 'Hebrew',
-                'ar' => 'Arabic',
-                'es' => 'Spanish',
-                'fr' => 'French',
-                'de' => 'German',
-                'it' => 'Italian',
-                'pt' => 'Portuguese',
-                'ru' => 'Russian',
-                'zh' => 'Chinese',
-                'ja' => 'Japanese',
-                'ko' => 'Korean',
-                'nl' => 'Dutch',
-                'pl' => 'Polish',
-                'tr' => 'Turkish',
-                'th' => 'Thai',
-                'vi' => 'Vietnamese',
-                'hi' => 'Hindi',
-                'id' => 'Indonesian',
-                'uk' => 'Ukrainian',
-                'el' => 'Greek',
-                'sv' => 'Swedish',
-                'da' => 'Danish',
-                'no' => 'Norwegian',
-                'fi' => 'Finnish',
-                'cs' => 'Czech',
-                'hu' => 'Hungarian',
-                'ro' => 'Romanian'
-            ];
-
-            // Convert code to full name, or use as-is if already full name
-            $language = $language_map[$language_code] ?? $language_code;
-
-            if (empty($language) || strlen($language) > 50) {
-                wp_send_json_error(['message' => 'Invalid language parameter']);
-                return;
-            }
-
-            // VALIDATION: Get and validate content length
-            $length = intval($_POST['length'] ?? 1000);
-            if ($length < 100 || $length > 10000) {
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Genwave: Invalid length: {$length}");
-                }
-                wp_send_json_error(['message' => 'Content length must be between 100 and 10000 characters']);
-                return;
-            }
-
-            // VALIDATION: Get and validate custom instructions
-            $custom_instructions = isset($_POST['instructions']) ? sanitize_textarea_field(wp_unslash($_POST['instructions'])) : '';
-            if (strlen($custom_instructions) > 1000) {
-                wp_send_json_error(['message' => 'Instructions cannot exceed 1000 characters']);
-                return;
-            }
-
-            // VALIDATION: Verify the post exists and user has permission to edit it
-            $post = get_post($post_id);
-            if (!$post) {
-                return;
-            }
-
-            // Check if user can edit this post
-            if (!current_user_can('edit_post', $post_id)) {
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Genwave: User cannot edit post {$post_id}");
-                }
-                wp_send_json_error(['message' => 'You do not have permission to edit this post']);
-                return;
-            }
-
-            // Verify post type is allowed
-            $allowed_post_types = ['post', 'product', 'page'];
-            if (!in_array($post->post_type, $allowed_post_types, true)) {
-                wp_send_json_error(['message' => 'Invalid post type']);
-                return;
-            }
-
-            // Store current content before generation
-            $current_content = '';
-            if ($generation_method === 'title') {
-                $current_content = $post->post_title;
-            } elseif ($generation_method === 'short_description') {
-                $current_content = $post->post_excerpt;
-            } else {
-                $current_content = $post->post_content;
-            }
-
-            // Initialize ApiManager
-            $api_manager = new ApiManager();
-
-            // Prepare post data for LiteLLM
-            // If custom instructions are provided, use them as the base content
-            // Otherwise, send existing content for context
-            if (!empty($custom_instructions)) {
-                // Put instructions in the relevant field based on generation method
-                if ($generation_method === 'title') {
-                    $post_data = [
-                        'id' => $post->ID,
-                        'title' => $custom_instructions,  // Use instructions as title input
-                        'content' => '',
-                        'excerpt' => '',
-                        'post_type' => $post->post_type ?: 'post'
-                    ];
-                } else {
-                    // For description generation
-                    $post_data = [
-                        'id' => $post->ID,
-                        'title' => $custom_instructions,  // Use instructions as context
-                        'content' => '',
-                        'excerpt' => '',
-                        'post_type' => $post->post_type ?: 'post'
-                    ];
-                }
-            } else {
-                $post_data = [
-                    'id' => $post->ID,
-                    'title' => $post->post_title ?: 'Untitled',
-                    'content' => $post->post_content ?: '',
-                    'excerpt' => $post->post_excerpt ?: '',
-                    'post_type' => $post->post_type ?: 'post'
-                ];
-
-                // If it's a product, get short description
-                if ($post->post_type === 'product' && function_exists('wc_get_product')) {
-                    $product = wc_get_product($post_id);
-                    if ($product) {
-                        $post_data['short_description'] = $product->get_short_description();
-                    }
-                }
-            }
-
-            // Generate job_id (numeric, like Pro plugin does)
-            $job_id = $this->generate_validated_job_id();
-            if (!$job_id) {
-                wp_send_json_error(['message' => 'Failed to generate unique job ID']);
-                return;
-            }
-
-            // Also generate request_id for LiteLLM (string format)
-            $request_id = 'genwave-' . time() . '-' . $post_id;
-
-            // Create tracking record in wp_gen_requests
-            $requests_table = $wpdb->prefix . 'gen_requests';
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom table insert for plugin data
-            $wpdb->insert(
-                $requests_table,
-                [
-                    'job_id' => $job_id,  // Numeric job_id
-                    'args' => json_encode([
-                        'job_id' => $job_id,
-                        'request_id' => $request_id,
-                        'generation_method' => $generation_method,
-                        'language' => $language,
-                        'length' => $length,
-                        'custom_instructions' => $custom_instructions,
-                        'post_id' => $post_id
-                    ]),
-                    'request_time' => microtime(true),
-                    'user_id' => get_current_user_id(),
-                    'status' => 'pending',
-                    'progress' => 0,
-                    'current_stage' => 'initialized',
-                    'total_items' => 1,
-                    'processed_items' => 0,
-                    'delivered' => 0,
-                ],
-                [
-                    '%d',  // job_id (numeric)
-                    '%s',  // args
-                    '%f',  // request_time
-                    '%d',  // user_id
-                    '%s',  // status
-                    '%f',  // progress
-                    '%s',  // current_stage
-                    '%d',  // total_items
-                    '%d',  // processed_items
-                    '%d',  // delivered
-                ]
-            );
-
-            $wp_request_id = $wpdb->insert_id;
-
-            // Create individual post request record in wp_gen_requests_posts
-            $requests_posts_table = $wpdb->prefix . 'gen_requests_posts';
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom table insert for plugin data
-            $wpdb->insert(
-                $requests_posts_table,
-                [
-                    'request_id' => $wp_request_id,
-                    'post_id' => $post->ID,
-                    'post_type' => $post->post_type,
-                    'old' => $current_content,
-                    'additional_content' => '',
-                    'get_response' => 0,
-                    'is_converted' => 0,
-                    'ai' => 1,
-                ],
-                [
-                    '%d',  // request_id
-                    '%d',  // post_id
-                    '%s',  // post_type
-                    '%s',  // old
-                    '%s',  // additional_content
-                    '%d',  // get_response
-                    '%d',  // is_converted
-                    '%d',  // ai
-                ]
-            );
-
-            $post_request_id = $wpdb->insert_id;
-
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table update for plugin data
-            $wpdb->update(
-                $requests_table,
-                [
-                    'progress' => 25,
-                    'current_stage' => 'ai_request_sent',
-                ],
-                ['id' => $wp_request_id],
-                ['%s', '%f', '%s', '%s'],
-                ['%d']
-            );
-
-            // Build instructions - use custom if provided, otherwise use defaults
-            if (!empty($custom_instructions)) {
-                // When custom instructions provided, use generic instruction that tells AI to follow the title/input
-                if ($generation_method === 'title') {
-                    $instructions_text = ["Generate a catchy and engaging title based on the provided topic. Write in {$language} language."];
-                } else {
-                    $instructions_text = ["Generate comprehensive, well-structured content based on the provided topic. Write in {$language} language."];
-                }
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Genwave: Using custom instructions with generic wrapper');
-                }
-            } else {
-                $instructions_text = $this->build_instructions($generation_method, $post->post_type, $language);
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Genwave: Using default instructions');
-                }
-            }
-
-            // Prepare LiteLLM request
-            $request_data = [
-                'request_id' => $request_id,
-                'posts' => [$post_data],
-                'provider' => 'openai',  // Default provider
-                'model' => 'gpt-3.5-turbo', // Default model for free version (cheaper!)
-                'language' => $language,
-                'selectedOptions' => [$generation_method],
-                'generateOptions' => [
-                    'instructions' => [$generation_method => $instructions_text[0]], // Get first instruction string
-                    'lengthResponses' => [$generation_method => $length],
-                    'imageOptions' => (object)[], // Must be object/dict, not array
-                    'selectedGenerateOptions' => (object)[] // Must be object/dict, not array
-                ]
-            ];
-
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log,WordPress.PHP.DevelopmentFunctions.error_log_print_r -- Debug mode only
-                error_log('Genwave: Sending request to LiteLLM: ' . print_r($request_data, true));
-            }
-
-            // Call LiteLLM API
-            $response = $api_manager->callLiteLLMStreaming($request_data);
-
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log,WordPress.PHP.DevelopmentFunctions.error_log_print_r -- Debug mode only
-                error_log('Genwave: LiteLLM response: ' . print_r($response, true));
-            }
-
-            if (isset($response['error']) && $response['error']) {
-                // Update WordPress DB record as failed
-                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table update for plugin data
-                $wpdb->update(
-                    $requests_table,
-                    [
-                        'status' => 'failed',
-                        'error' => $response['message'] ?? 'Unknown API error',
-                    ],
-                    ['id' => $wp_request_id],
-                    ['%s', '%s', '%s'],
-                    ['%d']
-                );
-
-                wp_send_json_error([
-                    'message' => $response['message'] ?? 'Failed to generate content'
-                ]);
-                return;
-            }
-
-            // Extract generated content from response
-            $response_content = '';
-            if (isset($response['results']['results']) && is_array($response['results']['results']) && count($response['results']['results']) > 0) {
-                $result = $response['results']['results'][0];
-                $response_content = isset($result['content']) ? json_encode($result['content']) : '';
-            }
-
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table update for plugin data
-            $wpdb->update(
-                $requests_table,
-                [
-                    'response_data' => wp_json_encode($response),
-                    'response_time' => current_time('mysql'),
-                    'progress' => 100,
-                    'processed_items' => 1,
-                    'delivered' => 1,
-                    'delivered_at' => current_time('mysql'),
-                ],
-                ['id' => $wp_request_id],
-                ['%s', '%s', '%s', '%f', '%d', '%d', '%s', '%s'],
-                ['%d']
-            );
-
-            // Update the individual post record with response data
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table update for plugin data
-            $wpdb->update(
-                $requests_posts_table,
-                [
-                    'additional_content' => $response_content,
-                    'get_response' => 1,
-                ],
-                ['id' => $post_request_id],
-                ['%s', '%d', '%s'],
-                ['%d']
-            );
-
-
-            // Update credit balance in database if available
-            if (isset($response['results']['token_usage']['tokens_balance'])) {
-                $new_balance = floatval($response['results']['token_usage']['tokens_balance']);
-                Config::set('credits', $new_balance);
-            }
-
-            // Save token usage data to wp_ai_pro_token_usage
-            if (isset($response['results']['token_usage'])) {
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log,WordPress.PHP.DevelopmentFunctions.error_log_print_r -- Debug mode only
-                    error_log('Genwave: Token usage data structure: ' . print_r($response['results']['token_usage'], true));
-                }
-                $this->save_token_usage($job_id, $response['results']['token_usage']);
-            }
-
-            // Return success with generated content and post_request_id
-            wp_send_json_success([
-                'data' => $response,
-                'post_request_id' => $post_request_id  // Return the ID for later update
-            ]);
-
-        } catch (Exception $e) {
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Genwave Generate Single: Exception: ' . $e->getMessage());
-            }
-
-            // Update WordPress DB record as failed if we have a request ID
-            if ($wp_request_id) {
-                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table update for plugin data
-                $wpdb->update(
-                    $wpdb->prefix . 'gen_requests',
-                    [
-                        'status' => 'failed',
-                        'error' => $e->getMessage(),
-                    ],
-                    ['id' => $wp_request_id],
-                    ['%s', '%s', '%s'],
-                    ['%d']
-                );
-
-                // Also update post request record if exists
-                if ($post_request_id) {
-                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table update for plugin data
-                    $wpdb->update(
-                        $wpdb->prefix . 'gen_requests_posts',
-                        [
-                            'get_response' => 0,
-                        ],
-                        ['id' => $post_request_id],
-                        ['%d', '%s'],
-                        ['%d']
-                    );
-                }
-            }
-
-            wp_send_json_error([
-                'message' => 'Error: ' . $e->getMessage()
-            ]);
-        }
-    }
-
-    /**
-     * Build instructions based on generation method
-     */
-    private function build_instructions($method, $post_type, $language = 'English') {
-        $instructions = [];
-
-        $type_label = $post_type === 'product' ? 'product' : 'post';
-
-        switch ($method) {
-            case 'title':
-                $instructions[] = "Generate high-quality, engaging content based on the {$type_label} title. Write in {$language} language.";
-                break;
-            case 'short_description':
-                $instructions[] = "Generate detailed and comprehensive content based on the short description. Write in {$language} language.";
-                break;
-            case 'description':
-                $instructions[] = "Generate a comprehensive, well-structured description for this {$type_label}. Write in {$language} language.";
-                break;
-        }
-
-        return $instructions;
-    }
-
-    /**
-     * Save token usage data to wp_ai_pro_token_usage table
-     */
-    private function save_token_usage($job_id, $token_data) {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'ai_pro_token_usage';
-
-        try {
-
-            $tokens_estimated = floatval($token_data['estimated_total_tokens'] ?? 0);
-            $tokens_actually_used = floatval($token_data['actual_total_tokens'] ?? $tokens_estimated);
-            $tokens_charged_to_user = floatval($token_data['tokens_charged'] ?? $tokens_actually_used);
-            $tokens_refunded = floatval($token_data['tokens_returned'] ?? 0);
-            $refund_applied = $tokens_refunded > 0 ? 1 : 0;
-            $usage_efficiency = floatval($token_data['token_efficiency'] ?? 100.0);
-
-            // Check if record exists
-            // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name is safe (uses $wpdb->prefix), custom table query
-            $existing = $wpdb->get_row($wpdb->prepare(
-                "SELECT id FROM {$table_name} WHERE job_id = %d",
-                $job_id
-            ));
-            // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
-
-            if ($existing) {
-                // Update existing record
-                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table update for plugin data
-                $wpdb->update(
-                    $table_name,
-                    [
-                        'tokens_estimated' => $tokens_estimated,
-                        'tokens_actually_used' => $tokens_actually_used,
-                        'tokens_refunded' => $tokens_refunded,
-                        'tokens_charged_to_user' => $tokens_charged_to_user,
-                        'refund_applied' => $refund_applied,
-                        'usage_efficiency' => $usage_efficiency
-                    ],
-                    ['job_id' => $job_id],
-                    ['%f', '%f', '%f', '%f', '%d', '%f'],
-                    ['%d']  // job_id is numeric
-                );
-            } else {
-                // Insert new record
-                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom table insert for plugin data
-                $wpdb->insert(
-                    $table_name,
-                    [
-                        'job_id' => $job_id,
-                        'tokens_estimated' => $tokens_estimated,
-                        'tokens_actually_used' => $tokens_actually_used,
-                        'tokens_refunded' => $tokens_refunded,
-                        'tokens_charged_to_user' => $tokens_charged_to_user,
-                        'refund_applied' => $refund_applied,
-                        'usage_efficiency' => $usage_efficiency
-                    ],
-                    ['%d', '%f', '%f', '%f', '%f', '%d', '%f']  // job_id is numeric
-                );
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Genwave: Inserted token usage for job_id '{$job_id}'");
-                }
-            }
-
-        } catch (Exception $e) {
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Genwave: Failed to save token usage: ' . $e->getMessage());
-            }
-        }
-    }
-
-    /**
-     * Generate validated job_id (like Pro plugin)
-     * Returns numeric job_id or false on failure
-     */
-    private function generate_validated_job_id($max_attempts = 5) {
-        global $wpdb;
-
-        for ($attempt = 1; $attempt <= $max_attempts; $attempt++) {
-            try {
-                // Generate job ID (9 digits)
-                $time = time() % 1000000000;
-                $random_number = random_int(0, 9999);
-                $job_id = str_pad($time + $random_number, 9, '0', STR_PAD_LEFT);
-
-                // Check for collision
-                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table query for plugin data
-                $exists = $wpdb->get_var($wpdb->prepare(
-                    "SELECT COUNT(*) FROM {$wpdb->prefix}gen_requests WHERE job_id = %s",
-                    $job_id
-                ));
-
-                if ($exists == 0) {
-                    if (defined('WP_DEBUG') && WP_DEBUG) {
-                        // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                        error_log("Genwave: Generated unique job_id: {$job_id}");
-                    }
-                    return $job_id;
-                }
-
-                // If collision detected, log and retry
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log("Genwave: Job ID collision detected ({$job_id}), attempt {$attempt}");
-                }
-
-            } catch (Exception $e) {
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Genwave: Error generating job_id: ' . $e->getMessage());
-                }
-            }
-        }
-
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-            error_log('Genwave: Failed to generate unique job_id after ' . $max_attempts . ' attempts');
-        }
-        return false;
-    }
 
     /**
      * Mark post as converted when user clicks Update button

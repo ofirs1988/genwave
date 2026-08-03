@@ -96,10 +96,10 @@ class AiRestApi extends WP_REST_Controller
         register_rest_route($this->namespace, '/response-data', [
             'methods' => 'GET',
             'callback' => [$this, 'getResponseData'],
-            'permission_callback' => function() {
-                // Allow if user is logged in
-                return is_user_logged_in();
-            }
+            // SECURITY (F4): this returns site-wide AI response data / post content
+            // for the admin review dashboard. It must be admin-only — is_user_logged_in()
+            // let any subscriber read arbitrary private/draft post content (IDOR).
+            'permission_callback' => [$this, 'check_admin_permission'],
         ]);
 
         register_rest_route($this->namespace, '/converting-products', [
@@ -411,11 +411,15 @@ class AiRestApi extends WP_REST_Controller
         }
 
 
-        // Return success with plugin information
+        // Return success. NOTE (F10): the exact plugin version is intentionally NOT
+        // included — this endpoint is public (permission_callback __return_true), and
+        // leaking the precise version lets an unauthenticated caller fingerprint the
+        // site for version-specific exploits. The dashboard verifies "plugin active"
+        // from success:true and tracks versions through its own plugin_versions
+        // channel, so nothing consumes a version here.
         return new WP_REST_Response([
             'success' => true,
             'message' => __('Genwave plugin is active', 'gen-wave'),
-            'plugin_version' => GEN_WAVE_VERSION,
             'token' => $token,
             'domain' => get_site_url(),
             'verified_at' => current_time('mysql')

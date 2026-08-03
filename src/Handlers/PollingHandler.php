@@ -352,6 +352,67 @@ class PollingHandler
     }
 
     /**
+     * SSRF guard: true only if $url is an http(s) URL whose host resolves solely
+     * to public IP addresses. Blocks localhost, RFC1918, link-local (including the
+     * 169.254.169.254 cloud metadata endpoint) and other reserved ranges. Used
+     * before any server-side fetch of a caller-influenced URL (F7).
+     *
+     * @param string $url
+     * @return bool
+     */
+    private static function isPublicHttpUrl($url)
+    {
+        $parts = wp_parse_url($url);
+        if (empty($parts['scheme']) || !in_array(strtolower($parts['scheme']), ['http', 'https'], true)) {
+            return false;
+        }
+        $host = $parts['host'] ?? '';
+        if ($host === '') {
+            return false;
+        }
+
+        // Collect every IP the host resolves to (or the literal IP itself).
+        $ips = [];
+        if (filter_var($host, FILTER_VALIDATE_IP)) {
+            $ips[] = $host;
+        } else {
+            $records = @dns_get_record($host, DNS_A + DNS_AAAA);
+            if (is_array($records)) {
+                foreach ($records as $r) {
+                    if (!empty($r['ip'])) {
+                        $ips[] = $r['ip'];
+                    }
+                    if (!empty($r['ipv6'])) {
+                        $ips[] = $r['ipv6'];
+                    }
+                }
+            }
+            if (empty($ips)) {
+                $resolved = gethostbyname($host); // A-record fallback
+                if ($resolved && $resolved !== $host) {
+                    $ips[] = $resolved;
+                }
+            }
+        }
+
+        // Unresolvable host → refuse (fail closed).
+        if (empty($ips)) {
+            return false;
+        }
+
+        // Every resolved IP must be public. FILTER_FLAG_NO_PRIV_RANGE rejects
+        // RFC1918/fc00::/7; NO_RES_RANGE rejects loopback, link-local (169.254/16),
+        // 0.0.0.0/8 and other reserved blocks.
+        foreach ($ips as $ip) {
+            if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Download image from URL and save to WordPress media library
      *
      * @param string $imageUrl Image URL (from R2 or anywhere)
@@ -366,6 +427,19 @@ class PollingHandler
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
                     error_log("Invalid image URL: $imageUrl");
+                }
+                return false;
+            }
+
+            // SSRF guard (F7): this image_url can arrive in the polling payload, and
+            // it is fetched server-side by download_url() below. Refuse anything that
+            // is not a public http(s) host so it cannot be pointed at internal
+            // targets — the cloud metadata endpoint (169.254.169.254), localhost, or
+            // RFC1918/reserved ranges.
+            if (!self::isPublicHttpUrl($imageUrl)) {
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
+                    error_log("Refused image download — non-public/internal URL (SSRF guard): $imageUrl");
                 }
                 return false;
             }
@@ -678,82 +752,4 @@ class PollingHandler
         return 'https://account.genwave.ai/api';
     }
 
-    /**
-     * Handle credit balance update requests from frontend JavaScript
-     *
-     * @return void
-     */
-    public function handle_update_credit_balance()
-    {
-        try {
-            // SECURITY: Verify nonce FIRST (accept both admin and frontend nonces)
-            $nonce = isset($_POST['security']) ? sanitize_text_field(wp_unslash($_POST['security'])) : (isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '');
-            $nonce_check = wp_verify_nonce($nonce, 'genwave_admin_nonce') ||
-                          wp_verify_nonce($nonce, 'genwave_frontend_nonce');
-
-            if (!$nonce_check) {
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('GenWave Credit Balance Update: Invalid nonce. Received: ' . $nonce);
-                }
-                wp_send_json_error('Invalid nonce');
-                return;
-            }
-
-            // Debug logging AFTER nonce verification
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Credit Balance Update AJAX: Function called');
-            }
-
-            // Verify required parameters (accept both old and new keys)
-            $creditBalance = null;
-            if (isset($_POST['credit_balance'])) {
-                $creditBalance = floatval($_POST['credit_balance']);
-            } elseif (isset($_POST['token_balance'])) {
-                $creditBalance = floatval($_POST['token_balance']);
-            }
-
-            if ($creditBalance === null) {
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Credit Balance Update AJAX: No credit_balance parameter provided');
-                }
-                wp_send_json_error('Credit balance parameter required');
-                return;
-            }
-
-            // Basic validation
-            if ($creditBalance < 0) {
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Credit Balance Update AJAX: Invalid credit balance value: ' . $creditBalance);
-                }
-                wp_send_json_error('Invalid credit balance value');
-                return;
-            }
-
-            // Update the credit balance in wp_options
-            if (update_option('genwave_credit_balance', $creditBalance)) {
-                // Return success response
-                wp_send_json_success([
-                    'credit_balance' => $creditBalance,
-                    'formatted_balance' => number_format($creditBalance, 2)
-                ]);
-            } else {
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('Credit Balance Update AJAX: Failed to update credit balance option');
-                }
-                wp_send_json_error('Failed to update credit balance in WordPress');
-            }
-
-        } catch (Exception $e) {
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('Credit Balance Update AJAX: Exception: ' . $e->getMessage());
-            }
-            wp_send_json_error('Error updating credit balance: ' . $e->getMessage());
-        }
-    }
 }

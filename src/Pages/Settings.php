@@ -86,47 +86,13 @@ class Settings
 
 
 
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Display-only, no state changes
-        if (isset($_GET['uuid'])) {
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Display-only, no state changes
-            if (isset($_GET['domain'])) {
-                // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Display-only, no state changes
-                $uuid = sanitize_text_field(wp_unslash($_GET['uuid']));
-                // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Display-only, no state changes
-                $domain = sanitize_text_field(wp_unslash($_GET['domain']));
-                // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Display-only, no state changes
-                $token = isset($_GET['token']) ? sanitize_text_field(wp_unslash($_GET['token'])) : '';
-                // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Display-only, no state changes
-                $plan = isset($_GET['plan']) ? sanitize_text_field(wp_unslash($_GET['plan'])) : '';
-                // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Display-only, no state changes
-                $tokens = isset($_GET['credits']) ? sanitize_text_field(wp_unslash($_GET['credits'])) : (isset($_GET['tokens']) ? sanitize_text_field(wp_unslash($_GET['tokens'])) : '');
-                if ($domain == get_site_url()) {
-                    //$accessToken = sanitize_text_field($_GET['token']);
-                    Config::set('uidd', $uuid);
-                    Config::set('token', $token);
-                    Config::set('auth_date', time());
-                    Config::set('domain', $domain);
-                    Config::set('active', 1);
-                    Config::set('plan', $plan);
-                    Config::set('credits', $tokens);
-                    // Use WordPress inline script function instead of direct echo
-                    wp_add_inline_script('jquery', 'history.replaceState({}, "", "/wp-admin/admin.php?page=gen-wave-plugin-settings");');
-                    $view_manager = new ViewManager(plugin_dir_path(__FILE__) . '../../views');
-                    $data = [
-                        'license_key' => Config::get('license_key') ?? null,
-                        'active' => Config::get('active'),
-                        'uidd' => Config::get('uidd') ?? null,
-                        'license_expired' => Config::get('license_expired') ?? '0',
-                        'expiration_date' => Config::get('expiration_date') ?? null,
-                    ];
-                    $view_manager->render('settings', [
-                        'message' => $message ?? '',
-                        'data' => $data,
-                    ]);
-                    return true;
-                }
-            }
-        }
+        // REMOVED (finding F6): the legacy connect path read the SSO token, uuid,
+        // domain and plan straight from $_GET and persisted them with no nonce and
+        // no state check — a CSRF that let a crafted URL bind this site to an
+        // attacker's account. Connecting now happens ONLY through
+        // IntegrationCallbackController::handleCallback() (the credentials_session
+        // auth-code flow, hooked on admin_init), which verifies manage_options and
+        // the anti-CSRF state token. Do not reintroduce a $_GET credential handler.
 
 
         if (isset($_POST['save_settings']) && check_admin_referer('save_ai_settings', 'ai_settings_nonce')) {

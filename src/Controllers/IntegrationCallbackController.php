@@ -49,6 +49,35 @@ class IntegrationCallbackController
             return false;
         }
 
+        // Only an administrator may bind this site to a GenWave account. Without
+        // this, any logged-in user (e.g. a subscriber) hitting the callback URL
+        // could complete a connect.
+        if (!current_user_can('manage_options')) {
+            return false;
+        }
+
+        // Anti-CSRF / session-fixation (F5): the connect must have been initiated
+        // by THIS admin from THIS site. We verify the state token we issued in
+        // VerifyLoginController::getUrl() and stored in a per-user transient.
+        // A callback carrying an attacker's credentials_session (to silently bind
+        // the victim's site to the attacker's account) has no matching state and
+        // is rejected here.
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- state token is our own anti-CSRF value, verified below
+        $state = isset($_GET['state']) ? sanitize_text_field(wp_unslash($_GET['state'])) : '';
+        $expected_state = get_transient('gw_connect_state_' . get_current_user_id());
+        if (empty($state) || empty($expected_state) || !hash_equals((string) $expected_state, $state)) {
+            add_action('admin_notices', function () {
+                ?>
+                <div class="notice notice-error is-dismissible">
+                    <p><strong>Authentication Error:</strong> This connection request could not be verified. Please start the connect flow again from the GenWave settings page.</p>
+                </div>
+                <?php
+            });
+            return false;
+        }
+        // One-time use — burn it so the callback can't be replayed.
+        delete_transient('gw_connect_state_' . get_current_user_id());
+
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- OAuth-like callback from external auth server
         $credentials_session = sanitize_text_field(wp_unslash($_GET['credentials_session']));
 
