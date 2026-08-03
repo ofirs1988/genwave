@@ -4,7 +4,15 @@ Developer-facing changelog for the GenWave (free / anchor) plugin. The customer
 changelog for WordPress.org lives in `readme.txt` and is written at release time
 (security items are described there generically, not by vulnerability).
 
-## Unreleased
+## 1.1.1 - 2026-08-03
+
+### UI, copy & assets
+- Modernized the Account, Plugins and Generate admin pages; rebuilt the React bundle.
+- Rewrote the readme.txt description and in-plugin copy to read naturally (removed marketing/AI-tell phrasing); added the full product description and a "Why Genwave Is Different" section with site/account links.
+- New WordPress.org banner (1544x500 / 772x250) and icon (128/256); corrected stale "AES-256-CBC" claims in the readme to reflect HTTPS/TLS transport (that application-level encryption was removed in the auth-code migration).
+- Genericized user-facing error messages so no internal service names (LiteLLM, endpoints, "agent backend") leak; detail retained in debug logs.
+- Repointed content generation and credit balance to the agent backend endpoints.
+- Plugin Check: added a translators comment for a placeholder string and a justified nonce `phpcs:ignore` in PluginsHandler.
 
 ### Security — hardening pass
 - **Removed the hardcoded shared AES key.** It shipped in this public plugin

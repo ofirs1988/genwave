@@ -71,12 +71,12 @@ class TokensController{
             return ['error' => true, 'auth' => false, 'message' => 'Authentication failed. Please reconnect.'];
         }
         if ($code !== 200 || !is_array($body)) {
-            return ['error' => true, 'auth' => true, 'message' => 'Could not read balance from the agent backend'];
+            return ['error' => true, 'auth' => true, 'message' => 'Could not read your credit balance. Please try again.'];
         }
 
         $credits = $body['credit_balance'] ?? $body['credits'] ?? null;
         if ($credits === null) {
-            return ['error' => true, 'auth' => true, 'message' => 'Unexpected response from the agent backend'];
+            return ['error' => true, 'auth' => true, 'message' => 'Received an unexpected response. Please try again.'];
         }
 
         // Sync: store in the SAME option the agent uses so both plugins agree.

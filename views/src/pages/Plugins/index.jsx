@@ -116,7 +116,7 @@ const Plugins = () => {
                     </span>
                     <h1 className="gw-mkt__title">GenWave Plugins</h1>
                     <p className="gw-mkt__subtitle">
-                        Extend your site with the GenWave suite — installed in one click, right from here.
+                        Install any GenWave plugin in one click.
                     </p>
                 </div>
                 <button

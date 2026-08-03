@@ -502,7 +502,7 @@ class ApiManager {
             return [
                 'success' => false,
                 'error' => true,
-                'message' => 'LiteLLM API URL not configured',
+                'message' => 'The AI service is currently unavailable. Please try again later.',
                 'data' => null
             ];
         }
@@ -641,7 +641,7 @@ class ApiManager {
             return [
                 'success' => false,
                 'error' => true,
-                'message' => 'Failed to decode LiteLLM JSON response: ' . json_last_error_msg(),
+                'message' => 'The AI service returned an unexpected response. Please try again.',
                 'raw_body' => $body,
                 'data' => null
             ];
@@ -664,7 +664,7 @@ class ApiManager {
             return [
                 'success' => false,
                 'error' => true,
-                'message' => $litellmResponse['message'] ?? 'Unknown LiteLLM error',
+                'message' => $litellmResponse['message'] ?? 'An error occurred. Please try again.',
                 'data' => null
             ];
         }
@@ -756,7 +756,7 @@ class ApiManager {
             return [
                 'success' => false,
                 'error' => true,
-                'message' => 'LiteLLM API URL not configured'
+                'message' => 'The AI service is currently unavailable. Please try again later.'
             ];
         }
 
@@ -836,7 +836,7 @@ class ApiManager {
             return [
                 'success' => false,
                 'error' => true,
-                'message' => 'LiteLLM API URL not configured'
+                'message' => 'The AI service is currently unavailable. Please try again later.'
             ];
         }
 
@@ -1193,7 +1193,7 @@ class ApiManager {
                 } else {
                     return [
                         'error' => true,
-                        'message' => 'Invalid response format from /generate-single'
+                        'message' => 'The AI service returned an unexpected response. Please try again.'
                     ];
                 }
             } else {
@@ -1207,7 +1207,7 @@ class ApiManager {
             if (empty($streaming_results)) {
                 return [
                     'error' => true,
-                    'message' => 'No content generated from response'
+                    'message' => 'No content was generated. Please try again.'
                 ];
             }
 
@@ -1217,13 +1217,17 @@ class ApiManager {
                 'error' => false,
                 'success' => true,
                 'results' => $streaming_results,
-                'message' => $is_single_post ? 'LiteLLM single post completed successfully' : 'LiteLLM streaming completed successfully'
+                'message' => 'Content generated'
             ];
 
         } catch (Exception $e) {
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
+                error_log('Genwave: AI generation exception: ' . $e->getMessage());
+            }
             return [
                 'error' => true,
-                'message' => 'Exception in LiteLLM API call: ' . $e->getMessage()
+                'message' => 'Something went wrong while generating content. Please try again.'
             ];
         }
     }

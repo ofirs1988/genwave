@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Genwave - AI Agent
  * Description: The #1 AI Agent for your website. Build plugins, fix errors, create pages, manage WooCommerce & optimize SEO — all through natural conversation. 250+ actions, 7-layer security, 48+ languages.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: Genwave.ai
  * Author URI: https://genwave.ai
  * Text Domain: gen-wave
@@ -28,7 +28,7 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
-define( 'GEN_WAVE_VERSION', '1.1.0' );
+define( 'GEN_WAVE_VERSION', '1.1.1' );
 
 define( 'GEN_WAVE__FILE__', __FILE__ );
 define( 'GEN_WAVE_PLUGIN_BASE', plugin_basename( GEN_WAVE__FILE__ ) );

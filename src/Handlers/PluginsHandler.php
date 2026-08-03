@@ -39,6 +39,7 @@ class PluginsHandler
             return;
         }
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce is verified in verify_admin_request() above.
         $force_refresh = isset($_POST['force_refresh']) && $_POST['force_refresh'] === '1';
         $remote = $this->fetch_remote_list($force_refresh);
 
@@ -72,6 +73,7 @@ class PluginsHandler
             return;
         }
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce is verified in verify_admin_request() above.
         $slug = isset($_POST['slug']) ? sanitize_key(wp_unslash($_POST['slug'])) : '';
         if ($slug === '') {
             wp_send_json_error(['message' => __('Missing plugin slug', 'gen-wave')]);
@@ -182,6 +184,7 @@ class PluginsHandler
         if ($code !== 200 || ! is_array($body) || empty($body['plugins'])) {
             $msg = is_array($body) && ! empty($body['message'])
                 ? $body['message']
+                // translators: %d is the HTTP status code returned by the GenWave dashboard.
                 : sprintf(__('Dashboard returned HTTP %d', 'gen-wave'), $code);
             return ['ok' => false, 'message' => $msg];
         }

@@ -128,12 +128,12 @@ $genwave_credits = get_option('aiaw_credits', $data['credits'] ?? 0);
 
                 <div class="gw-acct__hero">
                     <h2><?php esc_html_e('Connect your GenWave account', 'gen-wave'); ?></h2>
-                    <p><?php esc_html_e('Unlock the AI Agent for your website — build pages, fix errors and manage your site through conversation.', 'gen-wave'); ?></p>
+                    <p><?php esc_html_e('Add the AI Agent to your site to build pages, fix errors, and manage everything through conversation.', 'gen-wave'); ?></p>
                 </div>
 
                 <div class="gw-acct__features">
                     <div class="gw-feat"><span class="gw-feat__ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><div><strong><?php esc_html_e('Natural conversation', 'gen-wave'); ?></strong><span><?php esc_html_e('Run your whole site by talking to the AI.', 'gen-wave'); ?></span></div></div>
-                    <div class="gw-feat"><span class="gw-feat__ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span><div><strong><?php esc_html_e('250+ actions', 'gen-wave'); ?></strong><span><?php esc_html_e('Pages, WooCommerce, plugins, fixes and more.', 'gen-wave'); ?></span></div></div>
+                    <div class="gw-feat"><span class="gw-feat__ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span><div><strong><?php esc_html_e('250+ actions', 'gen-wave'); ?></strong><span><?php esc_html_e('Pages, WooCommerce, plugins and error fixing.', 'gen-wave'); ?></span></div></div>
                     <div class="gw-feat"><span class="gw-feat__ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><div><strong><?php esc_html_e('Safe by design', 'gen-wave'); ?></strong><span><?php esc_html_e('A preview before every change to your site.', 'gen-wave'); ?></span></div></div>
                 </div>
 

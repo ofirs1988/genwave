@@ -113,7 +113,7 @@ const Generate = () => {
                 const newBalance = tokenUsage.credits_balance || tokenUsage.tokens_balance || 0;
                 setResult({
                     success: true,
-                    message: 'Content generated successfully',
+                    message: 'Content generated',
                     creditUsage: {
                         charged: tokenUsage.credits_charged_to_user || tokenUsage.tokens_charged || tokenUsage.actual_total_tokens || 0,
                         balance: newBalance,
@@ -176,7 +176,7 @@ const Generate = () => {
         <div className="gw-page gw-gen">
             <header className="gw-gen__head">
                 <h1 className="gw-gen__title">Generate Content</h1>
-                <p className="gw-gen__subtitle">Create AI content for your products and posts — one field at a time.</p>
+                <p className="gw-gen__subtitle">Generate titles and descriptions for your products and posts, one field at a time.</p>
             </header>
 
             {/* Content type */}

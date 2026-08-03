@@ -99,7 +99,7 @@ const Dashboard = () => {
                     <span className="gw-dash-agent__badge"><MessageOutlined /> AI Agent</span>
                     <h2 className="gw-dash-agent__title">Manage your site through conversation</h2>
                     <p className="gw-dash-agent__lead">
-                        Your personal AI assistant for WordPress — build, fix, create and optimize, all by chatting.
+                        Build plugins, fix errors, and edit your site by chatting with it.
                     </p>
 
                     <div className="gw-dash-agent__feats">
