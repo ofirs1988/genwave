@@ -4,7 +4,7 @@ Tags: ai, ai-agent, chatbot, content-generation, ecommerce
 Requires at least: 5.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.1.2
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -264,9 +264,6 @@ Yes, the plugin works on multisite installations. Each site needs its own Genwav
 4. Track your credit balance and usage
 
 == Changelog ==
-
-= 1.1.2 =
-* Live chat, popups and other front-end widgets keep working when your site is served through a GenWave headless front end.
 
 = 1.1.1 =
 * Security hardening across account connection and admin actions.

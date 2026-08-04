@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Genwave - AI Agent
  * Description: The #1 AI Agent for your website. Build plugins, fix errors, create pages, manage WooCommerce & optimize SEO — all through natural conversation. 250+ actions, 7-layer security, 48+ languages.
- * Version: 1.1.2
+ * Version: 1.1.1
  * Author: Genwave.ai
  * Author URI: https://genwave.ai
  * Text Domain: gen-wave
@@ -28,7 +28,7 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
-define( 'GEN_WAVE_VERSION', '1.1.2' );
+define( 'GEN_WAVE_VERSION', '1.1.1' );
 
 define( 'GEN_WAVE__FILE__', __FILE__ );
 define( 'GEN_WAVE_PLUGIN_BASE', plugin_basename( GEN_WAVE__FILE__ ) );
@@ -167,29 +167,3 @@ add_action('init', function() {
     // Check and install if needed (will skip if already installed)
     \GenWavePlugin\InstallationManager::checkAndInstall();
 }, 1); // High priority to run early
-
-/**
- * Let the site's GenWave Front Site (the headless React site served from
- * *.genwave.site) read admin-ajax responses cross-origin.
- *
- * When a site is converted to a headless Front Site, WordPress stays as the CMS
- * and every plugin's front-end widget (live chat, popups, forms, …) still calls
- * this site's admin-ajax.php — but now from a different origin, which the
- * browser blocks unless the response carries CORS headers. WordPress only sends
- * them for "allowed" origins, so we add the request's own Front Site origin.
- *
- * Security: this only lets the browser READ the response for an origin that is
- * this customer's own front end. Every admin-ajax action still enforces its own
- * nonce / capability — CORS does not bypass authentication. REST (/wp-json) is
- * already origin-echoed by WordPress core, so only admin-ajax needs this.
- */
-add_filter('allowed_http_origins', function ($origins) {
-    $origin = function_exists('get_http_origin') ? get_http_origin() : '';
-    if ($origin) {
-        $host = strtolower((string) wp_parse_url($origin, PHP_URL_HOST));
-        if ($host === 'genwave.site' || substr($host, -13) === '.genwave.site') {
-            $origins[] = $origin;
-        }
-    }
-    return $origins;
-});

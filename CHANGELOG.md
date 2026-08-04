@@ -4,11 +4,6 @@ Developer-facing changelog for the GenWave (free / anchor) plugin. The customer
 changelog for WordPress.org lives in `readme.txt` and is written at release time
 (security items are described there generically, not by vulnerability).
 
-## 1.1.2 - 2026-08-04
-
-### Added — cross-origin access for the GenWave Front Site
-- `allowed_http_origins` filter adds the request's own `*.genwave.site` origin, so WordPress emits CORS headers on `admin-ajax.php` for the site's headless Front Site. Any plugin's front-end widget (live chat, popups, forms) that calls admin-ajax keeps working after the site goes headless — one site-wide enabler instead of per-plugin patches, and far simpler than a Front Site proxy. Auth is unchanged: CORS only lets the browser READ the response; every admin-ajax action still enforces its own nonce/capability. REST (`/wp-json`) is already origin-echoed by core, so only admin-ajax needs this.
-
 ## 1.1.1 - 2026-08-03
 
 ### UI, copy & assets
