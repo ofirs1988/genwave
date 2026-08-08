@@ -57,7 +57,6 @@ $genwave_credits = get_option('aiaw_credits', $data['credits'] ?? 0);
                             <p><?php esc_html_e('Renew now to keep using the AI Agent.', 'gen-wave'); ?></p>
                             <div class="gw-note__actions gw-alert-buttons">
                                 <a href="<?php echo esc_url(GENWAVE_API_URL . '/user/billing'); ?>" target="_blank" class="gw-b gw-b--warn gw-b--sm"><?php esc_html_e('Renew License', 'gen-wave'); ?></a>
-                                <button type="button" id="refresh_license" class="gw-b gw-b--ghost gw-b--sm"><?php esc_html_e('Check again', 'gen-wave'); ?></button>
                             </div>
                         </div>
                     </div>

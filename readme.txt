@@ -4,7 +4,7 @@ Tags: ai, ai-agent, chatbot, content-generation, ecommerce
 Requires at least: 5.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -264,6 +264,12 @@ Yes, the plugin works on multisite installations. Each site needs its own Genwav
 4. Track your credit balance and usage
 
 == Changelog ==
+
+= 1.1.2 =
+* New connection security: each site now signs every request to the AI Agent with its own key, verified end-to-end. No shared secrets or tokens are stored.
+* Simpler connect: link your site with your license key in one step; a clear Connected / Not connected status is shown.
+* Removed the retired LiteLLM integration and legacy authentication code.
+* Stability and security improvements.
 
 = 1.1.1 =
 * Security hardening across account connection and admin actions.

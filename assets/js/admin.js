@@ -151,60 +151,6 @@ jQuery(document).ready(function($) {
         });
     });
 
-    // Refresh License Handler (check if license was renewed)
-    $('#refresh_license').on('click', function (e) {
-        e.preventDefault();
-
-        var button = $(this);
-        var alertBox = button.closest('.gw-alert');
-        var alertContent = alertBox.find('.gw-alert-content');
-
-        // Add loading state
-        button.addClass('loading');
-        button.prop('disabled', true);
-        button.find('svg').css('animation', 'spin 1s linear infinite');
-
-        $.ajax({
-            url: genwave_admin_data.ajaxurl,
-            type: 'POST',
-            data: {
-                action: 'genwave_check_license_status',
-                security: genwave_admin_data.genwave_nonce
-            },
-            success: function(response) {
-                button.removeClass('loading');
-                button.prop('disabled', false);
-                button.find('svg').css('animation', '');
-
-                if (response.success) {
-                    if (response.data.expired === false) {
-                        // License is now valid - reload the page
-                        alertBox.removeClass('gw-alert-warning').addClass('gw-alert-success');
-                        alertContent.find('strong').text('License Renewed!');
-                        alertContent.find('p').text('Your license is now active. Refreshing...');
-                        alertContent.find('.gw-alert-buttons').remove();
-
-                        setTimeout(function() {
-                            window.location.reload();
-                        }, 1500);
-                    } else {
-                        // Still expired - update message
-                        alertContent.find('p').text('License is still expired. Please renew your subscription.');
-                    }
-                } else {
-                    // Show error message in the alert
-                    alertContent.find('p').text(response.data.message || 'Failed to check license status. Please try again.');
-                }
-            },
-            error: function() {
-                button.removeClass('loading');
-                button.prop('disabled', false);
-                button.find('svg').css('animation', '');
-                // Show error message in the alert
-                alertContent.find('p').text('Failed to connect to server. Please try again.');
-            }
-        });
-    });
 
     // Disconnect Account Handler
     $('#disconnect_account').on('click', function (e) {
