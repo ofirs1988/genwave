@@ -1,0 +1,122 @@
+name: Release to WordPress.org
+
+# Manual, one-click release of the free plugin to the WordPress.org SVN repo —
+# the SVN equivalent of the pro/seo release.yml (which ship to R2 instead).
+#
+# Requires two repo secrets (Settings -> Secrets and variables -> Actions):
+#   WPORG_SVN_USERNAME  — your WordPress.org account username
+#   WPORG_SVN_PASSWORD  — your WordPress.org account password
+#
+# It bumps the version, writes the changelog, builds assets, deploys trunk +
+# tags/<version> to WordPress.org, commits the bump back, and cuts a GitHub Release.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version bump type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      changelog:
+        description: 'Changelog (one line, shown under == Changelog ==)'
+        required: true
+        type: string
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Read current version
+        id: version
+        run: |
+          CURRENT=$(grep -oP "define\(\s*'GEN_WAVE_VERSION',\s*'\K[0-9]+\.[0-9]+\.[0-9]+" gen-wave.php)
+          if [ -z "$CURRENT" ]; then echo "::error::Could not read GEN_WAVE_VERSION"; exit 1; fi
+          echo "current=$CURRENT" >> "$GITHUB_OUTPUT"
+          echo "Current version: $CURRENT"
+
+      - name: Calculate new version
+        id: bump
+        run: |
+          IFS='.' read -r MAJOR MINOR PATCH <<< "${{ steps.version.outputs.current }}"
+          case "${{ inputs.version_type }}" in
+            major) MAJOR=$((MAJOR+1)); MINOR=0; PATCH=0 ;;
+            minor) MINOR=$((MINOR+1)); PATCH=0 ;;
+            patch) PATCH=$((PATCH+1)) ;;
+          esac
+          NEW="$MAJOR.$MINOR.$PATCH"
+          echo "new=$NEW" >> "$GITHUB_OUTPUT"
+          echo "New version: $NEW"
+
+      - name: Apply version + changelog
+        run: |
+          NEW="${{ steps.bump.outputs.new }}"
+          # Plugin header + constant
+          sed -i "s/^ \* Version: .*/ * Version: $NEW/" gen-wave.php
+          sed -i "s/define( 'GEN_WAVE_VERSION', '[^']*' )/define( 'GEN_WAVE_VERSION', '$NEW' )/" gen-wave.php
+          # readme: stable tag + prepend a changelog entry
+          sed -i "s/^Stable tag: .*/Stable tag: $NEW/" readme.txt
+          CL="${{ inputs.changelog }}"
+          awk -v v="$NEW" -v cl="$CL" '
+            /^== Changelog ==/ && !done { print; print ""; print "= " v " ="; print "* " cl; done=1; next }
+            { print }
+          ' readme.txt > readme.new && mv readme.new readme.txt
+          echo "--- Verification ---"
+          grep -m1 "Version:" gen-wave.php
+          grep "GEN_WAVE_VERSION" gen-wave.php
+          grep -m1 "Stable tag:" readme.txt
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build assets (only if a build script exists)
+        run: |
+          if [ -f package.json ] && node -e "process.exit(require('./package.json').scripts && require('./package.json').scripts.build ? 0 : 1)"; then
+            npm ci --prefer-offline 2>/dev/null || npm install
+            npm run build
+          else
+            echo "No build script — shipping the committed dist/."
+          fi
+
+      - name: Deploy to WordPress.org
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        with:
+          generate-zip: true
+        env:
+          SVN_USERNAME: ${{ secrets.WPORG_SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}
+          SLUG: gen-wave
+          VERSION: ${{ steps.bump.outputs.new }}
+
+      - name: Commit and push version bump
+        run: |
+          NEW="${{ steps.bump.outputs.new }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add gen-wave.php readme.txt
+          git commit -m "chore: release $NEW"
+          git push
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.bump.outputs.new }}
+          name: v${{ steps.bump.outputs.new }}
+          body: |
+            ## Changelog
+            ${{ inputs.changelog }}
+          generate_release_notes: false

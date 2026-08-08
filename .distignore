@@ -1,0 +1,22 @@
+# Files and folders excluded from the WordPress.org deploy (10up action).
+# Everything not listed here IS shipped to wp.org trunk/tag.
+
+/.git
+/.github
+/.gitignore
+/.gitattributes
+/.distignore
+/.gitleaks.toml
+/.pre-commit-config.yaml
+/.claude
+/node_modules
+/tests
+/CHANGELOG.md
+/README.md
+/package-lock.json
+/webpack.config.js
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.log
