@@ -136,11 +136,8 @@ class Enqueue {
         // token, uidd and license key out of window.genwaveConfig for low-privilege
         // roles (finding F2). Server-side API calls read the credentials from
         // Config directly and are unaffected.
-        $can_use_agent = current_user_can('manage_options');
-        $license_key = $can_use_agent ? \GenWavePlugin\Core\Config::get('license_key') : '';
-        $uidd        = $can_use_agent ? \GenWavePlugin\Core\Config::get('uidd') : '';
-        $token       = $can_use_agent ? \GenWavePlugin\Core\Config::get('token') : '';
-
+        // v2 signed auth: the browser never holds credentials. Generation runs
+        // through server-side AJAX, which signs requests from Config directly.
         // Add config for streaming client
         wp_localize_script('gen-wave-plugin-streaming-client', 'genwaveConfig', [
             'isDev' => $this->isDevelopmentEnvironment(),
@@ -151,11 +148,6 @@ class Enqueue {
             'apiUrl' => $this->getApiUrl(),
             'domain' => $this->getCurrentDomain(),
             'useProxy' => $this->isDevelopmentEnvironment(),
-            'litellmUrl' => defined('GEN_WAVE_SMART_API') ? GEN_WAVE_SMART_API : '',
-            'useLiteLLM' => true,
-            'token' => $token ?: '',
-            'uidd' => $uidd ?: '',
-            'licenseKey' => $license_key ?: ''
         ]);
         // Localize script to pass PHP data to JS
         wp_localize_script('gen-wave-plugin-admin-script', 'genwave_admin_data', [

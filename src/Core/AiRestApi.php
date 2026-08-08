@@ -53,13 +53,8 @@ class AiRestApi extends WP_REST_Controller
             return true;
         }
 
-        // Option 3: Check for valid uidd in header (from Laravel)
-        $uidd_header = $request->get_header('X-GenWave-UIDD');
-        $stored_uidd = Config::get('uidd');
-
-        if (!empty($uidd_header) && !empty($stored_uidd) && hash_equals($stored_uidd, $uidd_header)) {
-            return true;
-        }
+        // (Removed) the X-GenWave-UIDD branch — uidd is not a secret (it travels in
+        // every outbound request), so accepting it as an inbound credential was a bypass.
 
         if (defined('WP_DEBUG') && WP_DEBUG) {
             // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
@@ -392,17 +387,45 @@ class AiRestApi extends WP_REST_Controller
     }
 
     /**
-     * Domain verification endpoint for Laravel backend
-     * Verifies that Genwve plugin is active and returns verification token
+     * Domain verification endpoint for the Laravel backend.
      *
-     * Endpoint: GET /wp-json/gen-wave/v1/verify-domain?token=VERIFICATION_TOKEN
+     * Two modes:
+     *  - Secure challenge-response (auto-connect): ?challenge=NONCE
+     *    Returns challenge_response = HMAC-SHA256(NONCE, license_key). Because the
+     *    HMAC is keyed with the site's stored license key, a correct response proves
+     *    BOTH that the Genwave plugin runs on this exact domain AND that it holds the
+     *    matching license — without ever transmitting the key. The backend recomputes
+     *    the same HMAC from its own copy of the key and compares.
+     *  - Legacy token echo (DNS/file/manual verification): ?token=VERIFICATION_TOKEN
+     *    Kept for backward compatibility with the existing verification flows.
+     *
+     * Endpoint: GET /wp-json/gen-wave/v1/verify-domain
      */
     public function verifyDomainEndpoint(WP_REST_Request $request)
     {
-
-        // Get verification token from query parameter
+        $challenge = $request->get_param('challenge');
         $token = $request->get_param('token');
 
+        // Secure challenge-response — proves domain control + key possession.
+        if (!empty($challenge)) {
+            $licenseKey = Config::get('license_key');
+            if (empty($licenseKey)) {
+                return new WP_REST_Response([
+                    'success' => false,
+                    'message' => __('Plugin is not configured with a license key', 'gen-wave')
+                ], 409);
+            }
+
+            return new WP_REST_Response([
+                'success' => true,
+                'message' => __('Genwave plugin is active', 'gen-wave'),
+                'challenge_response' => hash_hmac('sha256', (string) $challenge, (string) $licenseKey),
+                'domain' => get_site_url(),
+                'verified_at' => current_time('mysql')
+            ], 200);
+        }
+
+        // Legacy token echo (unchanged).
         if (empty($token)) {
             return new WP_REST_Response([
                 'success' => false,
@@ -410,13 +433,9 @@ class AiRestApi extends WP_REST_Controller
             ], 400);
         }
 
-
-        // Return success. NOTE (F10): the exact plugin version is intentionally NOT
-        // included — this endpoint is public (permission_callback __return_true), and
-        // leaking the precise version lets an unauthenticated caller fingerprint the
-        // site for version-specific exploits. The dashboard verifies "plugin active"
-        // from success:true and tracks versions through its own plugin_versions
-        // channel, so nothing consumes a version here.
+        // NOTE (F10): the exact plugin version is intentionally NOT included — this
+        // endpoint is public (permission_callback __return_true), and leaking the
+        // precise version lets an unauthenticated caller fingerprint the site.
         return new WP_REST_Response([
             'success' => true,
             'message' => __('Genwave plugin is active', 'gen-wave'),

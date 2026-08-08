@@ -97,35 +97,9 @@ if (!defined('GENWAVE_AGENT_API_URL')) {
 }
 
 
-/**
- * ENCRYPTION KEY ARCHITECTURE
- *
- * This plugin uses a shared secret key for AES-256-CBC encryption between:
- * - WordPress Plugin (this code)
- * - Genwave Laravel Backend (account.genwave.ai)
- * - Genwave AI API (api.genwave.ai)
- *
- * SECURITY DESIGN:
- * 1. The key is stored in wp_options (database) for each installation
- * 2. The default key below serves as:
- *    - Initial setup fallback
- *    - Shared secret for service-to-service authentication
- *    - Backward compatibility with existing installations
- *
- * REMOVED (findings F1/F9): this plugin previously shipped a shared AES-256-CBC
- * key in source and used it to encrypt the SSO token/uidd. Because the plugin is
- * public, that key was public, so the encryption protected nothing. Credentials
- * are now delivered in plaintext over the authenticated, one-time
- * credentials_session channel (server-to-server HTTPS) and stored as-is. No key.
- */
-// The former shared AES secret is gone (findings F1/F9): credentials now travel
-// in plaintext over the authenticated one-time credentials_session channel, so no
-// key is shipped in source. The constant is still defined — resolved only from an
-// out-of-band value if one exists — so any lingering reference degrades to "" and
-// never fatals.
-if (!defined('GEN_WAVE_SECRET_KEY')) {
-    define('GEN_WAVE_SECRET_KEY', (string) get_option('genwave_encryption_key', ''));
-}
+// Auth v2: the site connects with an HMAC challenge and signs every agent request
+// with a per-site key (see src/Core/AgentAuth.php). No shared secret ships in source;
+// the removed AES key (findings F1/F9) and GEN_WAVE_SECRET_KEY are gone entirely.
 
 // Include Composer's autoload file
 require_once __DIR__ . '/vendor/autoload.php';

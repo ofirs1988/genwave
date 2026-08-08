@@ -11,14 +11,15 @@ class Config {
         'license_key' => '',
         'domain' => '',
         'active' => '',
-        'auth_token' => '',
         'uidd' => '',
         'token' => '',
         'plan' => '',
         'credits' => '',
         'license_expired' => '0',
         'expiration_date' => '',
-        'encryption_key' => '', // Removed: shared AES key no longer used (F1/F9); credentials travel plaintext over the authenticated credentials_session channel
+        // v2 signed auth: stable site id + derived per-site signing key (base64).
+        'site_uid' => '',
+        'site_key' => '',
     ];
 
     public static function get($key) {

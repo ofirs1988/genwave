@@ -56,7 +56,6 @@ class AjaxManager
         add_action('wp_ajax_genwave_refresh_credits', [$this, 'handle_refresh_credits']);
         add_action('wp_ajax_genwave_refresh_tokens', [$this, 'handle_refresh_credits']); // backward compat
         add_action('wp_ajax_genwave_disconnect_account', [$this, 'handle_disconnect_account']);
-        add_action('wp_ajax_genwave_check_license_status', [$this, 'handle_check_license_status']);
 
         // Dashboard stats endpoint
         add_action('wp_ajax_genwave_get_dashboard_stats', [$this, 'handle_get_dashboard_stats']);
@@ -243,49 +242,6 @@ class AjaxManager
             'message' => 'Content applied successfully',
             'post_id' => $post_id,
             'field' => $field
-        ]);
-    }
-
-    public function handle_check_license_status()
-    {
-        if (!isset($_POST['security']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['security'])), 'genwave_nonce')) {
-            wp_send_json_error(['message' => 'Invalid nonce']);
-        }
-
-        $license_key = Config::get('license_key');
-        if (empty($license_key)) {
-            wp_send_json_error(['message' => 'No license key found']);
-        }
-
-        // Call Python API to check license status
-        $api_manager = new ApiManager();
-        $response = $api_manager->postToLiteLLM('check-license-status', [
-            'license_key' => $license_key,
-        ], Config::get('token'), Config::get('uidd'));
-
-        // Check for error
-        if (isset($response['error']) && $response['error'] === true) {
-            wp_send_json_error([
-                'message' => $response['message'] ?? 'Failed to check license status'
-            ]);
-        }
-
-        // Get the data from wrapped response (postToLiteLLM wraps response in 'data')
-        $data = $response['data'] ?? $response;
-
-        // Check if expired
-        $is_expired = isset($data['expired']) ? $data['expired'] : true;
-
-        // Update local config
-        Config::set('license_expired', $is_expired ? '1' : '0');
-        if (isset($data['expiration_date'])) {
-            Config::set('expiration_date', $data['expiration_date']);
-        }
-
-        wp_send_json_success([
-            'expired' => $is_expired,
-            'expiration_date' => $data['expiration_date'] ?? null,
-            'message' => $is_expired ? 'License is still expired' : 'License is active'
         ]);
     }
 

@@ -22,14 +22,23 @@ class VerifyLoginController
             wp_send_json_error(['success' => false, 'message' => 'Unauthorized'], 403);
         }
 
-        // Continue processing the request
-        $license_key = Config::get('license_key');
-        if ($license_key) {
-            $login_url = self::getUrl();
-            wp_send_json_success(['success' => true , 'redirect' => $login_url  , 'message' => 'Invalid license key.' ]);
-        } else {
-            wp_send_json_error(['success' => false , 'message' => 'Invalid license key.'] );
+        if (!Config::get('license_key')) {
+            wp_send_json_error(['success' => false, 'message' => __('Enter your license key first.', 'gen-wave')]);
         }
+
+        // v2: connect directly. The panel proves ownership with an HMAC challenge
+        // back to this site and returns the per-site signing key — no dashboard
+        // round-trip. Keep the response shape (redirect on success) so the existing
+        // admin UI simply reloads into the connected state.
+        $result = \GenWavePlugin\Core\AgentAuth::connect();
+        if (!empty($result['success'])) {
+            wp_send_json_success([
+                'success'  => true,
+                'redirect' => admin_url('admin.php?page=gen-wave-plugin-settings&connected=1'),
+                'message'  => $result['message'],
+            ]);
+        }
+        wp_send_json_error(['success' => false, 'message' => $result['message']]);
 
         wp_die(); // End the process after sending response
     }

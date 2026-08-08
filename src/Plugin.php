@@ -23,6 +23,10 @@ class Plugin {
     }
 
     public function initialize() {
+        // Sign every outbound agent request (v2 auth). One global filter on the
+        // anchor plugin covers this plugin and the Agent/Chatbot plugins.
+        \GenWavePlugin\Core\AgentAuth::register();
+
         // Load AJAX manager for both admin and frontend
         new AjaxManager();
 
