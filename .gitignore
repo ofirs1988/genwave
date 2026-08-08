@@ -1,5 +1,7 @@
 node_modules/
-vendor/
+# Root Composer vendor only — it's rebuilt in CI. assets/vendor/ (static UI libs,
+# not reproducible) stays tracked so it ships to WordPress.org.
+/vendor/
 .DS_Store
 *.log
 .env

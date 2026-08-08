@@ -92,6 +92,13 @@ jobs:
             echo "No build script — shipping the committed dist/."
           fi
 
+      - name: Rebuild vendor/ (Composer autoloader — gitignored, must ship to wp.org)
+        run: |
+          if [ -f composer.json ]; then
+            composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+            test -f vendor/autoload.php || { echo "::error::vendor/autoload.php missing after composer install"; exit 1; }
+          fi
+
       - name: Deploy to WordPress.org
         uses: 10up/action-wordpress-plugin-deploy@stable
         with:
