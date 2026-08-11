@@ -69,6 +69,7 @@ class AgentAuth
         Config::set('license_key', $licenseKey);
         Config::set('domain', $data['domain'] ?? get_site_url());
         Config::set('active', '1');
+        Config::set('license_expired', !empty($data['expired']) ? '1' : '0');
         if (isset($data['plan'])) {
             Config::set('plan', $data['plan']);
         }
@@ -78,6 +79,32 @@ class AgentAuth
         }
 
         return ['success' => true, 'message' => __('Your site is connected.', 'gen-wave')];
+    }
+
+    /**
+     * Disconnect this site: tell the panel to drop the domain's verification (so
+     * the license is free to connect again) and clear the local signing keys.
+     * Best-effort on the network call — local state is always cleared.
+     */
+    public static function disconnect(): array
+    {
+        $licenseKey = Config::get('license_key');
+        $siteUrl = Config::get('domain') ?: get_site_url();
+
+        if (!empty($licenseKey)) {
+            wp_remote_post(self::panelUrl() . '/api/plugin/disconnect', [
+                'headers' => ['Content-Type' => 'application/json', 'Accept' => 'application/json'],
+                'body' => wp_json_encode([
+                    'license_key' => $licenseKey,
+                    'site_url' => $siteUrl,
+                ]),
+                'timeout' => 20,
+                'sslverify' => ! preg_match('#(localhost|127\.0\.0\.1|\.local)#', self::panelUrl()),
+            ]);
+        }
+
+        self::forget();
+        return ['success' => true, 'message' => __('Your site has been disconnected.', 'gen-wave')];
     }
 
     /**

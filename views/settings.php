@@ -3,7 +3,10 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-$genwave_is_connected = isset($data['uidd']) && !is_null($data['uidd']) && strlen($data['uidd']) > 3;
+// v2 auth: a site is connected once it holds a signing key (site_uid + site_key).
+// Fall back to the legacy `uidd` for sites connected via the old login flow.
+$genwave_is_connected = \GenWavePlugin\Core\AgentAuth::isConnected()
+    || (isset($data['uidd']) && !is_null($data['uidd']) && strlen($data['uidd']) > 3);
 $genwave_has_license = strlen($data['license_key'] ?? '') > 10;
 $genwave_is_expired = isset($data['license_expired']) && $data['license_expired'] === '1';
 // Balance is synced with the agent: prefer the shared `aiaw_credits` option
