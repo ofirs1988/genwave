@@ -25,6 +25,11 @@ class AiRestApi extends WP_REST_Controller
         self::$instance = $this; // Set instance
         add_action('rest_api_init', [$this, 'register_genwave_route']);
 
+        // Keep our own routes reachable when a security plugin restricts the REST
+        // API site-wide (very common). Runs late so it clears another plugin's
+        // denial; each of our routes still enforces its own permission_callback.
+        add_filter('rest_authentication_errors', [$this, 'allow_own_routes_through'], 9999);
+
         // Flush rewrite rules once after plugin update (temporary)
         if (!get_option('genwave_rest_api_flushed_v2')) {
             add_action('init', function() {
@@ -32,6 +37,42 @@ class AiRestApi extends WP_REST_Controller
                 update_option('genwave_rest_api_flushed_v2', true);
             });
         }
+    }
+
+    /**
+     * Let Genwave's own REST namespace through a site-wide REST API block.
+     *
+     * Many security plugins/snippets deny unauthenticated REST access by returning
+     * a WP_Error from `rest_authentication_errors`. That also blocks our bootstrap
+     * (the verify-domain challenge) and the signed agent calls — which carry their
+     * OWN HMAC/signature auth and never rely on a WordPress login. We ONLY clear an
+     * existing denial, and ONLY for the `gen-wave/v1` namespace; every route still
+     * runs its own permission_callback afterwards, so nothing is actually loosened.
+     *
+     * @param mixed $result null (no auth attempted), true (allowed) or WP_Error/false (denied).
+     * @return mixed
+     */
+    public function allow_own_routes_through($result)
+    {
+        // Not a denial → leave it exactly as it is.
+        if (!is_wp_error($result) && $result !== false) {
+            return $result;
+        }
+
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only route match, no state change
+        $uri = isset($_SERVER['REQUEST_URI']) ? wp_unslash($_SERVER['REQUEST_URI']) : '';
+        if (!is_string($uri) || $uri === '') {
+            return $result;
+        }
+
+        $prefix = rest_get_url_prefix(); // usually "wp-json"
+        $ns = $this->namespace;          // "gen-wave/v1"
+        $ours =
+            strpos($uri, '/' . $prefix . '/' . $ns . '/') !== false ||   // pretty permalinks
+            strpos($uri, 'rest_route=/' . $ns . '/') !== false ||        // plain permalinks
+            strpos($uri, 'rest_route=' . rawurlencode('/' . $ns . '/')) !== false; // encoded
+
+        return $ours ? true : $result;
     }
 
     /**
