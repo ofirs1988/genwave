@@ -4,7 +4,7 @@ Tags: ai, ai-agent, chatbot, content-generation, ecommerce
 Requires at least: 5.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.1.4
+Stable tag: 1.1.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -264,6 +264,9 @@ Yes, the plugin works on multisite installations. Each site needs its own Genwav
 4. Track your credit balance and usage
 
 == Changelog ==
+
+= 1.1.5 =
+* Fixed: the Open the Agent button now tells you when the GenWave Agent plugin is missing or inactive and offers to download or activate it, instead of showing an access error. Account, billing, credits, sign-up and support buttons now open the right page.
 
 = 1.1.4 =
 * Keep Genwave REST routes reachable when a security plugin restricts the REST API, so site connection works on locked-down sites
