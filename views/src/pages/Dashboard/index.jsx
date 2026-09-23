@@ -68,7 +68,7 @@ const Dashboard = () => {
     const agentCta = {
         active: 'Open the Agent',
         inactive: 'Activate GenWave Agent',
-        missing: 'Download GenWave Agent',
+        missing: agent.oneClick ? 'Install GenWave Agent' : 'Download GenWave Agent',
     }[agent.state] || 'Open the Agent';
 
     return (
@@ -131,11 +131,16 @@ const Dashboard = () => {
                         </a>
                     </div>
 
-                    {agent.state === 'missing' && (
+                    {agent.state === 'missing' && agent.oneClick && (
                         <p className="gw-dash-agent__note">
-                            The agent chat is a separate plugin. Download it, then upload it under{' '}
-                            <a href={agent.uploadUrl}>Plugins &rarr; Add New &rarr; Upload Plugin</a> and activate it.
-                            Please keep this plugin installed too, because the agent uses its connection.
+                            The agent chat is a separate plugin. You can install it in one click from the Genwave
+                            Plugins page. Please keep this plugin installed too, because the agent uses its connection.
+                        </p>
+                    )}
+                    {agent.state === 'missing' && !agent.oneClick && (
+                        <p className="gw-dash-agent__note">
+                            The agent chat is a separate plugin. Please ask a site administrator to install it.
+                            Keep this plugin installed too, because the agent uses its connection.
                         </p>
                     )}
                     {agent.state === 'inactive' && (

@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Genwave - AI Agent 1.1.4\n"
+"Project-Id-Version: Genwave - AI Agent 1.1.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/gen-wave\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-24T00:20:52+02:00\n"
+"POT-Creation-Date: 2026-09-24T01:38:20+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: gen-wave\n"
@@ -182,49 +182,53 @@ msgstr ""
 msgid "Error: %s"
 msgstr ""
 
-#: src/Handlers/PluginsHandler.php:48
+#: src/Handlers/PluginsHandler.php:49
 msgid "Failed to fetch plugin list"
 msgstr ""
 
-#: src/Handlers/PluginsHandler.php:79
+#: src/Handlers/PluginsHandler.php:80
 msgid "Missing plugin slug"
 msgstr ""
 
-#: src/Handlers/PluginsHandler.php:87
+#: src/Handlers/PluginsHandler.php:88
 msgid "Could not get download URL"
 msgstr ""
 
-#: src/Handlers/PluginsHandler.php:100
+#: src/Handlers/PluginsHandler.php:101
 msgid "Plugin not available for download"
 msgstr ""
 
-#: src/Handlers/PluginsHandler.php:111
+#: src/Handlers/PluginsHandler.php:112
 msgid "Plugin installed and activated"
 msgstr ""
 
-#: src/Handlers/PluginsHandler.php:124
+#: src/Handlers/PluginsHandler.php:125
 msgid "Security check failed"
 msgstr ""
 
-#: src/Handlers/PluginsHandler.php:129
+#: src/Handlers/PluginsHandler.php:130
 msgid "You do not have permission to install plugins"
 msgstr ""
 
-#: src/Handlers/PluginsHandler.php:157
-msgid "Connect your Genwave account first"
+#: src/Handlers/PluginsHandler.php:165
+msgid "Please connect your Genwave account on the Account page first."
 msgstr ""
 
 #. translators: %d is the HTTP status code returned by the GenWave dashboard.
-#: src/Handlers/PluginsHandler.php:188
+#: src/Handlers/PluginsHandler.php:202
 #, php-format
 msgid "Dashboard returned HTTP %d"
 msgstr ""
 
-#: src/Handlers/PluginsHandler.php:291
+#: src/Handlers/PluginsHandler.php:321
+msgid "This download is not from Genwave, so it was not installed."
+msgstr ""
+
+#: src/Handlers/PluginsHandler.php:334
 msgid "Install failed"
 msgstr ""
 
-#: src/Handlers/PluginsHandler.php:298
+#: src/Handlers/PluginsHandler.php:341
 msgid "Installed but plugin folder not found"
 msgstr ""
 
@@ -481,7 +485,7 @@ msgid "You must enter a license key to use Genwave."
 msgstr ""
 
 #: views/settings.php:35
-#: views/settings.php:241
+#: views/settings.php:245
 msgid "GenWave"
 msgstr ""
 
@@ -525,186 +529,190 @@ msgstr ""
 msgid "One more step: install GenWave Agent"
 msgstr ""
 
-#: views/settings.php:91
-msgid "The agent chat is a separate plugin. Download it, upload it under Plugins > Add New > Upload Plugin, and activate it. Keep this plugin installed - the agent uses its connection."
+#: views/settings.php:92
+msgid "The agent chat is a separate plugin. You can install it in one click from the Genwave Plugins page. Please keep this plugin installed too, because the agent uses its connection."
 msgstr ""
 
-#: views/settings.php:93
+#: views/settings.php:94
+msgid "Install GenWave Agent"
+msgstr ""
+
+#: views/settings.php:97
+msgid "The agent chat is a separate plugin. Please ask a site administrator to install it. Keep this plugin installed too, because the agent uses its connection."
+msgstr ""
+
+#: views/settings.php:99
 msgid "Download GenWave Agent"
 msgstr ""
 
-#: views/settings.php:95
-msgid "Upload plugin"
-msgstr ""
-
-#: views/settings.php:104
+#: views/settings.php:108
 msgid "GenWave Agent is installed but not active"
 msgstr ""
 
-#: views/settings.php:105
+#: views/settings.php:109
 msgid "Activate it to open the agent chat."
 msgstr ""
 
-#: views/settings.php:107
+#: views/settings.php:111
 msgid "Activate GenWave Agent"
 msgstr ""
 
-#: views/settings.php:117
+#: views/settings.php:121
 msgid "Credit balance"
 msgstr ""
 
-#: views/settings.php:118
+#: views/settings.php:122
 msgid "Refresh balance"
 msgstr ""
 
-#: views/settings.php:123
+#: views/settings.php:127
 msgid "Buy more credits"
 msgstr ""
 
-#: views/settings.php:128
+#: views/settings.php:132
 msgid "Account details"
 msgstr ""
 
-#: views/settings.php:131
+#: views/settings.php:135
 msgid "License key"
 msgstr ""
 
-#: views/settings.php:135
+#: views/settings.php:139
 msgid "Status"
 msgstr ""
 
-#: views/settings.php:138
+#: views/settings.php:142
 msgid "Expired"
 msgstr ""
 
-#: views/settings.php:140
+#: views/settings.php:144
 msgid "Active"
 msgstr ""
 
-#: views/settings.php:146
+#: views/settings.php:150
 msgid "Manage account"
 msgstr ""
 
-#: views/settings.php:147
+#: views/settings.php:151
 msgid "Disconnect"
 msgstr ""
 
-#: views/settings.php:154
+#: views/settings.php:158
 msgid "Getting started"
 msgstr ""
 
-#: views/settings.php:157
+#: views/settings.php:161
 msgid "Open the GenWave Agent"
 msgstr ""
 
-#: views/settings.php:157
+#: views/settings.php:161
 msgid "Find it in your WordPress admin menu."
 msgstr ""
 
-#: views/settings.php:159
+#: views/settings.php:163
 msgid "Activate the GenWave Agent plugin"
 msgstr ""
 
-#: views/settings.php:159
-msgid "It is installed but not active - see the note above."
+#: views/settings.php:163
+msgid "It is installed but not active. See the note above."
 msgstr ""
 
-#: views/settings.php:161
+#: views/settings.php:165
 msgid "Install the GenWave Agent plugin"
 msgstr ""
 
-#: views/settings.php:161
-msgid "The agent chat is a separate plugin - see the note above."
+#: views/settings.php:165
+msgid "The agent chat is a separate plugin. See the note above."
 msgstr ""
 
-#: views/settings.php:163
+#: views/settings.php:167
 msgid "Describe what you need"
 msgstr ""
 
-#: views/settings.php:163
+#: views/settings.php:167
 msgid "Plain language — build pages, manage products, fix errors."
 msgstr ""
 
-#: views/settings.php:164
+#: views/settings.php:168
 msgid "Review &amp; approve"
 msgstr ""
 
-#: views/settings.php:164
+#: views/settings.php:168
 msgid "You see a preview before anything changes."
 msgstr ""
 
-#: views/settings.php:172
+#: views/settings.php:176
 msgid "Connect your GenWave account"
 msgstr ""
 
-#: views/settings.php:173
+#: views/settings.php:177
 msgid "Add the AI Agent to your site to build pages, fix errors, and manage everything through conversation."
 msgstr ""
 
-#: views/settings.php:177
+#: views/settings.php:181
 msgid "Natural conversation"
 msgstr ""
 
-#: views/settings.php:177
+#: views/settings.php:181
 msgid "Run your whole site by talking to the AI."
 msgstr ""
 
-#: views/settings.php:178
+#: views/settings.php:182
 msgid "250+ actions"
 msgstr ""
 
-#: views/settings.php:178
+#: views/settings.php:182
 msgid "Pages, WooCommerce, plugins and error fixing."
 msgstr ""
 
-#: views/settings.php:179
+#: views/settings.php:183
 msgid "Safe by design"
 msgstr ""
 
-#: views/settings.php:179
+#: views/settings.php:183
 msgid "A preview before every change to your site."
 msgstr ""
 
-#: views/settings.php:183
+#: views/settings.php:187
 msgid "Quick setup"
 msgstr ""
 
-#: views/settings.php:194
+#: views/settings.php:198
 msgid "Enter your license key"
 msgstr ""
 
-#: views/settings.php:205
+#: views/settings.php:209
 msgid "Find your license key in your GenWave account."
 msgstr ""
 
-#: views/settings.php:207
+#: views/settings.php:211
 msgid "Save license key"
 msgstr ""
 
-#: views/settings.php:209
+#: views/settings.php:213
 msgid "Update key"
 msgstr ""
 
-#: views/settings.php:219
+#: views/settings.php:223
 msgid "Connect your account"
 msgstr ""
 
-#: views/settings.php:221
+#: views/settings.php:225
 msgid "You will be redirected to log in and authorize this site."
 msgstr ""
 
-#: views/settings.php:224
+#: views/settings.php:228
 msgid "Connect to GenWave"
 msgstr ""
 
-#: views/settings.php:232
+#: views/settings.php:236
 msgid "Don't have an account? Sign up free"
 msgstr ""
 
-#: views/settings.php:233
+#: views/settings.php:237
 msgid "Need help? Contact support"
 msgstr ""
 
-#: views/settings.php:242
+#: views/settings.php:246
 msgid "Support"
 msgstr ""

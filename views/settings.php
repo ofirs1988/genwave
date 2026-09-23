@@ -88,13 +88,17 @@ $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                         <div class="gw-note__body">
                             <strong><?php esc_html_e('One more step: install GenWave Agent', 'gen-wave'); ?></strong>
-                            <p><?php esc_html_e('The agent chat is a separate plugin. Download it, upload it under Plugins > Add New > Upload Plugin and activate it. Please keep this plugin installed too, because the agent uses its connection.', 'gen-wave'); ?></p>
-                            <div class="gw-note__actions">
-                                <a href="<?php echo esc_url($genwave_agent_url); ?>" class="gw-b gw-b--primary gw-b--sm"><?php esc_html_e('Download GenWave Agent', 'gen-wave'); ?></a>
-                                <?php if (current_user_can('install_plugins')): ?>
-                                    <a href="<?php echo esc_url(admin_url('plugin-install.php?tab=upload')); ?>" class="gw-b gw-b--ghost gw-b--sm"><?php esc_html_e('Upload plugin', 'gen-wave'); ?></a>
-                                <?php endif; ?>
-                            </div>
+                            <?php if (current_user_can('install_plugins')): ?>
+                                <p><?php esc_html_e('The agent chat is a separate plugin. You can install it in one click from the Genwave Plugins page. Please keep this plugin installed too, because the agent uses its connection.', 'gen-wave'); ?></p>
+                                <div class="gw-note__actions">
+                                    <a href="<?php echo esc_url($genwave_agent_url); ?>" class="gw-b gw-b--primary gw-b--sm"><?php esc_html_e('Install GenWave Agent', 'gen-wave'); ?></a>
+                                </div>
+                            <?php else: ?>
+                                <p><?php esc_html_e('The agent chat is a separate plugin. Please ask a site administrator to install it. Keep this plugin installed too, because the agent uses its connection.', 'gen-wave'); ?></p>
+                                <div class="gw-note__actions">
+                                    <a href="<?php echo esc_url($genwave_agent_url); ?>" class="gw-b gw-b--primary gw-b--sm"><?php esc_html_e('Download GenWave Agent', 'gen-wave'); ?></a>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 <?php elseif ($genwave_agent_state === 'inactive'): ?>

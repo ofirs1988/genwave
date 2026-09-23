@@ -6,6 +6,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+use GenWavePlugin\Core\AgentAuth;
 use GenWavePlugin\Core\ApiManager;
 use GenWavePlugin\Core\Config;
 
@@ -147,29 +148,42 @@ class PluginsHandler
             }
         }
 
+        // Sites connected the current way hold site_uid + site_key and never
+        // receive the old token/uidd. Requiring those here told every recently
+        // connected customer "Connect your Genwave account first" on a site that
+        // was connected, so this page could not install the agent for them.
+        // The dashboard's list is open to every site; the headers below only
+        // identify the caller for its logs.
         $token = Config::get('token');
         $uidd = Config::get('uidd');
         $license_key = Config::get('license_key');
+        $legacy_connected = ! empty($token) && ! empty($uidd);
 
-        if (empty($token) || empty($uidd) || empty($license_key)) {
+        if (! AgentAuth::isConnected() && ! $legacy_connected) {
             return [
                 'ok' => false,
-                'message' => __('Connect your Genwave account first', 'gen-wave'),
+                'message' => __('Please connect your Genwave account on the Account page first.', 'gen-wave'),
             ];
         }
 
         $url = rtrim(GENWAVE_API_URL, '/') . '/api/plugins';
         $is_localhost = preg_match('#(localhost|127\.0\.0\.1|\.local)#', $url) === 1;
 
+        $headers = [
+            'Accept' => 'application/json',
+            'from-domain' => ApiManager::getFromDomain(),
+            'server-ip' => isset($_SERVER['SERVER_ADDR']) ? sanitize_text_field(wp_unslash($_SERVER['SERVER_ADDR'])) : 'unknown',
+        ];
+        if (! empty($license_key)) {
+            $headers['license-key'] = $license_key;
+        }
+        if ($legacy_connected) {
+            $headers['Authorization'] = 'Bearer ' . $token;
+            $headers['uidd'] = $uidd;
+        }
+
         $response = wp_remote_get($url, [
-            'headers' => [
-                'Accept' => 'application/json',
-                'Authorization' => 'Bearer ' . $token,
-                'uidd' => $uidd,
-                'license-key' => $license_key,
-                'from-domain' => ApiManager::getFromDomain(),
-                'server-ip' => isset($_SERVER['SERVER_ADDR']) ? sanitize_text_field(wp_unslash($_SERVER['SERVER_ADDR'])) : 'unknown',
-            ],
+            'headers' => $headers,
             'sslverify' => ! $is_localhost,
             'timeout' => 20,
         ]);
@@ -192,6 +206,30 @@ class PluginsHandler
         set_transient(self::LIST_CACHE_KEY, $body, self::LIST_CACHE_TTL);
 
         return ['ok' => true, 'plugins' => $body['plugins']];
+    }
+
+    /**
+     * True for an https URL on GenWave's CDN or its own dashboard host (the
+     * dashboard may sign links on its own domain), or WordPress.org downloads.
+     */
+    private static function is_trusted_download(string $url): bool
+    {
+        $parts = wp_parse_url($url);
+        $host = strtolower($parts['host'] ?? '');
+        $scheme = strtolower($parts['scheme'] ?? '');
+        if ($host === '') {
+            return false;
+        }
+        $trusted = ['cdn.genwave.ai', 'downloads.wordpress.org'];
+        $api_host = strtolower((string) wp_parse_url(GENWAVE_API_URL, PHP_URL_HOST));
+        if ($api_host !== '') {
+            $trusted[] = $api_host;
+        }
+        if (! in_array($host, $trusted, true)) {
+            return false;
+        }
+        // Local development dashboards run over plain http.
+        return $scheme === 'https' || ($host === $api_host && preg_match('#(localhost|127\.0\.0\.1|\.local)$#', $host));
     }
 
     /**
@@ -276,6 +314,11 @@ class PluginsHandler
                 'plugin_file' => $existing['plugin_file'],
                 'activated' => $activated,
             ];
+        }
+
+        // Install only from GenWave's own download hosts, whatever the list says.
+        if (! self::is_trusted_download($download_url)) {
+            return ['ok' => false, 'message' => __('This download is not from Genwave, so it was not installed.', 'gen-wave')];
         }
 
         $upgrader = new \Plugin_Upgrader(new \WP_Ajax_Upgrader_Skin());

@@ -23,7 +23,7 @@ There is nothing to migrate. Your admin, your plugins and your checkout stay as 
 Genwave uses two plugins that work together:
 
 * **Genwave** (this plugin) connects your site to your Genwave account. It also adds AI writing for single posts and products.
-* **Genwave Agent** adds the agent chat, where you run your site by conversation. Download it from [genwave.ai/agent](https://genwave.ai/agent/).
+* **Genwave Agent** adds the agent chat, where you run your site by conversation. Once your account is connected, install it in one click from Genwave → Plugins.
 
 Once both are installed and your account is connected:
 
@@ -85,9 +85,10 @@ This plugin talks to Genwave's services to connect your account and to carry out
 1. In your WordPress admin, go to Plugins → Add New and search for "Genwave".
 2. Click Install Now, then Activate.
 3. Go to Genwave → Account. Enter your license key, which you can find in your [Genwave account](https://app.genwave.ai/), and click "Connect to GenWave".
-4. Download the Genwave Agent plugin from [genwave.ai/agent](https://genwave.ai/agent/).
-5. Go to Plugins → Add New → Upload Plugin, choose the file you downloaded, then click Install Now and Activate.
-6. Open Genwave Agent from your WordPress menu and tell it what you need.
+4. Go to Genwave → Plugins and click Install next to Genwave Agent. It is installed and activated for you.
+5. Open Genwave Agent from your WordPress menu and tell it what you need.
+
+If you prefer, you can also download Genwave Agent from [genwave.ai/agent](https://genwave.ai/agent/) and upload it under Plugins → Add New → Upload Plugin.
 
 Please keep both plugins installed. Genwave Agent uses the connection that this plugin sets up.
 
@@ -101,11 +102,11 @@ No. Genwave provides the AI for you. Connect your Genwave account and you are re
 
 = What is the difference between Genwave and Genwave Agent? =
 
-Genwave (this plugin) connects your site to your Genwave account and adds AI writing for posts and products. Genwave Agent is a separate plugin that adds the agent chat, where you manage your whole site by conversation. For the full experience, install both.
+Genwave (this plugin) connects your site to your Genwave account and adds AI writing for posts and products. Genwave Agent is a separate plugin that adds the agent chat, where you manage your whole site by conversation. For the full experience, install both. Once your account is connected, you can install Genwave Agent from Genwave → Plugins in one click.
 
 = "Open the Agent" says I am not allowed to access the page. What should I do? =
 
-This means Genwave Agent is not installed or not active yet. Download it from [genwave.ai/agent](https://genwave.ai/agent/), then upload and activate it under Plugins → Add New → Upload Plugin. From version 1.1.5, the Genwave Account page shows a download or activate button whenever the agent is missing.
+This means Genwave Agent is not installed or not active yet. Go to Genwave → Plugins and click Install next to Genwave Agent. The Genwave Account page also shows an install or activate button whenever the agent is missing.
 
 = What can the agent do? =
 
