@@ -88,7 +88,7 @@ $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                         <div class="gw-note__body">
                             <strong><?php esc_html_e('One more step: install GenWave Agent', 'gen-wave'); ?></strong>
-                            <p><?php esc_html_e('The agent chat is a separate plugin. Download it, upload it under Plugins > Add New > Upload Plugin, and activate it. Keep this plugin installed - the agent uses its connection.', 'gen-wave'); ?></p>
+                            <p><?php esc_html_e('The agent chat is a separate plugin. Download it, upload it under Plugins > Add New > Upload Plugin and activate it. Please keep this plugin installed too, because the agent uses its connection.', 'gen-wave'); ?></p>
                             <div class="gw-note__actions">
                                 <a href="<?php echo esc_url($genwave_agent_url); ?>" class="gw-b gw-b--primary gw-b--sm"><?php esc_html_e('Download GenWave Agent', 'gen-wave'); ?></a>
                                 <?php if (current_user_can('install_plugins')): ?>
@@ -156,9 +156,9 @@ $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
                         <?php if ($genwave_agent_state === 'active'): ?>
                             <li><strong><?php esc_html_e('Open the GenWave Agent', 'gen-wave'); ?></strong><span><?php esc_html_e('Find it in your WordPress admin menu.', 'gen-wave'); ?></span></li>
                         <?php elseif ($genwave_agent_state === 'inactive'): ?>
-                            <li><strong><?php esc_html_e('Activate the GenWave Agent plugin', 'gen-wave'); ?></strong><span><?php esc_html_e('It is installed but not active - see the note above.', 'gen-wave'); ?></span></li>
+                            <li><strong><?php esc_html_e('Activate the GenWave Agent plugin', 'gen-wave'); ?></strong><span><?php esc_html_e('It is installed but not active. See the note above.', 'gen-wave'); ?></span></li>
                         <?php else: ?>
-                            <li><strong><?php esc_html_e('Install the GenWave Agent plugin', 'gen-wave'); ?></strong><span><?php esc_html_e('The agent chat is a separate plugin - see the note above.', 'gen-wave'); ?></span></li>
+                            <li><strong><?php esc_html_e('Install the GenWave Agent plugin', 'gen-wave'); ?></strong><span><?php esc_html_e('The agent chat is a separate plugin. See the note above.', 'gen-wave'); ?></span></li>
                         <?php endif; ?>
                         <li><strong><?php esc_html_e('Describe what you need', 'gen-wave'); ?></strong><span><?php esc_html_e('Plain language — build pages, manage products, fix errors.', 'gen-wave'); ?></span></li>
                         <li><strong><?php esc_html_e('Review &amp; approve', 'gen-wave'); ?></strong><span><?php esc_html_e('You see a preview before anything changes.', 'gen-wave'); ?></span></li>

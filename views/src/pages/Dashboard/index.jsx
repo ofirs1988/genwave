@@ -135,7 +135,7 @@ const Dashboard = () => {
                         <p className="gw-dash-agent__note">
                             The agent chat is a separate plugin. Download it, then upload it under{' '}
                             <a href={agent.uploadUrl}>Plugins &rarr; Add New &rarr; Upload Plugin</a> and activate it.
-                            Keep this plugin installed &mdash; the agent uses its connection.
+                            Please keep this plugin installed too, because the agent uses its connection.
                         </p>
                     )}
                     {agent.state === 'inactive' && (

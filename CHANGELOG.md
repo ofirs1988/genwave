@@ -6,6 +6,17 @@ changelog for WordPress.org lives in `readme.txt` and is written at release time
 
 ## Unreleased
 
+### Changed
+- readme.txt rewritten for site owners in the voice of genwave.ai: short plain
+  sentences, no em dashes or marketing filler, and the same terms as the site
+  (Genwave Agent, Studio, Chatbot, "you see it first", "bound by your role",
+  undo for content edits, activity log, keep your hosting). Removed claims we
+  could not stand behind (daily free messages, named models, "7-layer
+  security", "never store"). Third Party Services now lists what the code
+  really calls: app.genwave.ai, account.genwave.ai, agent.genwave.ai (not
+  api.genwave.ai). Upgrade notices for 1.1.5 and 1.1.6.
+- In-plugin notes about installing Genwave Agent reworded without dashes.
+
 ### Fixed
 - readme.txt Installation and FAQ (the tabs in wp-admin's plugin details): the
   steps now match the real connect flow (license key, "Connect to GenWave") and

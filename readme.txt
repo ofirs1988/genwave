@@ -8,269 +8,149 @@ Stable tag: 1.1.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Run your WordPress site through conversation. Build plugins, fix errors, create pages, manage WooCommerce and optimize SEO with an AI Agent.
+Run the WordPress site you already have by describing what you need. Genwave Agent shows you the plan, you approve it, and it does the work.
 
 == Description ==
 
-**Manage your entire WordPress site through one conversation.** [Visit Genwave](https://genwave.ai/) · [Create your free account](https://account.genwave.ai/)
+Genwave lets you run the WordPress site you already have by talking to it. Ask for a new page, a sale on your store or a fix for an error, in plain language and in any language. Genwave Agent shows you exactly what will change, you approve it, and it does the work inside the WordPress admin you already use.
 
-= Welcome to the Future of WordPress =
+There is nothing to migrate. Your admin, your plugins and your checkout stay as they are.
 
-WordPress has powered the web for more than two decades, but the way people build and manage websites has changed. Today, website owners expect to create pages, launch products, improve SEO, fix issues and grow their business without spending hours learning plugins or searching through endless settings.
+[Visit Genwave](https://genwave.ai/) · [Try Genwave free](https://app.genwave.ai/register)
 
-Genwave was built for this new way of working. Instead of clicking through dozens of menus, you simply describe what you want. Whether you're creating a landing page, updating your online store, building a custom plugin or improving your website, Genwave helps you get the job done through one simple conversation.
+= How it works =
 
-= What is Genwave? =
+Genwave uses two plugins that work together:
 
-Genwave is an AI platform built specifically for WordPress. It combines website management, content creation, WooCommerce tools, SEO, plugin development, automation and website modernization into a single AI experience.
+* **Genwave** (this plugin) connects your site to your Genwave account. It also adds AI writing for single posts and products.
+* **Genwave Agent** adds the agent chat, where you run your site by conversation. Download it from [genwave.ai/agent](https://genwave.ai/agent/).
 
-Instead of installing separate plugins for every task, you connect your website once and use one intelligent assistant to manage everything. Whether you're a beginner building your first website or an agency managing hundreds of client sites, Genwave helps you work faster, reduce repetitive work and focus on what matters most.
+Once both are installed and your account is connected:
 
-= Why We Built Genwave =
+1. **Say what you need.** A product, a fix, a page or a report.
+2. **See the plan and approve it.** The agent shows what will change before anything runs. You confirm, or you change your mind.
+3. **It is done and logged.** You see the result, and every action is recorded. Content edits keep a copy you can restore.
 
-WordPress is one of the most flexible website platforms ever created, but over time it has also become more complicated. Building a modern website often means installing dozens of plugins, learning multiple interfaces and switching constantly between builders, dashboards and settings.
+= What Genwave Agent can do =
 
-We believed there should be a better way. Genwave was created to simplify WordPress without replacing it. Our goal isn't to move you away from WordPress; it's to make WordPress easier, faster and more enjoyable to use by adding an intelligent assistant that understands your website and helps you work naturally.
+**Content and pages.** Create and edit pages and posts, write product descriptions and FAQs, and translate existing content.
 
-= One AI Agent. Everything You Need. =
+**WooCommerce.** Add and edit products, change prices and stock, organise categories, create coupons and look up orders. If you have a product file, the agent can help you import it.
 
-Genwave is no longer a collection of separate AI plugins. There are no longer individual plugins for SEO, page building, website transfers or advanced features. Everything is now available through one AI Agent.
+**SEO.** Review your pages and improve titles, meta descriptions, headings, image alt text, internal links and structured data.
 
-From building pages and managing WooCommerce to creating plugins, improving SEO, fixing WordPress issues and organizing your content, every capability works together through a single conversation. One connection, one platform, one AI assistant.
+**Fixing problems.** Describe what you see. The agent finds the cause, explains it in plain language and proposes a fix for you to approve.
 
-= Why Genwave Is Different =
+**Plugins and code.** Install and set up plugins, or have a custom plugin built for something no existing plugin does. The result is a normal WordPress plugin that a developer can review and extend.
 
-Most AI tools generate content. Some AI tools answer questions.
+**Images.** Create featured images and banners, remove backgrounds and resize images without leaving WordPress.
 
-**Genwave does real work on your site:**
+= Careful with your site =
 
-* Creates pages
-* Builds plugins
-* Manages WooCommerce
-* Optimizes SEO
-* Modernizes websites
-* Helps migrate websites
-* Connects to managed services
-* Generates code
-* Fixes problems
+* **You see it first.** Every action shows what will change before it runs.
+* **Bound by your role.** The agent cannot touch anything your WordPress user cannot.
+* **Undo for content edits.** A copy is saved before a post or page changes.
+* **Full activity log.** Every action records who asked and what changed.
 
-= Build Websites Through Conversation =
+= More from Genwave =
 
-Creating websites shouldn't feel like assembling a puzzle from dozens of blocks and settings. With Genwave, you describe what you want to build — a homepage for your business, a landing page for a new product, a pricing section, a contact page — and Genwave creates modern layouts designed for today's web. You stay focused on your ideas while Genwave handles the technical work.
+**Genwave Studio** turns the front of your site into a fast, modern experience that you change by describing what you want, while WordPress stays your content system. Every change is a preview first. Studio is included in every paid plan.
 
-= Modernize Existing Websites =
+**Genwave Chatbot** answers your visitors from your own pages, products and documents, in their language.
 
-Not every website needs to be rebuilt from scratch. Many sites already contain valuable content, years of SEO work and important business information. Genwave helps modernize existing websites by improving layouts, structure and user experience while keeping your existing content, so you can evolve your site into something cleaner and faster instead of starting over.
+**Your hosting, your choice.** Keep the hosting you have, or let Genwave host your site if you prefer a managed option.
 
-= WordPress to Next.js =
+= What this free plugin includes =
 
-Modern websites often demand faster performance, cleaner architecture and better user experiences than traditional themes can provide. For supported websites, Genwave can modernize your WordPress frontend using Next.js while keeping WordPress as your content management system.
+* **Account connection.** Connect your site to your Genwave account with your license key.
+* **AI writing.** Generate titles, descriptions and content for posts and products.
+* **Credit balance.** See how many credits you have left.
+* **Many languages.** Write in your own language, including right-to-left languages such as Hebrew and Arabic.
+* **No API keys.** You do not need an account with any AI provider. Genwave takes care of that.
 
-You continue editing through the familiar WordPress dashboard while your visitors get a modern frontend built for speed. You don't need to learn React, configure headless WordPress or manage deployment pipelines — Genwave handles the heavy lifting so you can focus on your business.
-
-= Cloudflare Deployment =
-
-Deploying modern websites shouldn't require DevOps experience. For eligible websites, Genwave can help publish your site to Cloudflare's global edge network, delivering content closer to your visitors. The result is a site that loads faster, scales more easily and benefits from Cloudflare's performance and security features — deployment becomes part of your normal workflow instead of a complicated technical process.
-
-= AI Builder =
-
-Building websites usually means spending hours in a page builder moving sections, adjusting spacing and testing layouts. Genwave takes a different approach: describe the website you want — a modern SaaS homepage, a restaurant site, a law firm landing page, a portfolio, an online store — and Genwave generates complete layouts that are easy to customize. Need changes? Keep talking, and Genwave updates the design without forcing you to start over.
-
-= WooCommerce AI =
-
-Managing an online store involves much more than adding products. Prices change, inventory changes, promotions begin and end, and customers ask questions. Genwave helps you create products, update prices, generate descriptions, organize categories, manage inventory, create coupons and work with orders through one conversation.
-
-Need to import hundreds or thousands of products? Genwave can help organize, map and import product data from supported files, reducing repetitive manual work.
-
-= AI SEO =
-
-Search engine optimization shouldn't require multiple plugins and complicated settings pages. Genwave helps with many common SEO tasks: generating titles and meta descriptions, improving headings, optimizing image alt text, suggesting internal links, creating schema markup, reviewing content quality and analyzing pages. Whether you're publishing a new article or managing hundreds of existing pages, Genwave helps keep your site optimized.
-
-= AI Plugin Builder =
-
-Sometimes the feature you need simply doesn't exist. Instead of searching through thousands of plugins, describe exactly what you want — a booking system, a custom calculator, a CRM integration, a WooCommerce extension, an internal business tool.
-
-Genwave can generate complete WordPress plugin projects including PHP, JavaScript, CSS, database tables, REST API endpoints, admin pages, settings screens and scheduled tasks. The generated code follows WordPress development practices and can be reviewed, extended and customized like any other plugin.
-
-= AI Image Generation =
-
-Great websites need great visuals. Genwave helps you create and improve images without leaving WordPress: generate featured images for blog posts, create product images and banners, improve existing images, remove backgrounds, resize images for different devices and produce multiple design variations — directly from your conversation.
-
-= AI Content Creation =
-
-Writing content takes time. Genwave helps you move from an idea to a published page much faster. Generate blog posts, landing pages, service pages, product descriptions, FAQs, category descriptions and marketing copy while keeping your preferred writing style. Need to update existing content? Genwave can rewrite, simplify, expand or translate it while helping maintain consistency across your site.
-
-= Website Migration =
-
-Moving a website shouldn't feel risky. Genwave helps simplify supported website migrations by guiding the process from start to finish. Whether you're moving to a new server, importing an existing website or starting a new project, Genwave helps reduce manual work while keeping the migration organized.
-
-= Vibe Coding for WordPress =
-
-Software development is changing. Instead of writing every line of code by hand, people describe what they want and let AI build it. We believe the same should be true for WordPress.
-
-Need a homepage? Describe it. Need a booking system? Describe it. Need a customer portal or a custom WooCommerce feature? Describe it. The AI understands your request, builds the solution and helps you refine it through conversation. You focus on the idea; Genwave handles the implementation.
-
-= AI Website Management =
-
-Managing a WordPress website involves hundreds of small tasks: updating pages, creating content, managing plugins, reviewing settings, checking errors, optimizing SEO, updating products and monitoring performance. Genwave helps reduce that workload by becoming your AI website assistant. Instead of remembering where every option is located, you explain what you need — whether you're maintaining one website or hundreds.
-
-= Security =
-
-Your website is one of your most valuable business assets, and Genwave is designed to help you work safely while keeping you in control. Before making important changes, supported actions can be reviewed and confirmed. The platform validates permissions, works within your WordPress environment and gives you clear feedback before major operations. For best results, we always recommend keeping recent backups and testing significant changes on a staging site.
-
-= Performance Optimization =
-
-Website speed affects user experience, SEO and conversions. Genwave helps identify opportunities to improve your site by reviewing common performance issues: optimizing images, reducing unnecessary assets, reviewing page structure, improving loading behavior and recommending caching strategies. When supported platform services are used, Genwave can also help modernize eligible websites using newer frontend technologies built for better performance.
-
-= Managed Hosting =
-
-Running a website shouldn't require becoming a server administrator. Genwave offers managed platform services designed to simplify hosting and website management — from connecting domains and SSL certificates to backups, monitoring and deployment. As the platform grows, additional managed services continue to become available through your Genwave account.
-
-= Built for Everyone =
-
-**Website owners:** You don't need to know PHP, CSS or React, and you don't need hours of tutorials. If you can describe what you want, Genwave helps you build it — a personal blog, a company website or an online store.
-
-**Agencies:** Small changes across many clients quickly become large amounts of repetitive work. Genwave helps you move faster with website updates, content generation, WooCommerce management, SEO improvements and plugin development, while you keep full control over the final result.
-
-**Developers:** Genwave helps accelerate development by generating plugin structures, REST APIs, admin pages, custom post types, database tables and settings pages. It doesn't replace developers — it removes repetitive work so you can spend more time solving real problems.
-
-= Real World Examples =
-
-Genwave can assist with projects like:
-
-* Build a booking system for a hotel
-* Create a WooCommerce shipping integration
-* Build a customer support portal
-* Generate a complete company website
-* Create an appointment scheduling plugin
-* Build a learning management system
-* Import thousands of WooCommerce products
-* Create custom calculators and internal dashboards
-* Generate marketing landing pages and pricing pages
-* Build a real estate or restaurant ordering website
-* Modernize an existing WordPress website
-
-If you can describe your idea, Genwave helps you bring it to life.
-
-= What's Included in This Free Plugin =
-
-This free plugin connects your site to Genwave and includes AI content generation for individual posts and products:
-
-* **Account Connection** – Connect to your Genwave account in one click
-* **AI Content Generation** – Generate titles, descriptions and content for posts and products
-* **Credit Balance Tracking** – See your usage and remaining credits
-* **Multi-language Support** – Works in 48+ languages, including right-to-left languages
-* **No API Keys Required** – We handle all the AI infrastructure for you
-
-Install the [Genwave Agent](https://genwave.ai/) to add the full AI Agent with 250+ WordPress actions. [Create your free account](https://account.genwave.ai/) to get started.
+For the agent chat, install [Genwave Agent](https://genwave.ai/agent/) as well.
 
 = Requirements =
 
 * WordPress 5.0 or higher
 * PHP 7.4 or higher
-* A free Genwave account – [create one here](https://account.genwave.ai/)
+* A free Genwave account. [Create one here](https://app.genwave.ai/register).
 
 = Privacy =
 
-This plugin communicates with Genwave services for authentication and AI operations. No data is transmitted without your action, and all communication happens over encrypted HTTPS connections.
+This plugin talks to Genwave's services to connect your account and to carry out the AI tasks you ask for. Nothing is sent until you take an action, and every connection is encrypted (HTTPS). The services are listed under "Third Party Services" below.
 
 == Installation ==
 
-**Option 1: Install from WordPress.org**
+1. In your WordPress admin, go to Plugins → Add New and search for "Genwave".
+2. Click Install Now, then Activate.
+3. Go to Genwave → Account. Enter your license key, which you can find in your [Genwave account](https://app.genwave.ai/), and click "Connect to GenWave".
+4. Download the Genwave Agent plugin from [genwave.ai/agent](https://genwave.ai/agent/).
+5. Go to Plugins → Add New → Upload Plugin, choose the file you downloaded, then click Install Now and Activate.
+6. Open Genwave Agent from your WordPress menu and tell it what you need.
 
-1. Go to Plugins → Add New in your WordPress admin
-2. Search for "Genwave"
-3. Click "Install Now" and then "Activate"
-4. Go to Genwave → Account in the admin menu
-5. Enter your license key (you'll find it in your [Genwave account](https://app.genwave.ai/)) and click "Connect to GenWave"
-6. Install the **Genwave Agent** plugin - the agent chat is a separate plugin that works together with this one. Download it from [genwave.ai/agent](https://genwave.ai/agent/), upload it under Plugins → Add New → Upload Plugin, and activate it. Keep this plugin installed: the agent uses its connection.
+Please keep both plugins installed. Genwave Agent uses the connection that this plugin sets up.
 
-**Option 2: Manual Installation**
-
-1. Download the plugin zip file
-2. Go to Plugins → Add New → Upload Plugin
-3. Upload the zip file and click "Install Now"
-4. Activate the plugin
-5. Go to Genwave → Account, enter your license key and click "Connect to GenWave"
-6. Install and activate the **Genwave Agent** plugin the same way (download it from [genwave.ai/agent](https://genwave.ai/agent/))
-
-**After Installation**
-
-Once connected, you can:
-* Generate content for any post or product using the AI generation button
-* Open the agent chat (once Genwave Agent is installed) for full AI-powered WordPress management
-* View your credit balance in the Genwave dashboard
-* Start managing your site through natural conversation
+To install this plugin manually instead of from the directory, download the zip file and upload it under Plugins → Add New → Upload Plugin. Then continue from step 3.
 
 == Frequently Asked Questions ==
 
-= Do I need API keys from OpenAI or other providers? =
+= Do I need my own AI account or API keys? =
 
-No. We handle all the AI infrastructure for you, including access to GPT-4o, Claude and Gemini. Just connect your Genwave account and start talking.
+No. Genwave provides the AI for you. Connect your Genwave account and you are ready to go.
 
-= What is the Genwave Agent? =
+= What is the difference between Genwave and Genwave Agent? =
 
-The Genwave Agent is an AI-powered WordPress assistant that lets you perform any action on your site through natural conversation. Instead of clicking through menus and settings, just tell the Agent what you need — "build a booking plugin", "fix the PHP error", "create a landing page for my sale" — and it handles everything.
+Genwave (this plugin) connects your site to your Genwave account and adds AI writing for posts and products. Genwave Agent is a separate plugin that adds the agent chat, where you manage your whole site by conversation. For the full experience, install both.
 
-It is a separate plugin that works together with this one: this plugin connects your site to your Genwave account, and Genwave Agent adds the chat. Download it from [genwave.ai/agent](https://genwave.ai/agent/) and install it under Plugins → Add New → Upload Plugin.
+= "Open the Agent" says I am not allowed to access the page. What should I do? =
 
-= "Open the Agent" says I am not allowed to access the page =
+This means Genwave Agent is not installed or not active yet. Download it from [genwave.ai/agent](https://genwave.ai/agent/), then upload and activate it under Plugins → Add New → Upload Plugin. From version 1.1.5, the Genwave Account page shows a download or activate button whenever the agent is missing.
 
-That means the Genwave Agent plugin is not installed or not active yet. Since version 1.1.5 the Genwave Account page shows a button to download or activate it. Install and activate Genwave Agent, keep this plugin installed, and the button opens the chat.
+= What can the agent do? =
 
-= Is this plugin free? =
+It can create and edit pages, manage WooCommerce products and orders, help with SEO, find and fix errors, create images, install and set up plugins, and build custom plugins. Describe what you need and it will tell you what it can do.
 
-Yes, the Genwave plugin is free and includes AI content generation for individual posts and products. For the full AI Agent with 250+ actions, plugin builder and error fixing, install [Genwave Agent](https://genwave.ai/agent/).
+= Is the plugin free? =
 
-= What can the AI Agent do? =
-
-The Agent supports 250+ WordPress actions including:
-* Build custom plugins from natural language descriptions
-* Create pages with Elementor & Gutenberg
-* Manage WooCommerce products, orders and inventory
-* Auto-detect and fix PHP errors
-* Run full-site SEO audits and apply fixes
-* Generate AI images
-* Install and configure plugins
-* Manage settings, users, and more
+Yes. This plugin is free and includes AI writing for single posts and products. The agent uses credits from your Genwave account.
 
 = How does pricing work? =
 
-Genwave uses a flexible credit system. You get 10 free messages per day. Credits work across all your WordPress sites from a single dashboard. Check our [pricing page](https://genwave.ai/pricing/) for current rates.
+Genwave is free to start, with no credit card needed, and the free plan includes trial AI credits. After that, Genwave works with credits, and one balance covers all the sites connected to your account. You can see current plans on our [pricing page](https://genwave.ai/pricing/).
 
-= What languages are supported? =
+= Which languages does it support? =
 
-Genwave supports 48+ languages including English, Hebrew, Arabic, Spanish, French, German, Chinese, Japanese, and many more. The AI understands and responds in any language you write in.
+You can write to Genwave in your own language and it answers in the same language. Right-to-left languages such as Hebrew and Arabic are supported.
 
-= Can I use Genwave with WooCommerce? =
+= Does it work with WooCommerce? =
 
-Yes. Genwave works closely with WooCommerce: manage products, generate descriptions, handle orders, and update inventory, all through conversation.
+Yes. You can manage products, write descriptions, update prices and stock, and work with orders.
 
-= Is my site safe? =
+= Is it safe for my site? =
 
-Yes. Genwave runs 7-layer security validation on every operation. Each action is previewed before it runs, requests are signed, and the plugin includes malware monitoring and automatic crash recovery.
+The agent shows you what will change before anything runs, and it cannot touch anything your WordPress user cannot. A copy is saved before a post or page changes, so content edits can be undone, and every action is logged. We still recommend keeping a recent backup, as you would with any tool that changes your site.
 
-= What data is sent to your servers? =
+= What information is sent to Genwave? =
 
-When you use the AI Agent, relevant site data (post content, product info, etc.) is sent to our AI servers for processing. All data is sent over encrypted HTTPS connections. We never store or share your content.
+Only what is needed for the task you ask for, such as the content of the page or product you are working on. It is sent over an encrypted connection. See our [privacy policy](https://genwave.ai/privacy/) for details.
 
-= Is the plugin compatible with multisite? =
+= Does it work on multisite? =
 
-Yes, the plugin works on multisite installations. Each site needs its own Genwave account connection.
+Yes. Each site in the network connects to a Genwave account on its own.
 
-= Where can I get support? =
+= How do I get help? =
 
 * Support center: [app.genwave.ai/support](https://app.genwave.ai/support)
 * Email: support@genwave.ai
-* Website: [genwave.ai](https://genwave.ai/)
-* WordPress.org support forum
+* The WordPress.org support forum for this plugin
 
 == Screenshots ==
 
-1. Connect your Genwave account with one click
-2. Chat with the AI Agent to manage your WordPress site
-3. Build custom plugins through natural conversation
-4. Track your credit balance and usage
+1. Connecting your site to your Genwave account
+2. Managing your WordPress site in the agent chat
+3. Building a custom plugin by describing it
+4. Your credit balance and usage
 
 == Changelog ==
 
@@ -373,14 +253,20 @@ Yes, the plugin works on multisite installations. Each site needs its own Genwav
 
 == Upgrade Notice ==
 
+= 1.1.6 =
+Tested with WordPress 7.1.
+
+= 1.1.5 =
+If the Genwave Agent plugin is missing or inactive, the Account page now tells you and offers a download or activate button. Account, billing and support buttons open the right pages.
+
 = 1.1.1 =
 Security hardening and a refreshed, modernized admin interface. Recommended for all users.
 
 = 1.1.0 =
-New "Plugins" admin page — install GenWave Agent, Pro, Chatbot, SEO, Elements, and Site Transfer from inside WordPress with one click. Tested up to WordPress 7.0.
+A new Plugins page in the Genwave menu lets you install other Genwave plugins from inside WordPress. Tested with WordPress 7.0.
 
 = 1.0.5 =
-Rebranding update: Plugin now focuses on AI Agent capabilities — build plugins, fix errors, manage WooCommerce & more through conversation.
+The plugin now focuses on the Genwave Agent: build plugins, fix errors and manage WooCommerce through conversation.
 
 = 1.0.4 =
 Minor update: Code cleanup and optimization.
@@ -389,28 +275,22 @@ Minor update: Code cleanup and optimization.
 Major update: New Dashboard & Generate pages, custom instructions, multi-language support, modern UI redesign.
 
 = 1.0.2 =
-Documentation improvements - no code changes.
+Documentation improvements. No code changes.
 
 = 1.0.0 =
-Initial release - connect your WordPress site to the Genwave AI platform.
+First release. Connect your WordPress site to Genwave.
 
 == Third Party Services ==
 
-This plugin relies on the following external services:
+This plugin connects to the following Genwave services. It sends data only when you take an action, and always over an encrypted (HTTPS) connection.
 
-**Genwave Account API** ([account.genwave.ai](https://account.genwave.ai))
-* Used for: License verification, user authentication, account management
-* [Privacy Policy](https://genwave.ai/privacy/)
-* [Terms of Service](https://genwave.ai/terms/)
+**Genwave app** ([app.genwave.ai](https://app.genwave.ai))
+* Used to connect your site to your Genwave account and verify your license.
 
-**Genwave AI API** ([api.genwave.ai](https://api.genwave.ai))
-* Used for: AI content generation, AI Agent operations, credit balance management
-* [Privacy Policy](https://genwave.ai/privacy/)
-* [Terms of Service](https://genwave.ai/terms/)
+**Genwave account service** ([account.genwave.ai](https://account.genwave.ai))
+* Used for your credit balance, account details and the list of Genwave plugins.
 
-**Genwave Agent API** ([agent.genwave.ai](https://agent.genwave.ai))
-* Used for: AI Agent conversation, WordPress action execution, plugin building
-* [Privacy Policy](https://genwave.ai/privacy/)
-* [Terms of Service](https://genwave.ai/terms/)
+**Genwave Agent service** ([agent.genwave.ai](https://agent.genwave.ai))
+* Used to generate content and to carry out the tasks you ask the agent for.
 
-All data transmitted to these services is sent over encrypted HTTPS (TLS) connections.
+All three services are run by Genwave. [Privacy Policy](https://genwave.ai/privacy/) · [Terms of Service](https://genwave.ai/terms/)
