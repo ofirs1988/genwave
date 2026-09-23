@@ -7,6 +7,15 @@ changelog for WordPress.org lives in `readme.txt` and is written at release time
 ## Unreleased
 
 ### Fixed
+- Sites on WordPress 7.1 saw "This plugin has not been tested with your current
+  version of WordPress": readme.txt said `Tested up to: 7.0`. It now says 7.1,
+  and the WordPress.org release workflow sets it to the current WordPress
+  release on every run, so it cannot fall behind again.
+- The release workflow passes the changelog through the environment. Pasted
+  into the script, a double quote in it ended the string and ran the rest as a
+  shell command; 1.1.5's first run failed that way before deploying anything.
+
+### Fixed
 - "Open the Agent" no longer lands on "Sorry, you are not allowed to access this
   page". The agent chat is the separate GenWave Agent plugin, and the button
   linked to its admin page even on sites where it was not installed - an

@@ -61,6 +61,11 @@ jobs:
           echo "New version: $NEW"
 
       - name: Apply version + changelog
+        env:
+          # Through the environment, not pasted into the script: a changelog
+          # with a double quote in it ended the string and ran the rest as a
+          # command (1.1.5's first run died on 'the: command not found').
+          CL: ${{ inputs.changelog }}
         run: |
           NEW="${{ steps.bump.outputs.new }}"
           # Plugin header + constant
@@ -68,7 +73,18 @@ jobs:
           sed -i "s/define( 'GEN_WAVE_VERSION', '[^']*' )/define( 'GEN_WAVE_VERSION', '$NEW' )/" gen-wave.php
           # readme: stable tag + prepend a changelog entry
           sed -i "s/^Stable tag: .*/Stable tag: $NEW/" readme.txt
-          CL="${{ inputs.changelog }}"
+          # "Tested up to" = the WordPress release that is current right now.
+          # A stale value makes WordPress warn every site on a newer release
+          # that the plugin "has not been tested with your current version"
+          # (1.1.5 shipped saying 7.0 while sites ran 7.1.2). Left as-is if the
+          # lookup fails.
+          WP_LATEST=$(curl -fsS --max-time 20 https://api.wordpress.org/core/version-check/1.7/ \
+            | python3 -c "import sys,json; v=json.load(sys.stdin)['offers'][0]['version']; print('.'.join(v.split('.')[:2]))" || true)
+          if echo "$WP_LATEST" | grep -Eq '^[0-9]+\.[0-9]+$'; then
+            sed -i "s/^Tested up to: .*/Tested up to: $WP_LATEST/" readme.txt
+          else
+            echo "::warning::Could not read the current WordPress version; Tested up to left unchanged."
+          fi
           awk -v v="$NEW" -v cl="$CL" '
             /^== Changelog ==/ && !done { print; print ""; print "= " v " ="; print "* " cl; done=1; next }
             { print }
@@ -77,6 +93,7 @@ jobs:
           grep -m1 "Version:" gen-wave.php
           grep "GEN_WAVE_VERSION" gen-wave.php
           grep -m1 "Stable tag:" readme.txt
+          grep -m1 "Tested up to:" readme.txt
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
