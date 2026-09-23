@@ -1158,6 +1158,8 @@
 .gw-dash-agent__cta:hover { transform: translateY(-1px); color: #0e7490; }
 .gw-dash-agent__link { color: #fff; font-size: 13.5px; font-weight: 600; text-decoration: none; opacity: 0.9; }
 .gw-dash-agent__link:hover { color: #fff; opacity: 1; text-decoration: underline; }
+.gw-dash-agent__note { margin: 16px 0 0; max-width: 560px; color: #fff; font-size: 13px; line-height: 1.55; opacity: 0.92; }
+.gw-dash-agent__note a { color: #fff; font-weight: 700; text-decoration: underline; }
 
 @media (max-width: 768px) {
     .gw-dash-agent { padding: 24px 20px; }

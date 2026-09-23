@@ -4,6 +4,21 @@ Developer-facing changelog for the GenWave (free / anchor) plugin. The customer
 changelog for WordPress.org lives in `readme.txt` and is written at release time
 (security items are described there generically, not by vulnerability).
 
+## Unreleased
+
+### Fixed
+- "Open the Agent" no longer lands on "Sorry, you are not allowed to access this
+  page". The agent chat is the separate GenWave Agent plugin, and the button
+  linked to its admin page even on sites where it was not installed - an
+  administrator reported it from a live site after reinstalling everything. A new
+  `Core\AgentPlugin` reads where that plugin stands, and both the Dashboard and
+  the Account page follow it: **Open the Agent** when it is active, **Activate
+  GenWave Agent** (nonced activation link) when it is installed but inactive, and
+  **Download GenWave Agent** plus an upload link and a short explanation when it
+  is missing. The Account page's "Getting started" step changes with it.
+- The Dashboard link no longer hardcodes `/wp-admin/`, which broke on sites
+  installed in a subdirectory; it comes from `admin_url()`.
+
 ## 1.1.1 - 2026-08-03
 
 ### UI, copy & assets

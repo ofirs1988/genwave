@@ -1,394 +1,710 @@
-# Copyright (C) 2025 Gen Wave
-# This file is distributed under the same license as the Gen Wave plugin.
+# Copyright (C) 2026 Genwave.ai
+# This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gen Wave 1.1.0\n"
-"Report-Msgid-Bugs-To: https://genwave.ai\n"
-"POT-Creation-Date: 2025-11-01 00:00+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Project-Id-Version: Genwave - AI Agent 1.1.4\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/gen-wave\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"X-Generator: Claude Code\n"
+"POT-Creation-Date: 2026-09-23T22:36:06+02:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: gen-wave\n"
 
-#: genwave.php:29
+#. Plugin Name of the plugin
+#: gen-wave.php
 msgid "Genwave - AI Agent"
 msgstr ""
 
-#: src/MetaBox.php:62
-msgid "Product"
+#. Description of the plugin
+#: gen-wave.php
+msgid "The #1 AI Agent for your website. Build plugins, fix errors, create pages, manage WooCommerce & optimize SEO — all through natural conversation. 250+ actions, 7-layer security, 48+ languages."
 msgstr ""
 
-#: src/MetaBox.php:62
-msgid "Post"
+#. Author of the plugin
+#: gen-wave.php
+msgid "Genwave.ai"
 msgstr ""
 
-#: src/MetaBox.php:76
-msgid "Connection Required"
+#. Author URI of the plugin
+#: gen-wave.php
+msgid "https://genwave.ai"
 msgstr ""
 
-#: src/MetaBox.php:78
-msgid "Please connect your Genwave account to start using AI features."
+#: src/AjaxManager.php:983
+#: src/Handlers/GenerationHandler.php:351
+#: src/Handlers/PollingHandler.php:41
+#: src/Handlers/ProductHandler.php:34
+#: src/Handlers/ProductHandler.php:114
+#: src/Handlers/ProductHandler.php:242
+msgid "Security verification failed"
 msgstr ""
 
-#: src/MetaBox.php:84
-msgid "Connect Account"
+#: src/Controllers/VerifyLoginController.php:26
+#: src/Core/AgentAuth.php:44
+msgid "Enter your license key first."
 msgstr ""
 
-#: src/MetaBox.php:101
-msgid "Generate AI Content"
+#: src/Core/AgentAuth.php:64
+msgid "Connection failed."
 msgstr ""
 
-#: src/MetaBox.php:109
-msgid "Show Options"
+#: src/Core/AgentAuth.php:81
+msgid "Your site is connected."
 msgstr ""
 
-#: src/MetaBox.php:117
-#, php-format
-msgid "Use Genwave to automatically generate content for this %s."
+#: src/Core/AgentAuth.php:107
+msgid "Your site has been disconnected."
 msgstr ""
 
-#: src/MetaBox.php:125
-msgid "Language:"
+#: src/Core/AgentAuth.php:129
+msgid "Genwave needs to reconnect your site to keep working securely."
 msgstr ""
 
-#: src/MetaBox.php:128
-msgid "Loading languages..."
+#: src/Core/AgentAuth.php:130
+msgid "Reconnect now"
 msgstr ""
 
-#: src/MetaBox.php:136
-msgid "Content Length:"
+#: src/Core/AiRestApi.php:104
+#: src/Core/AiRestApi.php:121
+msgid "You do not have permission to access this endpoint"
 msgstr ""
 
-#: src/MetaBox.php:139
-msgid "Short (~500 characters)"
+#: src/Core/AiRestApi.php:231
+msgid "Response data saved successfully"
 msgstr ""
 
-#: src/MetaBox.php:140
-msgid "Medium (~1000 characters)"
+#: src/Core/AiRestApi.php:233
+msgid "Invalid JSON in response"
 msgstr ""
 
-#: src/MetaBox.php:148
-msgid "Instructions for AI:"
+#: src/Core/AiRestApi.php:236
+msgid "Missing response key in data"
 msgstr ""
 
-#: src/MetaBox.php:154
-msgid "Enter instructions for the AI to generate content... (max 1000 characters)"
+#: src/Core/AiRestApi.php:240
+msgid "No data received"
 msgstr ""
 
-#: src/MetaBox.php:157
-msgid "characters"
+#: src/Core/AiRestApi.php:456
+msgid "Plugin is not configured with a license key"
 msgstr ""
 
-#: src/MetaBox.php:165
-msgid "Generation Method:"
+#: src/Core/AiRestApi.php:462
+#: src/Core/AiRestApi.php:482
+msgid "Genwave plugin is active"
 msgstr ""
 
-#: src/MetaBox.php:174
-msgid "Generate Title"
+#: src/Core/AiRestApi.php:473
+msgid "Verification token is required"
 msgstr ""
 
-#: src/MetaBox.php:178
-msgid "Create product title using AI"
-msgstr ""
-
-#: src/MetaBox.php:179
-msgid "Create post title using AI"
-msgstr ""
-
-#: src/MetaBox.php:192
-msgid "Generate Short Description"
-msgstr ""
-
-#: src/MetaBox.php:194
-msgid "Create product short description using AI"
-msgstr ""
-
-#: src/MetaBox.php:205
-msgid "Generate Description"
-msgstr ""
-
-#: src/MetaBox.php:209
-msgid "Create full product description using AI"
-msgstr ""
-
-#: src/MetaBox.php:210
-msgid "Create full post content using AI"
-msgstr ""
-
-#: src/MetaBox.php:226
-msgid "Note:"
-msgstr ""
-
-#: src/MetaBox.php:227
-#, php-format
-msgid "For the full AI Agent — build plugins, fix errors, manage WooCommerce, SEO & more through conversation — install %s."
-msgstr ""
-
-#: src/MetaBox.php:229
-msgid "Genwave Agent"
-msgstr ""
-
-#: src/MetaBox.php:242
-msgid "Instructions Required"
-msgstr ""
-
-#: src/MetaBox.php:250
-msgid "To generate"
-msgstr ""
-
-#: src/MetaBox.php:250
-msgid "content"
-msgstr ""
-
-#: src/MetaBox.php:250
-msgid "please provide instructions for the AI."
-msgstr ""
-
-#: src/MetaBox.php:256
-msgid "Examples:"
-msgstr ""
-
-#: src/MetaBox.php:259
-msgid "\"Write a catchy title about sustainable gardening tips\""
-msgstr ""
-
-#: src/MetaBox.php:260
-msgid "\"Create a professional description for a WordPress development service\""
-msgstr ""
-
-#: src/MetaBox.php:261
-msgid "\"Generate an engaging product description for organic coffee beans\""
-msgstr ""
-
-#: src/MetaBox.php:262
-msgid "\"Write content about the benefits of meditation for beginners\""
-msgstr ""
-
-#: src/MetaBox.php:267
-msgid "Tip:"
-msgstr ""
-
-#: src/MetaBox.php:267
-msgid "The more specific your instructions, the better the AI-generated content will be."
-msgstr ""
-
-#: src/MetaBox.php:274
-msgid "Got it!"
-msgstr ""
-
-#: src/MetaBox.php:290
-msgid "Generated Content"
-msgstr ""
-
-#: src/MetaBox.php:300
-msgid "Input Tokens"
-msgstr ""
-
-#: src/MetaBox.php:304
-msgid "Output Tokens"
-msgstr ""
-
-#: src/MetaBox.php:308
-msgid "Total Tokens"
-msgstr ""
-
-#: src/MetaBox.php:312
-msgid "Token Cost"
-msgstr ""
-
-#: src/MetaBox.php:321
-msgid "Generated Content:"
-msgstr ""
-
-#: src/MetaBox.php:324
-msgid "Loading..."
-msgstr ""
-
-#: src/MetaBox.php:331
-msgid "Cancel"
-msgstr ""
-
-#: src/MetaBox.php:334
-msgid "Update Post"
-msgstr ""
-
-#: views/settings.php:34
-msgid "Gen Wave Plugin Settings"
-msgstr ""
-
-#: views/settings.php:48
-msgid "License Key"
-msgstr ""
-
-#: views/settings.php:52
-msgid "Loading..."
-msgstr ""
-
-#: views/settings.php:62
-msgid "Login has been verified"
-msgstr ""
-
-#: views/settings.php:76
-msgid "Successfully connected"
-msgstr ""
-
-#: views/settings.php:90
-msgid "Refresh Tokens"
-msgstr ""
-
-#: views/settings.php:99
-msgid "Disconnect"
-msgstr ""
-
-#: views/settings.php:112
-msgid "Update License"
-msgstr ""
-
-#: views/settings.php:112
-msgid "Save License"
-msgstr ""
-
-#: src/Handlers/GenerationHandler.php:34
+#: src/Handlers/GenerationHandler.php:42
 msgid "Security verification failed. Please refresh the page and try again."
 msgstr ""
 
-#: src/Handlers/GenerationHandler.php:44
+#: src/Handlers/GenerationHandler.php:54
 msgid "Valid Post ID is required"
 msgstr ""
 
-#: src/Handlers/GenerationHandler.php:53
+#. translators: %s: comma-separated list of allowed generation methods
+#: src/Handlers/GenerationHandler.php:67
 #, php-format
 msgid "Invalid generation method. Allowed: %s"
 msgstr ""
 
-#: src/Handlers/GenerationHandler.php:60
+#: src/Handlers/GenerationHandler.php:74
 msgid "Invalid language parameter"
 msgstr ""
 
-#: src/Handlers/GenerationHandler.php:68
+#: src/Handlers/GenerationHandler.php:85
 msgid "Content length must be between 100 and 10000 characters"
 msgstr ""
 
-#: src/Handlers/GenerationHandler.php:75
+#: src/Handlers/GenerationHandler.php:92
 msgid "Instructions cannot exceed 1000 characters"
 msgstr ""
 
-#: src/Handlers/GenerationHandler.php:82
-msgid "Post not found"
-msgstr ""
-
-#: src/Handlers/GenerationHandler.php:89
+#: src/Handlers/GenerationHandler.php:108
 msgid "You do not have permission to edit this post"
 msgstr ""
 
-#: src/Handlers/GenerationHandler.php:96
+#: src/Handlers/GenerationHandler.php:115
 msgid "Invalid post type"
 msgstr ""
 
-#: src/Handlers/GenerationHandler.php:145
+#: src/Handlers/GenerationHandler.php:164
 msgid "Failed to generate job ID. Please try again."
 msgstr ""
 
-#: src/Handlers/GenerationHandler.php:166
+#: src/Handlers/GenerationHandler.php:187
 msgid "Failed to create generation request"
 msgstr ""
 
-#: src/Handlers/GenerationHandler.php:190
+#: src/Handlers/GenerationHandler.php:216
 msgid "Failed to create post request"
 msgstr ""
 
-#: src/Handlers/GenerationHandler.php:219
-msgid "Content generated successfully"
-msgstr ""
-
-#: src/Handlers/GenerationHandler.php:229
+#. translators: %s: error message
+#. translators: %s: error message from the exception
+#: src/Handlers/GenerationHandler.php:293
+#: src/Handlers/GenerationHandler.php:332
 #, php-format
 msgid "Error generating content: %s"
 msgstr ""
 
-#: src/Handlers/GenerationHandler.php:245
-msgid "Security verification failed"
+#: src/Handlers/GenerationHandler.php:303
+msgid "Generation failed"
 msgstr ""
 
-#: src/Handlers/GenerationHandler.php:254
+#: src/Handlers/GenerationHandler.php:360
 msgid "Valid Post request ID is required"
 msgstr ""
 
-#: src/Handlers/GenerationHandler.php:268
-msgid "Request not found"
-msgstr ""
-
-#: src/Handlers/GenerationHandler.php:275
+#: src/Handlers/GenerationHandler.php:384
 msgid "You do not have permission to update this content"
 msgstr ""
 
-#: src/Handlers/GenerationHandler.php:294
+#: src/Handlers/GenerationHandler.php:406
 msgid "Post marked as converted"
 msgstr ""
 
-#: src/Handlers/GenerationHandler.php:297
+#: src/Handlers/GenerationHandler.php:412
 msgid "Failed to update conversion status"
 msgstr ""
 
-#: src/Handlers/GenerationHandler.php:302
+#. translators: %s: error message
+#: src/Handlers/GenerationHandler.php:421
 #, php-format
 msgid "Error: %s"
 msgstr ""
 
-#: src/Handlers/ProductHandler.php:29
-msgid "Insufficient permissions"
+#: src/Handlers/PluginsHandler.php:48
+msgid "Failed to fetch plugin list"
 msgstr ""
 
-#: src/Handlers/PollingHandler.php:38
-msgid "Security verification failed"
+#: src/Handlers/PluginsHandler.php:79
+msgid "Missing plugin slug"
 msgstr ""
 
-#: src/Handlers/PollingHandler.php:45
+#: src/Handlers/PluginsHandler.php:87
+msgid "Could not get download URL"
+msgstr ""
+
+#: src/Handlers/PluginsHandler.php:100
+msgid "Plugin not available for download"
+msgstr ""
+
+#: src/Handlers/PluginsHandler.php:111
+msgid "Plugin installed and activated"
+msgstr ""
+
+#: src/Handlers/PluginsHandler.php:124
+msgid "Security check failed"
+msgstr ""
+
+#: src/Handlers/PluginsHandler.php:129
+msgid "You do not have permission to install plugins"
+msgstr ""
+
+#: src/Handlers/PluginsHandler.php:157
+msgid "Connect your Genwave account first"
+msgstr ""
+
+#. translators: %d is the HTTP status code returned by the GenWave dashboard.
+#: src/Handlers/PluginsHandler.php:188
+#, php-format
+msgid "Dashboard returned HTTP %d"
+msgstr ""
+
+#: src/Handlers/PluginsHandler.php:291
+msgid "Install failed"
+msgstr ""
+
+#: src/Handlers/PluginsHandler.php:298
+msgid "Installed but plugin folder not found"
+msgstr ""
+
+#: src/Handlers/PollingHandler.php:57
 msgid "No response data provided"
 msgstr ""
 
-#: src/Handlers/PollingHandler.php:54
+#: src/Handlers/PollingHandler.php:69
 msgid "Response data exceeds maximum size"
 msgstr ""
 
-#: src/Handlers/PollingHandler.php:63
+#. translators: %s: JSON error message
+#: src/Handlers/PollingHandler.php:82
 #, php-format
 msgid "Invalid JSON format: %s"
 msgstr ""
 
-#: src/Handlers/PollingHandler.php:72
+#: src/Handlers/PollingHandler.php:94
 msgid "Response data must be an array"
 msgstr ""
 
-#: src/Handlers/PollingHandler.php:79
+#: src/Handlers/PollingHandler.php:104
 msgid "Response data is empty"
 msgstr ""
 
-#: src/Handlers/PollingHandler.php:86
+#: src/Handlers/PollingHandler.php:114
 msgid "Cannot process more than 100 posts at once"
 msgstr ""
 
-#: src/Global/AiRestApi.php:64
-msgid "You do not have permission to access this endpoint"
+#: src/Handlers/ProductHandler.php:40
+#: src/Handlers/ProductHandler.php:120
+msgid "Insufficient permissions"
 msgstr ""
 
-#: src/Global/AiRestApi.php:160
-msgid "Response data saved successfully"
+#: src/MetaBox.php:33
+#: src/MetaBox.php:44
+msgid "Genwave - AI Generate"
 msgstr ""
 
-#: src/Global/AiRestApi.php:162
-msgid "Invalid JSON in response"
+#: src/MetaBox.php:66
+msgid "Product"
 msgstr ""
 
-#: src/Global/AiRestApi.php:165
-msgid "Missing response key in data"
+#: src/MetaBox.php:66
+msgid "Post"
 msgstr ""
 
-#: src/Global/AiRestApi.php:169
-msgid "No data received"
+#: src/MetaBox.php:80
+msgid "Connection Required"
+msgstr ""
+
+#: src/MetaBox.php:82
+msgid "Please connect your Genwave account to start using AI features."
+msgstr ""
+
+#: src/MetaBox.php:88
+msgid "Connect Account"
+msgstr ""
+
+#: src/MetaBox.php:105
+msgid "Generate AI Content"
+msgstr ""
+
+#: src/MetaBox.php:113
+msgid "Show Options"
+msgstr ""
+
+#. translators: %s: post type name (e.g., "post", "product")
+#: src/MetaBox.php:123
+#, php-format
+msgid "Use Genwave to automatically generate content for this %s."
+msgstr ""
+
+#: src/MetaBox.php:132
+msgid "Language:"
+msgstr ""
+
+#: src/MetaBox.php:135
+msgid "Loading languages..."
+msgstr ""
+
+#: src/MetaBox.php:143
+msgid "Content Length:"
+msgstr ""
+
+#: src/MetaBox.php:146
+msgid "Short (~500 characters)"
+msgstr ""
+
+#: src/MetaBox.php:147
+msgid "Medium (~1000 characters)"
+msgstr ""
+
+#: src/MetaBox.php:155
+msgid "Instructions for AI:"
+msgstr ""
+
+#: src/MetaBox.php:161
+msgid "Enter instructions for the AI to generate content... (max 1000 characters)"
+msgstr ""
+
+#: src/MetaBox.php:164
+msgid "characters"
+msgstr ""
+
+#: src/MetaBox.php:172
+msgid "Generation Method:"
+msgstr ""
+
+#: src/MetaBox.php:181
+msgid "Generate Title"
+msgstr ""
+
+#: src/MetaBox.php:185
+msgid "Create product title using AI"
+msgstr ""
+
+#: src/MetaBox.php:186
+msgid "Create post title using AI"
+msgstr ""
+
+#: src/MetaBox.php:199
+msgid "Generate Short Description"
+msgstr ""
+
+#: src/MetaBox.php:201
+msgid "Create product short description using AI"
+msgstr ""
+
+#: src/MetaBox.php:212
+msgid "Generate Description"
+msgstr ""
+
+#: src/MetaBox.php:216
+msgid "Create full product description using AI"
+msgstr ""
+
+#: src/MetaBox.php:217
+msgid "Create full post content using AI"
+msgstr ""
+
+#: src/MetaBox.php:229
+msgid "Generate Content"
+msgstr ""
+
+#: src/MetaBox.php:238
+msgid "Note:"
+msgstr ""
+
+#. translators: %s: link to Genwave Agent
+#: src/MetaBox.php:241
+#, php-format
+msgid "For the full AI Agent — build plugins, fix errors, manage WooCommerce, SEO & more through conversation — install %s."
+msgstr ""
+
+#: src/MetaBox.php:242
+msgid "Genwave Agent"
+msgstr ""
+
+#: src/MetaBox.php:255
+msgid "Instructions Required"
+msgstr ""
+
+#: src/MetaBox.php:263
+msgid "To generate"
+msgstr ""
+
+#: src/MetaBox.php:263
+msgid "content"
+msgstr ""
+
+#: src/MetaBox.php:263
+msgid "please provide instructions for the AI."
+msgstr ""
+
+#: src/MetaBox.php:269
+msgid "Examples:"
+msgstr ""
+
+#: src/MetaBox.php:272
+msgid "\"Write a catchy title about sustainable gardening tips\""
+msgstr ""
+
+#: src/MetaBox.php:273
+msgid "\"Create a professional description for a WordPress development service\""
+msgstr ""
+
+#: src/MetaBox.php:274
+msgid "\"Generate an engaging product description for organic coffee beans\""
+msgstr ""
+
+#: src/MetaBox.php:275
+msgid "\"Write content about the benefits of meditation for beginners\""
+msgstr ""
+
+#: src/MetaBox.php:280
+msgid "Tip:"
+msgstr ""
+
+#: src/MetaBox.php:280
+msgid "The more specific your instructions, the better the AI-generated content will be."
+msgstr ""
+
+#: src/MetaBox.php:287
+msgid "Got it!"
+msgstr ""
+
+#: src/MetaBox.php:303
+msgid "Generated Content"
+msgstr ""
+
+#: src/MetaBox.php:313
+msgid "Input Tokens"
+msgstr ""
+
+#: src/MetaBox.php:317
+msgid "Output Tokens"
+msgstr ""
+
+#: src/MetaBox.php:321
+msgid "Total Tokens"
+msgstr ""
+
+#: src/MetaBox.php:325
+msgid "Credit Cost"
+msgstr ""
+
+#: src/MetaBox.php:334
+msgid "Generated Content:"
+msgstr ""
+
+#: src/MetaBox.php:337
+msgid "Loading..."
+msgstr ""
+
+#: src/MetaBox.php:346
+msgid "Cancel"
+msgstr ""
+
+#: src/MetaBox.php:350
+msgid "Update Post"
+msgstr ""
+
+#: src/Pages/Plugins.php:25
+msgid "Genwave Plugins"
+msgstr ""
+
+#: src/Pages/Plugins.php:26
+msgid "Plugins"
+msgstr ""
+
+#: src/Pages/Settings.php:48
+msgid "You must enter a license key to use Genwave."
+msgstr ""
+
+#: views/settings.php:35
+#: views/settings.php:241
+msgid "GenWave"
+msgstr ""
+
+#: views/settings.php:36
+msgid "Account"
+msgstr ""
+
+#: views/settings.php:40
+msgid "Connected"
+msgstr ""
+
+#: views/settings.php:42
+msgid "License Expired"
+msgstr ""
+
+#: views/settings.php:44
+msgid "Not Connected"
+msgstr ""
+
+#: views/settings.php:63
+msgid "License expired"
+msgstr ""
+
+#: views/settings.php:64
+msgid "Renew now to keep using the AI Agent."
+msgstr ""
+
+#: views/settings.php:66
+msgid "Renew License"
+msgstr ""
+
+#: views/settings.php:80
+msgid "Your account is connected. Manage your site through the GenWave Agent chat."
+msgstr ""
+
+#: views/settings.php:82
+msgid "Open the Agent"
+msgstr ""
+
+#: views/settings.php:90
+msgid "One more step: install GenWave Agent"
+msgstr ""
+
+#: views/settings.php:91
+msgid "The agent chat is a separate plugin. Download it, upload it under Plugins > Add New > Upload Plugin, and activate it. Keep this plugin installed - the agent uses its connection."
+msgstr ""
+
+#: views/settings.php:93
+msgid "Download GenWave Agent"
+msgstr ""
+
+#: views/settings.php:95
+msgid "Upload plugin"
+msgstr ""
+
+#: views/settings.php:104
+msgid "GenWave Agent is installed but not active"
+msgstr ""
+
+#: views/settings.php:105
+msgid "Activate it to open the agent chat."
+msgstr ""
+
+#: views/settings.php:107
+msgid "Activate GenWave Agent"
+msgstr ""
+
+#: views/settings.php:117
+msgid "Credit balance"
+msgstr ""
+
+#: views/settings.php:118
+msgid "Refresh balance"
+msgstr ""
+
+#: views/settings.php:123
+msgid "Buy more credits"
+msgstr ""
+
+#: views/settings.php:128
+msgid "Account details"
+msgstr ""
+
+#: views/settings.php:131
+msgid "License key"
+msgstr ""
+
+#: views/settings.php:135
+msgid "Status"
+msgstr ""
+
+#: views/settings.php:138
+msgid "Expired"
+msgstr ""
+
+#: views/settings.php:140
+msgid "Active"
+msgstr ""
+
+#: views/settings.php:146
+msgid "Manage account"
+msgstr ""
+
+#: views/settings.php:147
+msgid "Disconnect"
+msgstr ""
+
+#: views/settings.php:154
+msgid "Getting started"
+msgstr ""
+
+#: views/settings.php:157
+msgid "Open the GenWave Agent"
+msgstr ""
+
+#: views/settings.php:157
+msgid "Find it in your WordPress admin menu."
+msgstr ""
+
+#: views/settings.php:159
+msgid "Activate the GenWave Agent plugin"
+msgstr ""
+
+#: views/settings.php:159
+msgid "It is installed but not active - see the note above."
+msgstr ""
+
+#: views/settings.php:161
+msgid "Install the GenWave Agent plugin"
+msgstr ""
+
+#: views/settings.php:161
+msgid "The agent chat is a separate plugin - see the note above."
+msgstr ""
+
+#: views/settings.php:163
+msgid "Describe what you need"
+msgstr ""
+
+#: views/settings.php:163
+msgid "Plain language — build pages, manage products, fix errors."
+msgstr ""
+
+#: views/settings.php:164
+msgid "Review &amp; approve"
+msgstr ""
+
+#: views/settings.php:164
+msgid "You see a preview before anything changes."
+msgstr ""
+
+#: views/settings.php:172
+msgid "Connect your GenWave account"
+msgstr ""
+
+#: views/settings.php:173
+msgid "Add the AI Agent to your site to build pages, fix errors, and manage everything through conversation."
+msgstr ""
+
+#: views/settings.php:177
+msgid "Natural conversation"
+msgstr ""
+
+#: views/settings.php:177
+msgid "Run your whole site by talking to the AI."
+msgstr ""
+
+#: views/settings.php:178
+msgid "250+ actions"
+msgstr ""
+
+#: views/settings.php:178
+msgid "Pages, WooCommerce, plugins and error fixing."
+msgstr ""
+
+#: views/settings.php:179
+msgid "Safe by design"
+msgstr ""
+
+#: views/settings.php:179
+msgid "A preview before every change to your site."
+msgstr ""
+
+#: views/settings.php:183
+msgid "Quick setup"
+msgstr ""
+
+#: views/settings.php:194
+msgid "Enter your license key"
+msgstr ""
+
+#: views/settings.php:205
+msgid "Find your license key in your GenWave account."
+msgstr ""
+
+#: views/settings.php:207
+msgid "Save license key"
+msgstr ""
+
+#: views/settings.php:209
+msgid "Update key"
+msgstr ""
+
+#: views/settings.php:219
+msgid "Connect your account"
+msgstr ""
+
+#: views/settings.php:221
+msgid "You will be redirected to log in and authorize this site."
+msgstr ""
+
+#: views/settings.php:224
+msgid "Connect to GenWave"
+msgstr ""
+
+#: views/settings.php:232
+msgid "Don't have an account? Sign up free"
+msgstr ""
+
+#: views/settings.php:233
+msgid "Need help? Contact support"
+msgstr ""
+
+#: views/settings.php:242
+msgid "Support"
 msgstr ""

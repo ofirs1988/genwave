@@ -61,7 +61,15 @@ const Dashboard = () => {
         return Number(num).toLocaleString(undefined, { maximumFractionDigits: 2 });
     };
 
-    const agentUrl = '/wp-admin/admin.php?page=genwave-agent';
+    // The chat is a separate plugin. Linking to its page on a site without it
+    // got an administrator "Sorry, you are not allowed to access this page",
+    // so the button follows where the agent plugin actually stands.
+    const agent = window.genwaveFreeSettings?.agent || { state: 'missing', url: '', uploadUrl: '' };
+    const agentCta = {
+        active: 'Open the Agent',
+        inactive: 'Activate GenWave Agent',
+        missing: 'Download GenWave Agent',
+    }[agent.state] || 'Open the Agent';
 
     return (
         <div className="gw-page gw-dash">
@@ -110,8 +118,8 @@ const Dashboard = () => {
                     </div>
 
                     <div className="gw-dash-agent__actions">
-                        <a className="gw-dash-agent__cta" href={agentUrl}>
-                            Open the Agent <ArrowRightOutlined />
+                        <a className="gw-dash-agent__cta" href={agent.url}>
+                            {agentCta} <ArrowRightOutlined />
                         </a>
                         <a
                             className="gw-dash-agent__link"
@@ -122,6 +130,19 @@ const Dashboard = () => {
                             Learn more
                         </a>
                     </div>
+
+                    {agent.state === 'missing' && (
+                        <p className="gw-dash-agent__note">
+                            The agent chat is a separate plugin. Download it, then upload it under{' '}
+                            <a href={agent.uploadUrl}>Plugins &rarr; Add New &rarr; Upload Plugin</a> and activate it.
+                            Keep this plugin installed &mdash; the agent uses its connection.
+                        </p>
+                    )}
+                    {agent.state === 'inactive' && (
+                        <p className="gw-dash-agent__note">
+                            GenWave Agent is installed but not active. Activate it to open the chat.
+                        </p>
+                    )}
                 </div>
             </section>
         </div>

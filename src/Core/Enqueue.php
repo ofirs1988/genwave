@@ -281,6 +281,7 @@ class Enqueue {
                     'pluginsNonce'   => wp_create_nonce('genwave_plugins_nonce'),
                     'isPro'          => '0',
                     'hasWooCommerce' => class_exists('WooCommerce') ? '1' : '0',
+                    'agent'          => AgentPlugin::forScript(),
                 ]
             );
         }
