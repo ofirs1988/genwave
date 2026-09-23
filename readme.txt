@@ -181,8 +181,9 @@ This plugin communicates with Genwave services for authentication and AI operati
 1. Go to Plugins → Add New in your WordPress admin
 2. Search for "Genwave"
 3. Click "Install Now" and then "Activate"
-4. Go to Genwave in the admin menu
-5. Click "Connect Account" and sign in to your Genwave account
+4. Go to Genwave → Account in the admin menu
+5. Enter your license key (you'll find it in your [Genwave account](https://app.genwave.ai/)) and click "Connect to GenWave"
+6. Install the **Genwave Agent** plugin - the agent chat is a separate plugin that works together with this one. Download it from [genwave.ai/agent](https://genwave.ai/agent/), upload it under Plugins → Add New → Upload Plugin, and activate it. Keep this plugin installed: the agent uses its connection.
 
 **Option 2: Manual Installation**
 
@@ -190,13 +191,14 @@ This plugin communicates with Genwave services for authentication and AI operati
 2. Go to Plugins → Add New → Upload Plugin
 3. Upload the zip file and click "Install Now"
 4. Activate the plugin
-5. Go to Genwave and connect your account
+5. Go to Genwave → Account, enter your license key and click "Connect to GenWave"
+6. Install and activate the **Genwave Agent** plugin the same way (download it from [genwave.ai/agent](https://genwave.ai/agent/))
 
 **After Installation**
 
 Once connected, you can:
 * Generate content for any post or product using the AI generation button
-* Install the Genwave Agent for full AI-powered WordPress management
+* Open the agent chat (once Genwave Agent is installed) for full AI-powered WordPress management
 * View your credit balance in the Genwave dashboard
 * Start managing your site through natural conversation
 
@@ -210,9 +212,15 @@ No. We handle all the AI infrastructure for you, including access to GPT-4o, Cla
 
 The Genwave Agent is an AI-powered WordPress assistant that lets you perform any action on your site through natural conversation. Instead of clicking through menus and settings, just tell the Agent what you need — "build a booking plugin", "fix the PHP error", "create a landing page for my sale" — and it handles everything.
 
+It is a separate plugin that works together with this one: this plugin connects your site to your Genwave account, and Genwave Agent adds the chat. Download it from [genwave.ai/agent](https://genwave.ai/agent/) and install it under Plugins → Add New → Upload Plugin.
+
+= "Open the Agent" says I am not allowed to access the page =
+
+That means the Genwave Agent plugin is not installed or not active yet. Since version 1.1.5 the Genwave Account page shows a button to download or activate it. Install and activate Genwave Agent, keep this plugin installed, and the button opens the chat.
+
 = Is this plugin free? =
 
-Yes, the Genwave plugin is free and includes AI content generation for individual posts and products. For the full AI Agent with 250+ actions, plugin builder and error fixing, install [Genwave Agent](https://genwave.ai/).
+Yes, the Genwave plugin is free and includes AI content generation for individual posts and products. For the full AI Agent with 250+ actions, plugin builder and error fixing, install [Genwave Agent](https://genwave.ai/agent/).
 
 = What can the AI Agent do? =
 
@@ -228,7 +236,7 @@ The Agent supports 250+ WordPress actions including:
 
 = How does pricing work? =
 
-Genwave uses a flexible credit system. You get 10 free messages per day. Credits work across all your WordPress sites from a single dashboard. Check our [pricing page](https://genwave.ai/) for current rates.
+Genwave uses a flexible credit system. You get 10 free messages per day. Credits work across all your WordPress sites from a single dashboard. Check our [pricing page](https://genwave.ai/pricing/) for current rates.
 
 = What languages are supported? =
 
@@ -252,6 +260,7 @@ Yes, the plugin works on multisite installations. Each site needs its own Genwav
 
 = Where can I get support? =
 
+* Support center: [app.genwave.ai/support](https://app.genwave.ai/support)
 * Email: support@genwave.ai
 * Website: [genwave.ai](https://genwave.ai/)
 * WordPress.org support forum

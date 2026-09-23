@@ -7,6 +7,12 @@ changelog for WordPress.org lives in `readme.txt` and is written at release time
 ## Unreleased
 
 ### Fixed
+- readme.txt Installation and FAQ (the tabs in wp-admin's plugin details): the
+  steps now match the real connect flow (license key, "Connect to GenWave") and
+  say that Genwave Agent is a separate plugin, where to get it and to keep this
+  one installed - the step a customer got stuck on. New FAQ entry for "Open the
+  Agent says I am not allowed". Links point at genwave.ai/agent, /pricing and
+  app.genwave.ai/support instead of the home page.
 - Sites on WordPress 7.1 saw "This plugin has not been tested with your current
   version of WordPress": readme.txt said `Tested up to: 7.0`. It now says 7.1,
   and the WordPress.org release workflow sets it to the current WordPress
