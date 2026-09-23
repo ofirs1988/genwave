@@ -4,7 +4,7 @@ Tags: ai, ai-agent, chatbot, content-generation, ecommerce
 Requires at least: 5.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.1.6
+Stable tag: 1.1.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,9 @@ Yes. Each site in the network connects to a Genwave account on its own.
 4. Your credit balance and usage
 
 == Changelog ==
+
+= 1.1.7 =
+* Genwave Agent can now be installed in one click from Genwave > Plugins, including on recently connected sites. Clearer setup steps and FAQ.
 
 = 1.1.6 =
 * Compatibility: tested with WordPress 7.1.
