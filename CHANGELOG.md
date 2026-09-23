@@ -18,6 +18,16 @@ changelog for WordPress.org lives in `readme.txt` and is written at release time
 - In-plugin notes about installing Genwave Agent reworded without dashes.
 
 ### Fixed
+- Genwave → Plugins told sites connected the current way "Connect your Genwave
+  account first", because it still required the old token and uidd, which the
+  current connection never stores. It now works for any connected site, so the
+  agent really is one click away. It also installs only from Genwave's own
+  download hosts (cdn.genwave.ai, the dashboard host, downloads.wordpress.org),
+  whatever the list says.
+- When Genwave Agent is missing, the Account and Dashboard buttons now say
+  "Install GenWave Agent" and open that page, instead of handing over a zip
+  file to upload. Users who cannot install plugins still get the download link
+  and are asked to contact an administrator. readme Installation and FAQ follow.
 - readme.txt Installation and FAQ (the tabs in wp-admin's plugin details): the
   steps now match the real connect flow (license key, "Connect to GenWave") and
   say that Genwave Agent is a separate plugin, where to get it and to keep this
