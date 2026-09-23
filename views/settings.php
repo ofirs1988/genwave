@@ -164,7 +164,7 @@ $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
                         <?php else: ?>
                             <li><strong><?php esc_html_e('Install the GenWave Agent plugin', 'gen-wave'); ?></strong><span><?php esc_html_e('The agent chat is a separate plugin. See the note above.', 'gen-wave'); ?></span></li>
                         <?php endif; ?>
-                        <li><strong><?php esc_html_e('Describe what you need', 'gen-wave'); ?></strong><span><?php esc_html_e('Plain language — build pages, manage products, fix errors.', 'gen-wave'); ?></span></li>
+                        <li><strong><?php esc_html_e('Describe what you need', 'gen-wave'); ?></strong><span><?php esc_html_e('In plain language. Build pages, manage products, fix errors.', 'gen-wave'); ?></span></li>
                         <li><strong><?php esc_html_e('Review &amp; approve', 'gen-wave'); ?></strong><span><?php esc_html_e('You see a preview before anything changes.', 'gen-wave'); ?></span></li>
                     </ol>
                 </div>

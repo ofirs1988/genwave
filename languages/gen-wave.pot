@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-24T01:38:20+02:00\n"
+"POT-Creation-Date: 2026-09-24T01:38:59+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: gen-wave\n"
@@ -381,7 +381,7 @@ msgstr ""
 #. translators: %s: link to Genwave Agent
 #: src/MetaBox.php:241
 #, php-format
-msgid "For the full AI Agent — build plugins, fix errors, manage WooCommerce, SEO & more through conversation — install %s."
+msgid "To build pages, fix errors, manage WooCommerce and more by conversation, install %s."
 msgstr ""
 
 #: src/MetaBox.php:242
@@ -630,7 +630,7 @@ msgid "Describe what you need"
 msgstr ""
 
 #: views/settings.php:167
-msgid "Plain language — build pages, manage products, fix errors."
+msgid "In plain language. Build pages, manage products, fix errors."
 msgstr ""
 
 #: views/settings.php:168

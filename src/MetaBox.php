@@ -238,7 +238,7 @@ class MetaBox {
                     <strong><?php esc_html_e('Note:', 'gen-wave'); ?></strong> <?php
                     printf(
                         /* translators: %s: link to Genwave Agent */
-                        esc_html__('For the full AI Agent — build plugins, fix errors, manage WooCommerce, SEO & more through conversation — install %s.', 'gen-wave'),
+                        esc_html__('To build pages, fix errors, manage WooCommerce and more by conversation, install %s.', 'gen-wave'),
                         '<a href="' . esc_url(\GenWavePlugin\Core\Links::agentInfo()) . '" target="_blank" style="color: #856404; text-decoration: underline;">' . esc_html__('Genwave Agent', 'gen-wave') . '</a>'
                     ); ?>
                 </p>
