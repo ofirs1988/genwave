@@ -282,6 +282,7 @@ class Enqueue {
                     'isPro'          => '0',
                     'hasWooCommerce' => class_exists('WooCommerce') ? '1' : '0',
                     'agent'          => AgentPlugin::forScript(),
+                    'links'          => Links::forScript(),
                 ]
             );
         }

@@ -123,7 +123,7 @@ const Dashboard = () => {
                         </a>
                         <a
                             className="gw-dash-agent__link"
-                            href="https://genwave.ai/ai-agent"
+                            href={window.genwaveFreeSettings?.links?.agentInfo || 'https://genwave.ai/agent/'}
                             target="_blank"
                             rel="noopener noreferrer"
                         >

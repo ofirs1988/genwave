@@ -145,7 +145,7 @@ class IntegrationCallbackController
             if ($is_expired) {
                 ?>
                 <div class="notice notice-warning">
-                    <p><strong>Connected!</strong> However, your license has expired. <a href="<?php echo esc_url(GENWAVE_API_URL . '/billing'); ?>" target="_blank">Renew your license</a> to continue using all features.</p>
+                    <p><strong>Connected!</strong> However, your license has expired. <a href="<?php echo esc_url(\GenWavePlugin\Core\Links::billing()); ?>" target="_blank">Renew your license</a> to continue using all features.</p>
                 </div>
                 <?php
             } else {

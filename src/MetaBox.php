@@ -239,7 +239,7 @@ class MetaBox {
                     printf(
                         /* translators: %s: link to Genwave Agent */
                         esc_html__('For the full AI Agent — build plugins, fix errors, manage WooCommerce, SEO & more through conversation — install %s.', 'gen-wave'),
-                        '<a href="https://genwave.ai" target="_blank" style="color: #856404; text-decoration: underline;">' . esc_html__('Genwave Agent', 'gen-wave') . '</a>'
+                        '<a href="' . esc_url(\GenWavePlugin\Core\Links::agentInfo()) . '" target="_blank" style="color: #856404; text-decoration: underline;">' . esc_html__('Genwave Agent', 'gen-wave') . '</a>'
                     ); ?>
                 </p>
             </div>

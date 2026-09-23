@@ -18,7 +18,6 @@ if (!defined('ABSPATH')) {
 class AgentPlugin
 {
     const SLUG = 'genwave-agent';
-    const DOWNLOAD_URL = 'https://cdn.genwave.ai/plugins/genwave-agent-latest.zip';
 
     /** The agent's plugin file ("genwave-agent/genwave-agent.php"), or '' when absent. */
     public static function file(): string
@@ -73,7 +72,7 @@ class AgentPlugin
                 admin_url('plugins.php')
             );
         }
-        return self::DOWNLOAD_URL;
+        return Links::agentDownload();
     }
 
     /** State + link, for the React pages. */

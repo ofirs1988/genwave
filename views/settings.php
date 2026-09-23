@@ -63,7 +63,7 @@ $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
                             <strong><?php esc_html_e('License expired', 'gen-wave'); ?></strong>
                             <p><?php esc_html_e('Renew now to keep using the AI Agent.', 'gen-wave'); ?></p>
                             <div class="gw-note__actions gw-alert-buttons">
-                                <a href="<?php echo esc_url(GENWAVE_API_URL . '/user/billing'); ?>" target="_blank" class="gw-b gw-b--warn gw-b--sm"><?php esc_html_e('Renew License', 'gen-wave'); ?></a>
+                                <a href="<?php echo esc_url(\GenWavePlugin\Core\Links::billing()); ?>" target="_blank" class="gw-b gw-b--warn gw-b--sm"><?php esc_html_e('Renew License', 'gen-wave'); ?></a>
                             </div>
                         </div>
                     </div>
@@ -120,7 +120,7 @@ $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
                             </button>
                         </div>
                         <div class="gw-panel__value" id="credit-balance"><?php echo number_format(floor((float)$genwave_credits * 100) / 100, 2); ?></div>
-                        <a href="<?php echo esc_url(GENWAVE_API_URL . '/user/plans'); ?>" target="_blank" class="gw-b gw-b--soft gw-b--sm gw-b--block"><?php esc_html_e('Buy more credits', 'gen-wave'); ?></a>
+                        <a href="<?php echo esc_url(\GenWavePlugin\Core\Links::credits()); ?>" target="_blank" class="gw-b gw-b--soft gw-b--sm gw-b--block"><?php esc_html_e('Buy more credits', 'gen-wave'); ?></a>
                     </div>
 
                     <!-- Account details -->
@@ -143,7 +143,7 @@ $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
                             </div>
                         </dl>
                         <div class="gw-panel__foot gw-card-footer">
-                            <a href="<?php echo esc_url(GENWAVE_API_URL); ?>" target="_blank" class="gw-b gw-b--primary gw-b--sm"><?php esc_html_e('Manage account', 'gen-wave'); ?></a>
+                            <a href="<?php echo esc_url(\GenWavePlugin\Core\Links::account()); ?>" target="_blank" class="gw-b gw-b--primary gw-b--sm"><?php esc_html_e('Manage account', 'gen-wave'); ?></a>
                             <button type="button" id="disconnect_account" class="gw-b gw-b--danger gw-b--sm"><span class="gw-btn-text"><?php esc_html_e('Disconnect', 'gen-wave'); ?></span></button>
                         </div>
                     </div>
@@ -229,8 +229,8 @@ $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
                 </div>
 
                 <div class="gw-acct__help">
-                    <a href="<?php echo esc_url(GENWAVE_API_URL . '/register'); ?>" target="_blank"><?php esc_html_e("Don't have an account? Sign up free", 'gen-wave'); ?></a>
-                    <a href="<?php echo esc_url(GENWAVE_API_URL . '/support'); ?>" target="_blank"><?php esc_html_e('Need help? Contact support', 'gen-wave'); ?></a>
+                    <a href="<?php echo esc_url(\GenWavePlugin\Core\Links::register()); ?>" target="_blank"><?php esc_html_e("Don't have an account? Sign up free", 'gen-wave'); ?></a>
+                    <a href="<?php echo esc_url(\GenWavePlugin\Core\Links::support()); ?>" target="_blank"><?php esc_html_e('Need help? Contact support', 'gen-wave'); ?></a>
                 </div>
 
             <?php endif; ?>
@@ -239,7 +239,7 @@ $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
         <!-- Footer -->
         <footer class="gw-acct__foot">
             <span><?php esc_html_e('GenWave', 'gen-wave'); ?> · v<?php echo esc_html(defined('GEN_WAVE_VERSION') ? GEN_WAVE_VERSION : '1.0.0'); ?></span>
-            <a href="<?php echo esc_url(GENWAVE_API_URL . '/support'); ?>" target="_blank"><?php esc_html_e('Support', 'gen-wave'); ?></a>
+            <a href="<?php echo esc_url(\GenWavePlugin\Core\Links::support()); ?>" target="_blank"><?php esc_html_e('Support', 'gen-wave'); ?></a>
         </footer>
     </div>
 </section>

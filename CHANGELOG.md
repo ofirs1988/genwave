@@ -18,6 +18,16 @@ changelog for WordPress.org lives in `readme.txt` and is written at release time
   is missing. The Account page's "Getting started" step changes with it.
 - The Dashboard link no longer hardcodes `/wp-admin/`, which broke on sites
   installed in a subdirectory; it comes from `admin_url()`.
+- Every button that opens a GenWave page now reaches that page. They pointed at
+  account.genwave.ai, the old dashboard, which now sends everything to the app's
+  sign-in screen and drops the path: "Sign up free" opened a login form, and
+  Renew License, Buy more credits, Support and the Pro upgrade button all landed
+  on sign-in instead of their page. The Dashboard's "Learn more" was a 404. A new
+  `Core\Links` holds them all, pointing at app.genwave.ai (which returns a
+  signed-out visitor to the page they asked for after sign-in) and at
+  genwave.ai/agent; it follows `GENWAVE_PANEL_URL` like the connect flow. The
+  agent download goes through the app's tracked-download route, so downloads
+  from the plugin are counted with the others. API calls are unchanged.
 
 ## 1.1.1 - 2026-08-03
 
