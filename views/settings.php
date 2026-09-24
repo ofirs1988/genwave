@@ -32,7 +32,7 @@ $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
                     </svg>
                 </span>
                 <div>
-                    <span class="gw-acct__brand-name"><?php esc_html_e('GenWave', 'gen-wave'); ?></span>
+                    <span class="gw-acct__brand-name"><?php esc_html_e('Genwave', 'gen-wave'); ?></span>
                     <span class="gw-acct__brand-sub"><?php esc_html_e('Account', 'gen-wave'); ?></span>
                 </div>
             </div>
@@ -77,7 +77,7 @@ $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
                     <span class="gw-acct__confirm-icon">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                     </span>
-                    <?php esc_html_e('Your account is connected. Manage your site through the GenWave Agent chat.', 'gen-wave'); ?>
+                    <?php esc_html_e('Your account is connected. Manage your site through the Genwave Agent chat.', 'gen-wave'); ?>
                     <?php if ($genwave_agent_state === 'active'): ?>
                         <a href="<?php echo esc_url($genwave_agent_url); ?>" class="gw-b gw-b--primary gw-b--sm gw-acct__open"><?php esc_html_e('Open the Agent', 'gen-wave'); ?></a>
                     <?php endif; ?>
@@ -87,16 +87,16 @@ $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
                     <div class="gw-note gw-note--warn">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                         <div class="gw-note__body">
-                            <strong><?php esc_html_e('One more step: install GenWave Agent', 'gen-wave'); ?></strong>
+                            <strong><?php esc_html_e('One more step: install Genwave Agent', 'gen-wave'); ?></strong>
                             <?php if (current_user_can('install_plugins')): ?>
                                 <p><?php esc_html_e('The agent chat is a separate plugin. You can install it in one click from the Genwave Plugins page. Please keep this plugin installed too, because the agent uses its connection.', 'gen-wave'); ?></p>
                                 <div class="gw-note__actions">
-                                    <a href="<?php echo esc_url($genwave_agent_url); ?>" class="gw-b gw-b--primary gw-b--sm"><?php esc_html_e('Install GenWave Agent', 'gen-wave'); ?></a>
+                                    <a href="<?php echo esc_url($genwave_agent_url); ?>" class="gw-b gw-b--primary gw-b--sm"><?php esc_html_e('Install Genwave Agent', 'gen-wave'); ?></a>
                                 </div>
                             <?php else: ?>
                                 <p><?php esc_html_e('The agent chat is a separate plugin. Please ask a site administrator to install it. Keep this plugin installed too, because the agent uses its connection.', 'gen-wave'); ?></p>
                                 <div class="gw-note__actions">
-                                    <a href="<?php echo esc_url($genwave_agent_url); ?>" class="gw-b gw-b--primary gw-b--sm"><?php esc_html_e('Download GenWave Agent', 'gen-wave'); ?></a>
+                                    <a href="<?php echo esc_url($genwave_agent_url); ?>" class="gw-b gw-b--primary gw-b--sm"><?php esc_html_e('Download Genwave Agent', 'gen-wave'); ?></a>
                                 </div>
                             <?php endif; ?>
                         </div>
@@ -105,10 +105,10 @@ $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
                     <div class="gw-note gw-note--warn">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                         <div class="gw-note__body">
-                            <strong><?php esc_html_e('GenWave Agent is installed but not active', 'gen-wave'); ?></strong>
+                            <strong><?php esc_html_e('Genwave Agent is installed but not active', 'gen-wave'); ?></strong>
                             <p><?php esc_html_e('Activate it to open the agent chat.', 'gen-wave'); ?></p>
                             <div class="gw-note__actions">
-                                <a href="<?php echo esc_url($genwave_agent_url); ?>" class="gw-b gw-b--primary gw-b--sm"><?php esc_html_e('Activate GenWave Agent', 'gen-wave'); ?></a>
+                                <a href="<?php echo esc_url($genwave_agent_url); ?>" class="gw-b gw-b--primary gw-b--sm"><?php esc_html_e('Activate Genwave Agent', 'gen-wave'); ?></a>
                             </div>
                         </div>
                     </div>
@@ -158,11 +158,11 @@ $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
                     <span class="gw-panel__label"><?php esc_html_e('Getting started', 'gen-wave'); ?></span>
                     <ol class="gw-steps">
                         <?php if ($genwave_agent_state === 'active'): ?>
-                            <li><strong><?php esc_html_e('Open the GenWave Agent', 'gen-wave'); ?></strong><span><?php esc_html_e('Find it in your WordPress admin menu.', 'gen-wave'); ?></span></li>
+                            <li><strong><?php esc_html_e('Open the Genwave Agent', 'gen-wave'); ?></strong><span><?php esc_html_e('Find it in your WordPress admin menu.', 'gen-wave'); ?></span></li>
                         <?php elseif ($genwave_agent_state === 'inactive'): ?>
-                            <li><strong><?php esc_html_e('Activate the GenWave Agent plugin', 'gen-wave'); ?></strong><span><?php esc_html_e('It is installed but not active. See the note above.', 'gen-wave'); ?></span></li>
+                            <li><strong><?php esc_html_e('Activate the Genwave Agent plugin', 'gen-wave'); ?></strong><span><?php esc_html_e('It is installed but not active. See the note above.', 'gen-wave'); ?></span></li>
                         <?php else: ?>
-                            <li><strong><?php esc_html_e('Install the GenWave Agent plugin', 'gen-wave'); ?></strong><span><?php esc_html_e('The agent chat is a separate plugin. See the note above.', 'gen-wave'); ?></span></li>
+                            <li><strong><?php esc_html_e('Install the Genwave Agent plugin', 'gen-wave'); ?></strong><span><?php esc_html_e('The agent chat is a separate plugin. See the note above.', 'gen-wave'); ?></span></li>
                         <?php endif; ?>
                         <li><strong><?php esc_html_e('Describe what you need', 'gen-wave'); ?></strong><span><?php esc_html_e('In plain language. Build pages, manage products, fix errors.', 'gen-wave'); ?></span></li>
                         <li><strong><?php esc_html_e('Review &amp; approve', 'gen-wave'); ?></strong><span><?php esc_html_e('You see a preview before anything changes.', 'gen-wave'); ?></span></li>
@@ -173,7 +173,7 @@ $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
                 <!-- ===== Not connected ===== -->
 
                 <div class="gw-acct__hero">
-                    <h2><?php esc_html_e('Connect your GenWave account', 'gen-wave'); ?></h2>
+                    <h2><?php esc_html_e('Connect your Genwave account', 'gen-wave'); ?></h2>
                     <p><?php esc_html_e('Add the AI Agent to your site to build pages, fix errors, and manage everything through conversation.', 'gen-wave'); ?></p>
                 </div>
 
@@ -206,7 +206,7 @@ $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
                                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
                                     </div>
                                 </div>
-                                <p class="gw-field__hint"><?php esc_html_e('Find your license key in your GenWave account.', 'gen-wave'); ?></p>
+                                <p class="gw-field__hint"><?php esc_html_e('Find your license key in your Genwave account.', 'gen-wave'); ?></p>
                                 <?php if (!$genwave_has_license): ?>
                                     <button type="submit" name="save_settings" class="gw-b gw-b--primary gw-b--block"><?php esc_html_e('Save license key', 'gen-wave'); ?></button>
                                 <?php else: ?>
@@ -225,7 +225,7 @@ $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
                             <p class="gw-wiz__desc"><?php esc_html_e('You will be redirected to log in and authorize this site.', 'gen-wave'); ?></p>
                             <button type="button" id="verify_by_login" class="gw-b gw-b--primary gw-b--block gw-b--lg">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-                                <?php esc_html_e('Connect to GenWave', 'gen-wave'); ?>
+                                <?php esc_html_e('Connect to Genwave', 'gen-wave'); ?>
                             </button>
                         </div>
                         <?php endif; ?>
@@ -242,14 +242,14 @@ $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
 
         <!-- Footer -->
         <footer class="gw-acct__foot">
-            <span><?php esc_html_e('GenWave', 'gen-wave'); ?> · v<?php echo esc_html(defined('GEN_WAVE_VERSION') ? GEN_WAVE_VERSION : '1.0.0'); ?></span>
+            <span><?php esc_html_e('Genwave', 'gen-wave'); ?> · v<?php echo esc_html(defined('GEN_WAVE_VERSION') ? GEN_WAVE_VERSION : '1.0.0'); ?></span>
             <a href="<?php echo esc_url(\GenWavePlugin\Core\Links::support()); ?>" target="_blank"><?php esc_html_e('Support', 'gen-wave'); ?></a>
         </footer>
     </div>
 </section>
 
 <style>
-/* ===== GenWave Account — clean, professional layout ===== */
+/* ===== Genwave Account — clean, professional layout ===== */
 .gw-acct {
     --a1: #06b6d4;
     --a2: #3b82f6;

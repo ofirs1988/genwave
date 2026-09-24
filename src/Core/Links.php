@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Every page on GenWave that a button in this plugin opens.
+ * Every page on Genwave that a button in this plugin opens.
  *
  * The buttons pointed at account.genwave.ai, the old dashboard. It now sends
  * every page to the new app's sign-in screen and drops the path, so "Sign up
@@ -62,7 +62,7 @@ class Links
         return self::SITE . '/agent/';
     }
 
-    /** GenWave Agent download, counted like the site's own download buttons. */
+    /** Genwave Agent download, counted like the site's own download buttons. */
     public static function agentDownload(): string
     {
         return self::app('api/download-track/genwave-agent?source=plugin');

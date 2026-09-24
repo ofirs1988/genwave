@@ -67,15 +67,15 @@ const Dashboard = () => {
     const agent = window.genwaveFreeSettings?.agent || { state: 'missing', url: '', uploadUrl: '' };
     const agentCta = {
         active: 'Open the Agent',
-        inactive: 'Activate GenWave Agent',
-        missing: agent.oneClick ? 'Install GenWave Agent' : 'Download GenWave Agent',
+        inactive: 'Activate Genwave Agent',
+        missing: agent.oneClick ? 'Install Genwave Agent' : 'Download Genwave Agent',
     }[agent.state] || 'Open the Agent';
 
     return (
         <div className="gw-page gw-dash">
             <header className="gw-dash__head">
                 <h1 className="gw-dash__title">Dashboard</h1>
-                <p className="gw-dash__subtitle">An overview of your GenWave activity.</p>
+                <p className="gw-dash__subtitle">An overview of your Genwave activity.</p>
             </header>
 
             {/* Real stats */}
@@ -145,7 +145,7 @@ const Dashboard = () => {
                     )}
                     {agent.state === 'inactive' && (
                         <p className="gw-dash-agent__note">
-                            GenWave Agent is installed but not active. Activate it to open the chat.
+                            Genwave Agent is installed but not active. Activate it to open the chat.
                         </p>
                     )}
                 </div>

@@ -36,7 +36,7 @@ class PollingHandler
             if (!$nonce_check) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                    error_log('GenWave Polling AJAX: Invalid nonce');
+                    error_log('Genwave Polling AJAX: Invalid nonce');
                 }
                 wp_send_json_error(__('Security verification failed', 'gen-wave'));
                 return;
@@ -630,7 +630,7 @@ class PollingHandler
         if (!$nonce_check) {
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('GenWave Poll Proxy: Invalid nonce. Received: ' . $nonce);
+                error_log('Genwave Poll Proxy: Invalid nonce. Received: ' . $nonce);
             }
             wp_send_json_error('Invalid nonce', 403);
             return;

@@ -14,7 +14,7 @@ use GenWavePlugin\Core\Config;
  * PluginsHandler — backs the in-WP "Plugins" marketplace page.
  *
  * Talks to the Laravel dashboard's GET /api/plugins to list available
- * GenWave plugins, then installs them via WP_Upgrader on demand.
+ * Genwave plugins, then installs them via WP_Upgrader on demand.
  */
 class PluginsHandler
 {
@@ -32,7 +32,7 @@ class PluginsHandler
     ];
 
     /**
-     * AJAX: return list of available GenWave plugins augmented with local status.
+     * AJAX: return list of available Genwave plugins augmented with local status.
      */
     public function handle_list_plugins(): void
     {
@@ -198,7 +198,7 @@ class PluginsHandler
         if ($code !== 200 || ! is_array($body) || empty($body['plugins'])) {
             $msg = is_array($body) && ! empty($body['message'])
                 ? $body['message']
-                // translators: %d is the HTTP status code returned by the GenWave dashboard.
+                // translators: %d is the HTTP status code returned by the Genwave dashboard.
                 : sprintf(__('Dashboard returned HTTP %d', 'gen-wave'), $code);
             return ['ok' => false, 'message' => $msg];
         }
@@ -209,7 +209,7 @@ class PluginsHandler
     }
 
     /**
-     * True for an https URL on GenWave's CDN or its own dashboard host (the
+     * True for an https URL on Genwave's CDN or its own dashboard host (the
      * dashboard may sign links on its own domain), or WordPress.org downloads.
      */
     private static function is_trusted_download(string $url): bool
@@ -316,7 +316,7 @@ class PluginsHandler
             ];
         }
 
-        // Install only from GenWave's own download hosts, whatever the list says.
+        // Install only from Genwave's own download hosts, whatever the list says.
         if (! self::is_trusted_download($download_url)) {
             return ['ok' => false, 'message' => __('This download is not from Genwave, so it was not installed.', 'gen-wave')];
         }

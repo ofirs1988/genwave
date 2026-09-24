@@ -60,7 +60,7 @@ class AjaxManager
         // Dashboard stats endpoint
         add_action('wp_ajax_genwave_get_dashboard_stats', [$this, 'handle_get_dashboard_stats']);
 
-        // Plugin marketplace (install paid GenWave plugins from inside WP)
+        // Plugin marketplace (install paid Genwave plugins from inside WP)
         add_action('wp_ajax_genwave_list_plugins', [$this->pluginsHandler, 'handle_list_plugins']);
         add_action('wp_ajax_genwave_install_plugin', [$this->pluginsHandler, 'handle_install_plugin']);
 
@@ -152,7 +152,7 @@ class AjaxManager
 
         // Only an administrator may disconnect the site (F8): the nonce is exposed
         // to any admin-area role (incl. contributors on edit screens), so without a
-        // capability check a low-privilege user could wipe the site's GenWave
+        // capability check a low-privilege user could wipe the site's Genwave
         // credentials and break the agent for everyone.
         if (!current_user_can('manage_options')) {
             wp_send_json_error(['message' => 'Unauthorized'], 403);
@@ -548,7 +548,7 @@ class AjaxManager
 
         if (defined('WP_DEBUG') && WP_DEBUG) {
             // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-            error_log('GenWave API Response Body: ' . substr($body, 0, 1000));
+            error_log('Genwave API Response Body: ' . substr($body, 0, 1000));
         }
         $data = json_decode($body, true);
 
@@ -838,7 +838,7 @@ class AjaxManager
         if (!$nonce_check) {
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log('GenWave Poll Proxy: Invalid nonce');
+                error_log('Genwave Poll Proxy: Invalid nonce');
             }
             wp_send_json_error('Invalid nonce', 403);
             return;

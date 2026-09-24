@@ -12,7 +12,7 @@ import {
 /**
  * Genwave Plugins marketplace page.
  *
- * Lists all available GenWave plugins, shows install/active status, and lets
+ * Lists all available Genwave plugins, shows install/active status, and lets
  * the user install missing ones via WP_Upgrader in a single click.
  */
 const Plugins = () => {
@@ -114,9 +114,9 @@ const Plugins = () => {
                     <span className="gw-mkt__eyebrow">
                         <ThunderboltOutlined /> Marketplace
                     </span>
-                    <h1 className="gw-mkt__title">GenWave Plugins</h1>
+                    <h1 className="gw-mkt__title">Genwave Plugins</h1>
                     <p className="gw-mkt__subtitle">
-                        Install any GenWave plugin in one click.
+                        Install any Genwave plugin in one click.
                     </p>
                 </div>
                 <button

@@ -84,7 +84,7 @@ This plugin talks to Genwave's services to connect your account and to carry out
 
 1. In your WordPress admin, go to Plugins → Add New and search for "Genwave".
 2. Click Install Now, then Activate.
-3. Go to Genwave → Account. Enter your license key, which you can find in your [Genwave account](https://app.genwave.ai/), and click "Connect to GenWave".
+3. Go to Genwave → Account. Enter your license key, which you can find in your [Genwave account](https://app.genwave.ai/), and click "Connect to Genwave".
 4. Go to Genwave → Plugins and click Install next to Genwave Agent. It is installed and activated for you.
 5. Open Genwave Agent from your WordPress menu and tell it what you need.
 
@@ -162,7 +162,7 @@ Yes. Each site in the network connects to a Genwave account on its own.
 * Compatibility: tested with WordPress 7.1.
 
 = 1.1.5 =
-* Fixed: the Open the Agent button now tells you when the GenWave Agent plugin is missing or inactive and offers to download or activate it, instead of showing an access error. Account, billing, credits, sign-up and support buttons now open the right page.
+* Fixed: the Open the Agent button now tells you when the Genwave Agent plugin is missing or inactive and offers to download or activate it, instead of showing an access error. Account, billing, credits, sign-up and support buttons now open the right page.
 
 = 1.1.4 =
 * Keep Genwave REST routes reachable when a security plugin restricts the REST API, so site connection works on locked-down sites
@@ -185,7 +185,7 @@ Yes. Each site in the network connects to a Genwave account on its own.
 
 = 1.1.0 =
 **New:**
-* New "Plugins" admin page — browse and install GenWave plugins (Agent, Pro, Chatbot, SEO, Elements, Site Transfer) directly from inside WordPress with a single click
+* New "Plugins" admin page — browse and install Genwave plugins (Agent, Pro, Chatbot, SEO, Elements, Site Transfer) directly from inside WordPress with a single click
 * WordPress 7.0 compatibility verified
 
 **Improvements:**

@@ -7,6 +7,10 @@ changelog for WordPress.org lives in `readme.txt` and is written at release time
 ## Unreleased
 
 ### Changed
+
+- The brand name reads "Genwave" everywhere a person reads it (it said "GenWave").
+
+### Changed
 - readme.txt rewritten for site owners in the voice of genwave.ai: short plain
   sentences, no em dashes or marketing filler, and the same terms as the site
   (Genwave Agent, Studio, Chatbot, "you see it first", "bound by your role",

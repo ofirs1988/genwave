@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Where the separate GenWave Agent plugin stands on this site.
+ * Where the separate Genwave Agent plugin stands on this site.
  *
  * The agent chat is its own plugin. "Open the Agent" used to link straight to
  * its admin page, and on a site without it WordPress answered "Sorry, you are

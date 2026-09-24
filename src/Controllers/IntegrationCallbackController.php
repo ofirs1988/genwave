@@ -49,7 +49,7 @@ class IntegrationCallbackController
             return false;
         }
 
-        // Only an administrator may bind this site to a GenWave account. Without
+        // Only an administrator may bind this site to a Genwave account. Without
         // this, any logged-in user (e.g. a subscriber) hitting the callback URL
         // could complete a connect.
         if (!current_user_can('manage_options')) {
@@ -69,7 +69,7 @@ class IntegrationCallbackController
             add_action('admin_notices', function () {
                 ?>
                 <div class="notice notice-error is-dismissible">
-                    <p><strong>Authentication Error:</strong> This connection request could not be verified. Please start the connect flow again from the GenWave settings page.</p>
+                    <p><strong>Authentication Error:</strong> This connection request could not be verified. Please start the connect flow again from the Genwave settings page.</p>
                 </div>
                 <?php
             });

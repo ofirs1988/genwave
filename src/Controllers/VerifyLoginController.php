@@ -14,10 +14,10 @@ class VerifyLoginController
         // Verify login request
         check_ajax_referer('verify_login_nonce', 'security');
 
-        // Only a site administrator may obtain the GenWave auto-login URL — it
+        // Only a site administrator may obtain the Genwave auto-login URL — it
         // carries a live session into the OWNER's SaaS account. Without this an
         // editor/contributor (or, via the nopriv hook, an unauthenticated caller)
-        // who has the nonce could take over the owner's GenWave account (F3).
+        // who has the nonce could take over the owner's Genwave account (F3).
         if (!current_user_can('manage_options')) {
             wp_send_json_error(['success' => false, 'message' => 'Unauthorized'], 403);
         }
@@ -110,7 +110,7 @@ class VerifyLoginController
 
         return add_query_arg(
             'error',
-            'Could not start a secure connection to GenWave. Please try again.',
+            'Could not start a secure connection to Genwave. Please try again.',
             $redirect_back_url
         );
     }

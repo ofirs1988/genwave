@@ -21,7 +21,7 @@ class AdminBar {
         // falling back to the anchor's own copy.
         $credits = get_option('aiaw_credits', Config::get('credits'));
 
-        // Lightning bolt — same mark the GenWave Agent uses (cyan #00ffd5).
+        // Lightning bolt — same mark the Genwave Agent uses (cyan #00ffd5).
         $icon = '<svg style="width:14px;height:14px;vertical-align:-2px;margin-right:2px;color:#00ffd5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg>';
 
         // Format the credits to show 2 decimal places

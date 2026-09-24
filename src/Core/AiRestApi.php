@@ -87,14 +87,14 @@ class AiRestApi extends WP_REST_Controller
         }
 
         // Option 2: Validate API key from headers (for external Laravel backend)
-        $api_key = $request->get_header('X-GenWave-API-Key');
+        $api_key = $request->get_header('X-Genwave-API-Key');
         $stored_key = Config::get('license_key'); // Use license key as API key
 
         if (!empty($api_key) && !empty($stored_key) && hash_equals($stored_key, $api_key)) {
             return true;
         }
 
-        // (Removed) the X-GenWave-UIDD branch — uidd is not a secret (it travels in
+        // (Removed) the X-Genwave-UIDD branch — uidd is not a secret (it travels in
         // every outbound request), so accepting it as an inbound credential was a bypass.
 
         if (defined('WP_DEBUG') && WP_DEBUG) {

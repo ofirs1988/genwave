@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Genwave - AI Agent 1.1.6\n"
+"Project-Id-Version: Genwave - AI Agent 1.1.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/gen-wave\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-24T01:38:59+02:00\n"
+"POT-Creation-Date: 2026-09-24T14:07:09+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: gen-wave\n"
@@ -214,7 +214,7 @@ msgstr ""
 msgid "Please connect your Genwave account on the Account page first."
 msgstr ""
 
-#. translators: %d is the HTTP status code returned by the GenWave dashboard.
+#. translators: %d is the HTTP status code returned by the Genwave dashboard.
 #: src/Handlers/PluginsHandler.php:202
 #, php-format
 msgid "Dashboard returned HTTP %d"
@@ -486,7 +486,7 @@ msgstr ""
 
 #: views/settings.php:35
 #: views/settings.php:245
-msgid "GenWave"
+msgid "Genwave"
 msgstr ""
 
 #: views/settings.php:36
@@ -518,7 +518,7 @@ msgid "Renew License"
 msgstr ""
 
 #: views/settings.php:80
-msgid "Your account is connected. Manage your site through the GenWave Agent chat."
+msgid "Your account is connected. Manage your site through the Genwave Agent chat."
 msgstr ""
 
 #: views/settings.php:82
@@ -526,7 +526,7 @@ msgid "Open the Agent"
 msgstr ""
 
 #: views/settings.php:90
-msgid "One more step: install GenWave Agent"
+msgid "One more step: install Genwave Agent"
 msgstr ""
 
 #: views/settings.php:92
@@ -534,7 +534,7 @@ msgid "The agent chat is a separate plugin. You can install it in one click from
 msgstr ""
 
 #: views/settings.php:94
-msgid "Install GenWave Agent"
+msgid "Install Genwave Agent"
 msgstr ""
 
 #: views/settings.php:97
@@ -542,11 +542,11 @@ msgid "The agent chat is a separate plugin. Please ask a site administrator to i
 msgstr ""
 
 #: views/settings.php:99
-msgid "Download GenWave Agent"
+msgid "Download Genwave Agent"
 msgstr ""
 
 #: views/settings.php:108
-msgid "GenWave Agent is installed but not active"
+msgid "Genwave Agent is installed but not active"
 msgstr ""
 
 #: views/settings.php:109
@@ -554,7 +554,7 @@ msgid "Activate it to open the agent chat."
 msgstr ""
 
 #: views/settings.php:111
-msgid "Activate GenWave Agent"
+msgid "Activate Genwave Agent"
 msgstr ""
 
 #: views/settings.php:121
@@ -602,7 +602,7 @@ msgid "Getting started"
 msgstr ""
 
 #: views/settings.php:161
-msgid "Open the GenWave Agent"
+msgid "Open the Genwave Agent"
 msgstr ""
 
 #: views/settings.php:161
@@ -610,7 +610,7 @@ msgid "Find it in your WordPress admin menu."
 msgstr ""
 
 #: views/settings.php:163
-msgid "Activate the GenWave Agent plugin"
+msgid "Activate the Genwave Agent plugin"
 msgstr ""
 
 #: views/settings.php:163
@@ -618,7 +618,7 @@ msgid "It is installed but not active. See the note above."
 msgstr ""
 
 #: views/settings.php:165
-msgid "Install the GenWave Agent plugin"
+msgid "Install the Genwave Agent plugin"
 msgstr ""
 
 #: views/settings.php:165
@@ -642,7 +642,7 @@ msgid "You see a preview before anything changes."
 msgstr ""
 
 #: views/settings.php:176
-msgid "Connect your GenWave account"
+msgid "Connect your Genwave account"
 msgstr ""
 
 #: views/settings.php:177
@@ -682,7 +682,7 @@ msgid "Enter your license key"
 msgstr ""
 
 #: views/settings.php:209
-msgid "Find your license key in your GenWave account."
+msgid "Find your license key in your Genwave account."
 msgstr ""
 
 #: views/settings.php:211
@@ -702,7 +702,7 @@ msgid "You will be redirected to log in and authorize this site."
 msgstr ""
 
 #: views/settings.php:228
-msgid "Connect to GenWave"
+msgid "Connect to Genwave"
 msgstr ""
 
 #: views/settings.php:236
