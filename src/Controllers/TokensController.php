@@ -6,6 +6,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+use GenWavePlugin\Core\AgentAuth;
 use GenWavePlugin\Core\ApiManager;
 use GenWavePlugin\Core\Config;
 
@@ -38,23 +39,26 @@ class TokensController{
             ? GENWAVE_AGENT_API_URL
             : 'https://agent.genwave.ai';
 
-        $token = Config::get('token');
-        $uidd = Config::get('uidd');
-        $license = Config::get('license_key');
-
-        if (empty($token) || empty($license)) {
+        // Sites connected the current way hold site_uid + site_key and never
+        // receive the old token, and the agent now accepts only signed requests
+        // (AgentAuth signs this call on its way out). Requiring the old token
+        // here meant the balance never refreshed on any recently connected site.
+        if (!AgentAuth::isConnected()) {
             return ['error' => true, 'auth' => false, 'message' => 'Connect your Genwave account first'];
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+            'from-domain' => ApiManager::getFromDomain(),
+        ];
+        $license = Config::get('license_key');
+        if (!empty($license)) {
+            $headers['license-key'] = $license; // context for the agent's logs only
         }
 
         $is_local = preg_match('#(localhost|127\.0\.0\.1|\.local)#', $base) === 1;
         $response = wp_remote_get(rtrim($base, '/') . '/credits', [
-            'headers' => [
-                'Accept' => 'application/json',
-                'Authorization' => 'Bearer ' . $token,
-                'uidd' => $uidd,
-                'license-key' => $license,
-                'from-domain' => ApiManager::getFromDomain(),
-            ],
+            'headers' => $headers,
             'timeout' => 20,
             'sslverify' => !$is_local,
         ]);

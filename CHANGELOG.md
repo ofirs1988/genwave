@@ -6,6 +6,16 @@ changelog for WordPress.org lives in `readme.txt` and is written at release time
 
 ## Unreleased
 
+### Fixed
+
+- **The credit balance never refreshed on recently connected sites.**
+  `TokensController::RefreshCredits()` required the old `token` option, which
+  the current connection (`AgentAuth::connect`, site_uid + site_key) never
+  sets, so it answered "Connect your Genwave account first" on a connected
+  site. It now requires `AgentAuth::isConnected()` and sends no Bearer header:
+  the agent accepts only signed requests since 2026-09-27, and this call is
+  signed on its way out.
+
 ### Changed
 
 - The brand name reads "Genwave" everywhere a person reads it (it said "GenWave").
