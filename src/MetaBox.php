@@ -321,10 +321,6 @@ class MetaBox {
                             <div style="font-size: 11px; color: #666; text-transform: uppercase; font-weight: 600; margin-bottom: 5px;"><?php esc_html_e('Total Tokens', 'gen-wave'); ?></div>
                             <div id="genwave-total-tokens" style="font-size: 20px; font-weight: bold; color: #f093fb;">-</div>
                         </div>
-                        <div style="flex: 1; min-width: 150px;">
-                            <div style="font-size: 11px; color: #666; text-transform: uppercase; font-weight: 600; margin-bottom: 5px;"><?php esc_html_e('Credit Cost', 'gen-wave'); ?></div>
-                            <div id="genwave-credit-cost" style="font-size: 20px; font-weight: bold; color: #43e97b;">-</div>
-                        </div>
                     </div>
 
                     <!-- Generated Content -->

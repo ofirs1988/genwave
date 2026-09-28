@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {
-    ThunderboltOutlined,
     FileTextOutlined,
     LoadingOutlined,
     MessageOutlined,
@@ -80,15 +79,6 @@ const Dashboard = () => {
 
             {/* Real stats */}
             <div className="gw-dash__stats">
-                <div className="gw-dash-stat gw-dash-stat--accent">
-                    <span className="gw-dash-stat__ic"><ThunderboltOutlined /></span>
-                    <div className="gw-dash-stat__body">
-                        <span className="gw-dash-stat__label">Credit balance</span>
-                        <span className="gw-dash-stat__value">
-                            {stats.loading ? <LoadingOutlined /> : formatNumber(stats.creditBalance)}
-                        </span>
-                    </div>
-                </div>
                 <div className="gw-dash-stat">
                     <span className="gw-dash-stat__ic"><FileTextOutlined /></span>
                     <div className="gw-dash-stat__body">

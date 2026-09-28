@@ -115,16 +115,14 @@ $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
                 <?php endif; ?>
 
                 <div class="gw-acct__cols">
-                    <!-- Credit balance -->
+                    <!-- Usage: no credits to count (see AdminBar::usage_label) -->
+                    <?php $genwave_usage = \GenWavePlugin\AdminBar::usage_label(); ?>
                     <div class="gw-panel gw-panel--accent gw-card-stats">
                         <div class="gw-panel__row">
-                            <span class="gw-panel__label"><?php esc_html_e('Credit balance', 'gen-wave'); ?></span>
-                            <button type="button" id="refresh_credits" class="gw-iconbtn" title="<?php esc_attr_e('Refresh balance', 'gen-wave'); ?>">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-                            </button>
+                            <span class="gw-panel__label"><?php esc_html_e('Usage', 'gen-wave'); ?></span>
                         </div>
-                        <div class="gw-panel__value" id="credit-balance"><?php echo number_format(floor((float)$genwave_credits * 100) / 100, 2); ?></div>
-                        <a href="<?php echo esc_url(\GenWavePlugin\Core\Links::credits()); ?>" target="_blank" class="gw-b gw-b--soft gw-b--sm gw-b--block"><?php esc_html_e('Buy more credits', 'gen-wave'); ?></a>
+                        <div class="gw-panel__value" title="<?php echo esc_attr($genwave_usage['title'] ?? ''); ?>"><?php echo esc_html($genwave_usage['text'] ?? __('Normal use fully included', 'gen-wave')); ?></div>
+                        <a href="<?php echo esc_url(\GenWavePlugin\Core\Links::app('usage')); ?>" target="_blank" class="gw-b gw-b--soft gw-b--sm gw-b--block"><?php esc_html_e('Usage and plan', 'gen-wave'); ?></a>
                     </div>
 
                     <!-- Account details -->

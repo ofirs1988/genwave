@@ -272,12 +272,6 @@ const Generate = () => {
                         {result.applied && <span className="gw-gen-result__applied"><CheckCircleOutlined /> Applied</span>}
                     </div>
 
-                    {result.success && result.creditUsage && (
-                        <div className="gw-gen-result__meta">
-                            <span>Charged <strong>{Number(result.creditUsage.charged).toFixed(4)}</strong> credits</span>
-                            <span className="gw-gen-result__bal">Balance <strong>{Number(result.creditUsage.balance).toFixed(2)}</strong></span>
-                        </div>
-                    )}
 
                     {generatedContent && (
                         <>

@@ -6,6 +6,16 @@ changelog for WordPress.org lives in `readme.txt` and is written at release time
 
 ## Unreleased
 
+### Changed
+
+- **No credits to count.** The admin bar, the settings screen, the Dashboard
+  and content generation no longer show a credit balance or cost. The admin
+  bar reads the plan state the Genwave Agent keeps
+  (`genwave_agent_plan_state`, `AdminBar::usage_label()`): nothing on a paid
+  plan, "Light mode" when a month went far past normal use (the lighter model
+  until renewal), about how many AI actions are left on the Free plan. It links
+  to the usage page instead of the credit shop.
+
 ### Fixed
 
 - **The credit balance never refreshed on recently connected sites.**
