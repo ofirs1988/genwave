@@ -20,3 +20,5 @@
 .DS_Store
 Thumbs.db
 *.log
+/CLAUDE.md
+/GENWAVE.md

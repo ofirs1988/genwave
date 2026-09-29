@@ -64,7 +64,7 @@ Once both are installed and your account is connected:
 
 * **Account connection.** Connect your site to your Genwave account with your license key.
 * **AI writing.** Generate titles, descriptions and content for posts and products.
-* **Credit balance.** See how many credits you have left.
+* **Your plan at a glance.** On Pro and Business there is nothing to count. On the Free plan you see about how many AI actions are left this month.
 * **Many languages.** Write in your own language, including right-to-left languages such as Hebrew and Arabic.
 * **No API keys.** You do not need an account with any AI provider. Genwave takes care of that.
 
@@ -114,11 +114,11 @@ It can create and edit pages, manage WooCommerce products and orders, help with 
 
 = Is the plugin free? =
 
-Yes. This plugin is free and includes AI writing for single posts and products. The agent uses credits from your Genwave account.
+Yes. This plugin is free and includes AI writing for single posts and products. The agent comes with your Genwave plan, and the Free plan lets you try it.
 
 = How does pricing work? =
 
-Genwave is free to start, with no credit card needed, and the free plan includes trial AI credits. After that, Genwave works with credits, and one balance covers all the sites connected to your account. You can see current plans on our [pricing page](https://genwave.ai/pricing/).
+Genwave is free to start, with no credit card needed. The Free plan includes about 30 AI actions a month on one site. Pro and Business have no credits to count: normal use of your site is fully included, and so is Genwave Studio. You can see current plans on our [pricing page](https://genwave.ai/pricing/).
 
 = Which languages does it support? =
 
@@ -151,7 +151,7 @@ Yes. Each site in the network connects to a Genwave account on its own.
 1. Connecting your site to your Genwave account
 2. Managing your WordPress site in the agent chat
 3. Building a custom plugin by describing it
-4. Your credit balance and usage
+4. Your plan and usage
 
 == Changelog ==
 
@@ -295,7 +295,7 @@ This plugin connects to the following Genwave services. It sends data only when 
 * Used to connect your site to your Genwave account and verify your license.
 
 **Genwave account service** ([account.genwave.ai](https://account.genwave.ai))
-* Used for your credit balance, account details and the list of Genwave plugins.
+* Used for your plan and usage, account details and the list of Genwave plugins.
 
 **Genwave Agent service** ([agent.genwave.ai](https://agent.genwave.ai))
 * Used to generate content and to carry out the tasks you ask the agent for.
