@@ -27,6 +27,9 @@ class Plugin {
         // anchor plugin covers this plugin and the Agent/Chatbot plugins.
         \GenWavePlugin\Core\AgentAuth::register();
 
+        // "Connect to Genwave": connect by approving the site in the panel.
+        \GenWavePlugin\Core\PanelConnect::register();
+
         // Load AJAX manager for both admin and frontend
         new AjaxManager();
 

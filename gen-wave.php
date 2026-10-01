@@ -123,6 +123,10 @@ function genwave_plugin_activation() {
     // Create database tables
     require_once GEN_WAVE_PATH . 'src/InstallationManager.php';
     \GenWavePlugin\InstallationManager::checkAndInstall();
+
+    // Open the Genwave page right after activation, where "Connect to Genwave"
+    // is waiting (PanelConnect::maybeRedirectAfterActivation).
+    set_transient('genwave_activation_redirect', 1, 60);
 }
 
 // Register activation hook

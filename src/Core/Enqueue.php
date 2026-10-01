@@ -156,6 +156,8 @@ class Enqueue {
             'refresh_credits_nonce' => wp_create_nonce('refresh_credits_nonce'),
             'disconnect_account_nonce' => wp_create_nonce('disconnect_account_nonce'),
             'genwave_nonce' => wp_create_nonce('genwave_nonce'),
+            // Installing the Agent right after "Connect to Genwave" (PluginsHandler).
+            'plugins_nonce' => wp_create_nonce('genwave_plugins_nonce'),
         ]);
     }
 

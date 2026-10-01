@@ -56,6 +56,32 @@ jQuery(document).ready(function($) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
 
+    // Right after "Connect to Genwave", when the customer also asked for the
+    // Agent: install it here with the progress on screen, then open the chat.
+    var autoInstall = $('#gw-agent-autoinstall');
+    if (autoInstall.length) {
+        var installFailed = function (message) {
+            autoInstall.removeClass('gw-note--info').addClass('gw-note--warn');
+            autoInstall.find('.gw-spin').remove();
+            autoInstall.find('[data-gw-title]').text(autoInstall.data('fail-title'));
+            autoInstall.find('[data-gw-text]').text(message || autoInstall.data('fail-text'));
+            autoInstall.find('[data-gw-actions]').prop('hidden', false);
+        };
+        $.post(genwave_admin_data.ajaxurl, {
+            action: 'genwave_install_plugin',
+            security: genwave_admin_data.plugins_nonce,
+            slug: 'genwave-agent'
+        }).done(function (response) {
+            if (response && response.success) {
+                window.location.href = autoInstall.data('agent-url');
+            } else {
+                installFailed(response && response.data && response.data.message);
+            }
+        }).fail(function () {
+            installFailed();
+        });
+    }
+
     $('#verify_by_login').on('click', function(e) {
         e.preventDefault();
 

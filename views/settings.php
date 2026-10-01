@@ -17,6 +17,8 @@ $genwave_credits = get_option('aiaw_credits', $data['credits'] ?? 0);
 // at a page that does not exist without it.
 $genwave_agent_state = \GenWavePlugin\Core\AgentPlugin::state();
 $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
+// The customer approved "also install Genwave Agent" while connecting: do it now.
+$genwave_install_agent_now = $genwave_is_connected && \GenWavePlugin\Core\PanelConnect::takeAgentInstall();
 ?>
 <section class="gw-acct">
     <div class="gw-acct__shell">
@@ -83,7 +85,21 @@ $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
                     <?php endif; ?>
                 </div>
 
-                <?php if ($genwave_agent_state === 'missing'): ?>
+                <?php if ($genwave_install_agent_now): ?>
+                    <div class="gw-note gw-note--info" id="gw-agent-autoinstall"
+                         data-agent-url="<?php echo esc_url(admin_url('admin.php?page=' . \GenWavePlugin\Core\AgentPlugin::SLUG)); ?>"
+                         data-fail-title="<?php esc_attr_e('Genwave Agent was not installed automatically', 'gen-wave'); ?>"
+                         data-fail-text="<?php esc_attr_e('Your site is connected. Install the Agent in one click from the Genwave Plugins page.', 'gen-wave'); ?>">
+                        <svg class="gw-spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.22-8.56"/></svg>
+                        <div class="gw-note__body">
+                            <strong data-gw-title><?php esc_html_e('Installing Genwave Agent…', 'gen-wave'); ?></strong>
+                            <p data-gw-text><?php esc_html_e('This takes a few seconds. The agent chat opens as soon as it is ready.', 'gen-wave'); ?></p>
+                            <div class="gw-note__actions" data-gw-actions hidden>
+                                <a href="<?php echo esc_url(\GenWavePlugin\Core\AgentPlugin::url()); ?>" class="gw-b gw-b--primary gw-b--sm"><?php esc_html_e('Install Genwave Agent', 'gen-wave'); ?></a>
+                            </div>
+                        </div>
+                    </div>
+                <?php elseif ($genwave_agent_state === 'missing'): ?>
                     <div class="gw-note gw-note--warn">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                         <div class="gw-note__body">
@@ -181,8 +197,22 @@ $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
                     <div class="gw-feat"><span class="gw-feat__ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><div><strong><?php esc_html_e('Safe by design', 'gen-wave'); ?></strong><span><?php esc_html_e('A preview before every change to your site.', 'gen-wave'); ?></span></div></div>
                 </div>
 
-                <div class="gw-panel">
-                    <span class="gw-panel__label"><?php esc_html_e('Quick setup', 'gen-wave'); ?></span>
+                <!-- Primary: approve this site in Genwave, no key to copy (PanelConnect) -->
+                <div class="gw-panel gw-connect">
+                    <?php if (current_user_can('manage_options')): ?>
+                        <a href="<?php echo esc_url(\GenWavePlugin\Core\PanelConnect::startUrl()); ?>" id="gw-connect-start" class="gw-b gw-b--primary gw-b--block gw-b--lg">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                            <?php esc_html_e('Connect to Genwave', 'gen-wave'); ?>
+                        </a>
+                        <p class="gw-connect__hint"><?php esc_html_e('Sign in or create a free account, then approve this site. No key to copy.', 'gen-wave'); ?></p>
+                    <?php else: ?>
+                        <p class="gw-connect__hint"><?php esc_html_e('Ask a site administrator to connect this site to Genwave.', 'gen-wave'); ?></p>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Fallback: paste the API key from the Genwave panel -->
+                <details class="gw-panel gw-alt" <?php echo $genwave_has_license ? 'open' : ''; ?>>
+                    <summary class="gw-alt__summary"><?php esc_html_e('Have an API key? Connect with it instead', 'gen-wave'); ?></summary>
 
                     <div class="gw-wiz">
                         <!-- Step 1 -->
@@ -228,7 +258,7 @@ $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
                         </div>
                         <?php endif; ?>
                     </div>
-                </div>
+                </details>
 
                 <div class="gw-acct__help">
                     <a href="<?php echo esc_url(\GenWavePlugin\Core\Links::register()); ?>" target="_blank"><?php esc_html_e("Don't have an account? Sign up free", 'gen-wave'); ?></a>
@@ -423,6 +453,20 @@ $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
 .gw-field__hint { margin: 8px 0 12px; padding-left: 0; font-size: 12px; color: #94a3b8; }
 .gw-input-loader { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--a1); }
 .gw-input-loader svg { animation: gwspin 1s linear infinite; }
+
+/* Connect (primary) and the API-key fallback */
+.gw-connect { gap: 10px; }
+.gw-connect__hint { margin: 0; text-align: center; font-size: 13px; color: var(--muted); }
+.gw-alt { padding: 0; gap: 0; }
+.gw-alt__summary { cursor: pointer; padding: 14px 18px; font-size: 13px; font-weight: 600; color: var(--muted); list-style-position: inside; }
+.gw-alt__summary:hover { color: var(--ink); }
+.gw-alt[open] .gw-alt__summary { border-bottom: 1px solid var(--line); }
+.gw-alt .gw-wiz { padding: 18px; }
+
+/* Agent install in progress */
+.gw-note--info { background: #eff6ff; color: #1e3a8a; border-color: #bfdbfe; }
+.gw-note--info svg { stroke: #3b82f6; }
+.gw-spin { animation: gwspin2 1s linear infinite; }
 
 /* Help */
 .gw-acct__help { display: flex; flex-direction: column; gap: 8px; }
