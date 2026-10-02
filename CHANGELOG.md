@@ -6,6 +6,41 @@ changelog for WordPress.org lives in `readme.txt` and is written at release time
 
 ## Unreleased
 
+## 1.2.0 - 2026-10-02
+
+### Added
+
+- **Connect to Genwave, no key to copy** (`Core\PanelConnect`). The Account
+  page leads with one button. `start()` (nonced admin-post, `manage_options`)
+  mints a one-time `state` and a PKCE verifier, keeps them in a per-user
+  transient (30 min, long enough to sign up and confirm the email on the way)
+  and sends the browser to `{panel}/connect/authorize` with the site address,
+  the state and sha256(verifier). The customer signs in or signs up there and
+  approves the site; the panel sends the browser back with a two-minute,
+  single-use, encrypted code. `maybeHandleCallback()` (admin_init) checks the
+  state against this admin's transient, burns it, and redeems the code at
+  `/api/plugin/connect/exchange` with the verifier, server to server. The
+  answer is the license key, and `AgentAuth::connect()` finishes the
+  connection exactly as a pasted key would (HMAC challenge, per-site signing
+  key). If that fails the previous key is put back. The license key never
+  appears in a URL, a code is useless without the verifier, and a callback
+  this admin did not start is rejected.
+- **Genwave Agent in the same step.** When the Agent is missing and the admin
+  may install plugins, the approval offers it (ticked). Back on the Account
+  page it is installed through the existing one-click route with progress on
+  screen, then the chat opens; if that fails the page says so and links to
+  the manual install.
+- **The Account page opens after activation** (`genwave_activation_redirect`
+  transient), not on bulk or network activation, and not when already
+  connected.
+
+### Changed
+
+- Pasting the license key is now the fallback, under "Have an API key?
+  Connect with it instead" (open when a key is already saved).
+
+## 1.1.2 – 1.1.9
+
 ### Changed
 
 - **No credits to count.** The admin bar, the settings screen, the Dashboard

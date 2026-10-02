@@ -23,7 +23,7 @@ There is nothing to migrate. Your admin, your plugins and your checkout stay as 
 Genwave uses two plugins that work together:
 
 * **Genwave** (this plugin) connects your site to your Genwave account. It also adds AI writing for single posts and products.
-* **Genwave Agent** adds the agent chat, where you run your site by conversation. Once your account is connected, install it in one click from Genwave → Plugins.
+* **Genwave Agent** adds the agent chat, where you run your site by conversation. Install it in the same step as connecting your account, or later in one click from Genwave → Plugins.
 
 Once both are installed and your account is connected:
 
@@ -62,7 +62,7 @@ Once both are installed and your account is connected:
 
 = What this free plugin includes =
 
-* **Account connection.** Connect your site to your Genwave account with your license key.
+* **Account connection.** Connect your site to your Genwave account in one click: sign in and approve the site. There is no key to copy.
 * **AI writing.** Generate titles, descriptions and content for posts and products.
 * **Your plan at a glance.** On Pro and Business there is nothing to count. On the Free plan you see about how many AI actions are left this month.
 * **Many languages.** Write in your own language, including right-to-left languages such as Hebrew and Arabic.
@@ -84,11 +84,11 @@ This plugin talks to Genwave's services to connect your account and to carry out
 
 1. In your WordPress admin, go to Plugins → Add New and search for "Genwave".
 2. Click Install Now, then Activate.
-3. Go to Genwave → Account. Enter your license key, which you can find in your [Genwave account](https://app.genwave.ai/), and click "Connect to Genwave".
-4. Go to Genwave → Plugins and click Install next to Genwave Agent. It is installed and activated for you.
+3. Go to Genwave → Account (it opens by itself after activation) and click "Connect to Genwave".
+4. Sign in to your [Genwave account](https://app.genwave.ai/), or create one for free, and approve this site. Leave "Also install Genwave Agent" ticked and it is installed for you when you return.
 5. Open Genwave Agent from your WordPress menu and tell it what you need.
 
-If you prefer, you can also download Genwave Agent from [genwave.ai/agent](https://genwave.ai/agent/) and upload it under Plugins → Add New → Upload Plugin.
+Prefer to paste your license key? Open "Have an API key? Connect with it instead" under the Connect button. You can also install Genwave Agent later from Genwave → Plugins, or download it from [genwave.ai/agent](https://genwave.ai/agent/) and upload it under Plugins → Add New → Upload Plugin.
 
 Please keep both plugins installed. Genwave Agent uses the connection that this plugin sets up.
 
@@ -295,7 +295,7 @@ First release. Connect your WordPress site to Genwave.
 This plugin connects to the following Genwave services. It sends data only when you take an action, and always over an encrypted (HTTPS) connection.
 
 **Genwave app** ([app.genwave.ai](https://app.genwave.ai))
-* Used to connect your site to your Genwave account and verify your license.
+* Used to connect your site to your Genwave account and verify your license. When you click "Connect to Genwave", your browser opens app.genwave.ai so you can sign in and approve the site; the plugin then completes the connection with app.genwave.ai directly. Your license key is never put in a web address.
 
 **Genwave account service** ([account.genwave.ai](https://account.genwave.ai))
 * Used for your plan and usage, account details and the list of Genwave plugins.
