@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: Genwave - AI Agent
- * Description: The #1 AI Agent for your website. Build plugins, fix errors, create pages, manage WooCommerce & optimize SEO — all through natural conversation. 250+ actions, 7-layer security, 48+ languages.
+ * Description: Run the WordPress site you already have by describing what you need: pages, WooCommerce, plugins, SEO and error fixes. Genwave Agent shows you the plan, you approve it, and it does the work.
  * Version: 1.2.0
  * Author: Genwave.ai
  * Author URI: https://genwave.ai

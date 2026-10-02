@@ -193,7 +193,7 @@ $genwave_install_agent_now = $genwave_is_connected && \GenWavePlugin\Core\PanelC
 
                 <div class="gw-acct__features">
                     <div class="gw-feat"><span class="gw-feat__ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><div><strong><?php esc_html_e('Natural conversation', 'gen-wave'); ?></strong><span><?php esc_html_e('Run your whole site by talking to the AI.', 'gen-wave'); ?></span></div></div>
-                    <div class="gw-feat"><span class="gw-feat__ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span><div><strong><?php esc_html_e('250+ actions', 'gen-wave'); ?></strong><span><?php esc_html_e('Pages, WooCommerce, plugins and error fixing.', 'gen-wave'); ?></span></div></div>
+                    <div class="gw-feat"><span class="gw-feat__ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span><div><strong><?php esc_html_e('Every area of WordPress', 'gen-wave'); ?></strong><span><?php esc_html_e('Content, WooCommerce, plugins, SEO and error fixing.', 'gen-wave'); ?></span></div></div>
                     <div class="gw-feat"><span class="gw-feat__ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><div><strong><?php esc_html_e('Safe by design', 'gen-wave'); ?></strong><span><?php esc_html_e('A preview before every change to your site.', 'gen-wave'); ?></span></div></div>
                 </div>
 
@@ -261,7 +261,6 @@ $genwave_install_agent_now = $genwave_is_connected && \GenWavePlugin\Core\PanelC
                 </details>
 
                 <div class="gw-acct__help">
-                    <a href="<?php echo esc_url(\GenWavePlugin\Core\Links::register()); ?>" target="_blank"><?php esc_html_e("Don't have an account? Sign up free", 'gen-wave'); ?></a>
                     <a href="<?php echo esc_url(\GenWavePlugin\Core\Links::support()); ?>" target="_blank"><?php esc_html_e('Need help? Contact support', 'gen-wave'); ?></a>
                 </div>
 

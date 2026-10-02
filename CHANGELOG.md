@@ -6,6 +6,17 @@ changelog for WordPress.org lives in `readme.txt` and is written at release time
 
 ## Unreleased
 
+## 1.2.1 - 2026-10-02
+
+### Changed
+
+- Copy without counts or superlatives, as on genwave.ai: the plugin description
+  (Plugins screen) no longer says "#1", "250+ actions", "7-layer security" or
+  "48+ languages", and the Account page's feature tile reads "Every area of
+  WordPress" instead of "250+ actions".
+- The "Don't have an account? Sign up free" link is gone from the Account page:
+  "Connect to Genwave" takes a visitor without an account through sign-up.
+
 ## 1.2.0 - 2026-10-02
 
 ### Added
