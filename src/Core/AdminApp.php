@@ -145,6 +145,8 @@ class AdminApp
                 'licenseKey'    => (!$connected && $canManage) ? $licenseKey : '',
                 'usageText'     => $usage['text'] ?? '',
                 'usageTitle'    => $usage['title'] ?? '',
+                // ok | low | out (Free), light (paid past fair use), '' (nothing to say)
+                'usageState'    => $usage['state'] ?? '',
                 'canManage'     => $canManage,
                 'connectUrl'    => $canManage ? PanelConnect::startUrl() : '',
             ],

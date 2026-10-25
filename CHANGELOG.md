@@ -6,6 +6,17 @@ changelog for WordPress.org lives in `readme.txt` and is written at release time
 
 ## Unreleased
 
+### Changed
+
+- **No number of AI actions anywhere.** The Free plan is "Limited use" in the
+  admin bar and on the Genwave screens; near the end of the month's free use it
+  says "Free use almost used up", and when used up "Free use used up · Upgrade"
+  with an invitation to upgrade (`AdminBar::usage_label` returns a `state`:
+  ok, low, out, light; the brain's `free_state` is used when the Agent stored
+  it, otherwise the stored balance with the brain's thresholds). The Free
+  plan's label opens the plans page. The dashboard stats AJAX no longer sends
+  the credit balance to the browser.
+
 ## 1.3.0
 
 ### Changed

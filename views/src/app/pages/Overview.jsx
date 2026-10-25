@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Glyph from '../Glyph';
-import { data, t, ajax, Card, ActionRow, Button, Stats, PageHeader, Spinner } from '../ui';
+import { data, t, ajax, Card, ActionRow, Button, Stats, PageHeader, Spinner, usageWords, UpgradeCallout } from '../ui';
 
 /** Where this site stands with Genwave, and the ways in. */
 export default function Overview({ go }) {
@@ -62,10 +62,12 @@ export default function Overview({ go }) {
                 </div>
             )}
 
+            {a.connected && <UpgradeCallout a={a} links={d.links} />}
+
             {a.connected && (
                 <Stats
                     items={[
-                        { icon: 'chart', label: t('Usage', 'שימוש'), value: a.usageText || t('Included', 'כלול'), note: a.usageTitle },
+                        { icon: 'chart', label: t('Usage', 'שימוש'), value: usageWords(a) },
                         { icon: 'bolt', label: t('Requests', 'בקשות'), value: requests === null ? <Spinner /> : requests },
                         {
                             icon: 'bot',

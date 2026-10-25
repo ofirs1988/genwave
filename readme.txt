@@ -118,7 +118,7 @@ Yes. This plugin is free and includes AI writing for single posts and products. 
 
 = How does pricing work? =
 
-Genwave is free to start, with no credit card needed. The Free plan includes about 30 AI actions a month on one site. Pro and Business have no credits to count: normal use of your site is fully included, and so is Genwave Studio. You can see current plans on our [pricing page](https://genwave.ai/pricing/).
+Genwave is free to start, with no credit card needed. The Free plan includes limited AI use each month on one site. Pro and Business have no credits to count: normal use of your site is fully included, and so is Genwave Studio. You can see current plans on our [pricing page](https://genwave.ai/pricing/).
 
 = Which languages does it support? =
 

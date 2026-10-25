@@ -27,6 +27,36 @@ export async function ajax(action, fields = {}) {
     }
 }
 
+/** How usage stands, in words: never a number (AdminBar::usage_label states). */
+export function usageWords(a) {
+    const words = {
+        ok: t('Limited use', 'שימוש מוגבל'),
+        low: t('Free use almost used up', 'השימוש החינמי כמעט נגמר'),
+        out: t('Free use used up', 'השימוש החינמי של החודש נוצל'),
+        light: t('Light mode', 'מצב חסכוני'),
+    };
+    return words[a?.usageState] || a?.usageText || t('Normal use fully included', 'שימוש רגיל כלול במלואו');
+}
+
+/** The invitation when the Free plan's monthly use is almost or fully used. */
+export function UpgradeCallout({ a, links }) {
+    if (a?.usageState !== 'out' && a?.usageState !== 'low') return null;
+    const out = a.usageState === 'out';
+    return (
+        <Callout
+            tone="ok"
+            icon="sparkle"
+            title={out ? t("You've used this month's free use", 'השתמשת בכל השימוש החינמי של החודש') : t('Your free use is almost used up', 'השימוש החינמי של החודש כמעט נגמר')}
+            actions={<Button size="sm" variant="primary" icon="arrowOut" href={links?.plans} external>{t('Upgrade', 'לשדרוג')}</Button>}
+        >
+            {t(
+                'Enjoying what we built together? On a paid plan the agent keeps working for you, with the best models and AI images.',
+                'אהבת את מה שעשינו יחד? בתוכנית בתשלום הסוכן ממשיך לעבוד בשבילך, עם המודלים הטובים ביותר ויצירת תמונות.',
+            )}
+        </Callout>
+    );
+}
+
 export function Spinner({ size = 16 }) {
     return (
         <svg className="gw-spin" width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
