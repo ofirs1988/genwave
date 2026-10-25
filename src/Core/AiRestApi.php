@@ -49,6 +49,14 @@ class AiRestApi extends WP_REST_Controller
      * existing denial, and ONLY for the `gen-wave/v1` namespace; every route still
      * runs its own permission_callback afterwards, so nothing is actually loosened.
      *
+     * Two things are never cleared (1.2.2):
+     *  - core's own cookie check (`rest_cookie_invalid_nonce`): with a wrong nonce
+     *    WordPress keeps the cookie user logged in and only this error stops the
+     *    request, so clearing it turned any cookie request into a CSRF;
+     *  - anything that is not our route. The route is the one WordPress parsed
+     *    (`rest_route`), not a substring of the raw URI: a query string such as
+     *    `/wp-json/wp/v2/users?x=/wp-json/gen-wave/v1/` used to count as ours.
+     *
      * @param mixed $result null (no auth attempted), true (allowed) or WP_Error/false (denied).
      * @return mixed
      */
@@ -59,20 +67,33 @@ class AiRestApi extends WP_REST_Controller
             return $result;
         }
 
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only route match, no state change
-        $uri = isset($_SERVER['REQUEST_URI']) ? wp_unslash($_SERVER['REQUEST_URI']) : '';
-        if (!is_string($uri) || $uri === '') {
+        // Core's cookie authentication said no: that answer stands.
+        if (is_wp_error($result) && in_array('rest_cookie_invalid_nonce', $result->get_error_codes(), true)) {
             return $result;
         }
 
-        $prefix = rest_get_url_prefix(); // usually "wp-json"
-        $ns = $this->namespace;          // "gen-wave/v1"
-        $ours =
-            strpos($uri, '/' . $prefix . '/' . $ns . '/') !== false ||   // pretty permalinks
-            strpos($uri, 'rest_route=/' . $ns . '/') !== false ||        // plain permalinks
-            strpos($uri, 'rest_route=' . rawurlencode('/' . $ns . '/')) !== false; // encoded
+        return $this->is_own_route($this->current_rest_route()) ? true : $result;
+    }
 
-        return $ours ? true : $result;
+    /** The REST route WordPress is serving (e.g. "/gen-wave/v1/verify-domain"), or ''. */
+    private function current_rest_route(): string
+    {
+        if (isset($GLOBALS['wp']) && is_object($GLOBALS['wp']) && !empty($GLOBALS['wp']->query_vars['rest_route'])) {
+            return (string) $GLOBALS['wp']->query_vars['rest_route'];
+        }
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only route match, no state change
+        if (isset($_GET['rest_route']) && is_string($_GET['rest_route'])) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            return sanitize_text_field(wp_unslash($_GET['rest_route']));
+        }
+        return '';
+    }
+
+    /** Whether a REST route is in this plugin's namespace (the route itself, never its query). */
+    public function is_own_route(string $route): bool
+    {
+        $route = '/' . ltrim($route, '/');
+        return strpos($route, '/' . $this->namespace . '/') === 0;
     }
 
     /**
@@ -448,7 +469,17 @@ class AiRestApi extends WP_REST_Controller
         $token = $request->get_param('token');
 
         // Secure challenge-response — proves domain control + key possession.
+        // Answered only while this site is itself connecting or disconnecting
+        // (AgentAuth::openChallenge, 1.2.2): otherwise anyone holding the license
+        // key could have the panel "connect" this site for them and receive its
+        // signing key.
         if (!empty($challenge)) {
+            if (!AgentAuth::challengeOpen()) {
+                return new WP_REST_Response([
+                    'success' => false,
+                    'message' => __('This site is not connecting right now. Connect it from its Genwave settings.', 'gen-wave')
+                ], 403);
+            }
             $licenseKey = Config::get('license_key');
             if (empty($licenseKey)) {
                 return new WP_REST_Response([
@@ -466,23 +497,12 @@ class AiRestApi extends WP_REST_Controller
             ], 200);
         }
 
-        // Legacy token echo (unchanged).
-        if (empty($token)) {
-            return new WP_REST_Response([
-                'success' => false,
-                'message' => __('Verification token is required', 'gen-wave')
-            ], 400);
-        }
-
-        // NOTE (F10): the exact plugin version is intentionally NOT included — this
-        // endpoint is public (permission_callback __return_true), and leaking the
-        // precise version lets an unauthenticated caller fingerprint the site.
+        // The legacy token echo (retired account.genwave.ai flow) is gone (1.2.2): it
+        // repeated any token back, so anyone could "verify" any site with it.
+        unset($token);
         return new WP_REST_Response([
-            'success' => true,
-            'message' => __('Genwave plugin is active', 'gen-wave'),
-            'token' => $token,
-            'domain' => get_site_url(),
-            'verified_at' => current_time('mysql')
-        ], 200);
+            'success' => false,
+            'message' => __('A verification challenge is required', 'gen-wave')
+        ], 400);
     }
 }

@@ -50,8 +50,8 @@ class AjaxManager
         // Product/Post handlers - delegated to ProductHandler
         add_action('wp_ajax_genwave_get_all_products', [$this->productHandler, 'getAllProducts']);
         add_action('wp_ajax_genwave_get_all_posts', [$this->productHandler, 'getAllPosts']);
+        // Logged-in only (1.2.2): the handler checks edit_post for the post asked for.
         add_action('wp_ajax_genwave_get_post_data', [$this->productHandler, 'handle_get_post_data']);
-        add_action('wp_ajax_nopriv_genwave_get_post_data', [$this->productHandler, 'handle_get_post_data']);
 
         add_action('wp_ajax_genwave_refresh_credits', [$this, 'handle_refresh_credits']);
         add_action('wp_ajax_genwave_refresh_tokens', [$this, 'handle_refresh_credits']); // backward compat
@@ -64,11 +64,8 @@ class AjaxManager
         add_action('wp_ajax_genwave_list_plugins', [$this->pluginsHandler, 'handle_list_plugins']);
         add_action('wp_ajax_genwave_install_plugin', [$this->pluginsHandler, 'handle_install_plugin']);
 
-        // Polling handlers - delegated to PollingHandler
-        add_action('wp_ajax_genwave_polling_results', [$this->pollingHandler, 'handle_ai_polling_results']);
-        add_action('wp_ajax_nopriv_genwave_polling_results', [$this->pollingHandler, 'handle_ai_polling_results']);
-        add_action('wp_ajax_genwave_poll_proxy', [$this->pollingHandler, 'handle_ai_poll_proxy']);
-        add_action('wp_ajax_nopriv_genwave_poll_proxy', [$this->pollingHandler, 'handle_ai_poll_proxy']);
+        // REMOVED (1.2.2): genwave_polling_results and genwave_poll_proxy (also on
+        // nopriv). Only the unused streaming client called them.
         // REMOVED (F11): the genwave_update_credit_balance / _token_balance actions
         // and their handler are gone. Nothing called them (no JS caller anywhere),
         // they let the client dictate the displayed balance, and were even exposed

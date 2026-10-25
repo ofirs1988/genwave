@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Genwave - AI Agent 1.2.0\n"
+"Project-Id-Version: Genwave - AI Agent 1.2.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/gen-wave\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-02T15:04:44+02:00\n"
+"POT-Creation-Date: 2026-10-25T02:28:21+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: gen-wave\n"
@@ -52,7 +52,7 @@ msgstr ""
 msgid "Free AI actions left this month"
 msgstr ""
 
-#: src/AjaxManager.php:983
+#: src/AjaxManager.php:980
 #: src/Handlers/GenerationHandler.php:351
 #: src/Handlers/PollingHandler.php:41
 #: src/Handlers/ProductHandler.php:34
@@ -62,63 +62,66 @@ msgid "Security verification failed"
 msgstr ""
 
 #: src/Controllers/VerifyLoginController.php:26
-#: src/Core/AgentAuth.php:44
+#: src/Core/AgentAuth.php:66
 msgid "Enter your license key first."
 msgstr ""
 
-#: src/Core/AgentAuth.php:64
+#: src/Core/AgentAuth.php:90
 #: src/Core/PanelConnect.php:157
 msgid "Connection failed."
 msgstr ""
 
-#: src/Core/AgentAuth.php:81
+#: src/Core/AgentAuth.php:107
 msgid "Your site is connected."
 msgstr ""
 
-#: src/Core/AgentAuth.php:107
+#: src/Core/AgentAuth.php:135
 msgid "Your site has been disconnected."
 msgstr ""
 
-#: src/Core/AgentAuth.php:129
+#: src/Core/AgentAuth.php:157
 msgid "Genwave needs to reconnect your site to keep working securely."
 msgstr ""
 
-#: src/Core/AgentAuth.php:130
+#: src/Core/AgentAuth.php:158
 msgid "Reconnect now"
 msgstr ""
 
-#: src/Core/AiRestApi.php:104
-#: src/Core/AiRestApi.php:121
+#: src/Core/AiRestApi.php:125
+#: src/Core/AiRestApi.php:142
 msgid "You do not have permission to access this endpoint"
 msgstr ""
 
-#: src/Core/AiRestApi.php:231
+#: src/Core/AiRestApi.php:252
 msgid "Response data saved successfully"
 msgstr ""
 
-#: src/Core/AiRestApi.php:233
+#: src/Core/AiRestApi.php:254
 msgid "Invalid JSON in response"
 msgstr ""
 
-#: src/Core/AiRestApi.php:236
+#: src/Core/AiRestApi.php:257
 msgid "Missing response key in data"
 msgstr ""
 
-#: src/Core/AiRestApi.php:240
+#: src/Core/AiRestApi.php:261
 msgid "No data received"
 msgstr ""
 
-#: src/Core/AiRestApi.php:456
+#: src/Core/AiRestApi.php:480
+msgid "This site is not connecting right now. Connect it from its Genwave settings."
+msgstr ""
+
+#: src/Core/AiRestApi.php:487
 msgid "Plugin is not configured with a license key"
 msgstr ""
 
-#: src/Core/AiRestApi.php:462
-#: src/Core/AiRestApi.php:482
+#: src/Core/AiRestApi.php:493
 msgid "Genwave plugin is active"
 msgstr ""
 
-#: src/Core/AiRestApi.php:473
-msgid "Verification token is required"
+#: src/Core/AiRestApi.php:505
+msgid "A verification challenge is required"
 msgstr ""
 
 #: src/Core/PanelConnect.php:56
@@ -304,6 +307,10 @@ msgstr ""
 #: src/Handlers/ProductHandler.php:40
 #: src/Handlers/ProductHandler.php:120
 msgid "Insufficient permissions"
+msgstr ""
+
+#: src/Handlers/ProductHandler.php:254
+msgid "You do not have permission to read this post."
 msgstr ""
 
 #: src/MetaBox.php:33

@@ -248,7 +248,7 @@ class GenerationHandler
 
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-                error_log("Genwave: License Key: " . $license_key);
+                error_log("Genwave: Has License Key: " . ($license_key ? 'YES' : 'NO'));
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
                 error_log("Genwave: Has Token: " . ($encrypted_token ? 'YES' : 'NO'));
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only

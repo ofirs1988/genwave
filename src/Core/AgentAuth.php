@@ -27,6 +27,28 @@ class AgentAuth
         return 'https://app.genwave.ai';
     }
 
+    /**
+     * The verify-domain challenge is answered only while this site is talking to
+     * the panel (connect, disconnect): a short window opened before the request
+     * and closed after it. Five minutes covers a slow panel; it closes itself.
+     */
+    private const CHALLENGE_WINDOW = 'genwave_challenge_open';
+
+    public static function openChallenge(): void
+    {
+        set_transient(self::CHALLENGE_WINDOW, 1, 5 * MINUTE_IN_SECONDS);
+    }
+
+    public static function closeChallenge(): void
+    {
+        delete_transient(self::CHALLENGE_WINDOW);
+    }
+
+    public static function challengeOpen(): bool
+    {
+        return (bool) get_transient(self::CHALLENGE_WINDOW);
+    }
+
     /** True once the site has completed the signed connect. */
     public static function isConnected(): bool
     {
@@ -44,6 +66,8 @@ class AgentAuth
             return ['success' => false, 'message' => __('Enter your license key first.', 'gen-wave')];
         }
 
+        // The panel calls back to verify-domain during this request: answer it now, and only now.
+        self::openChallenge();
         $response = wp_remote_post(self::panelUrl() . '/api/plugin/connect', [
             'headers' => ['Content-Type' => 'application/json', 'Accept' => 'application/json'],
             'body' => wp_json_encode([
@@ -54,6 +78,8 @@ class AgentAuth
             // Local panel over http/self-signed; real panel is always verified.
             'sslverify' => ! preg_match('#(localhost|127\.0\.0\.1|\.local)#', self::panelUrl()),
         ]);
+
+        self::closeChallenge();
 
         if (is_wp_error($response)) {
             return ['success' => false, 'message' => $response->get_error_message()];
@@ -92,6 +118,7 @@ class AgentAuth
         $siteUrl = Config::get('domain') ?: get_site_url();
 
         if (!empty($licenseKey)) {
+            self::openChallenge();
             wp_remote_post(self::panelUrl() . '/api/plugin/disconnect', [
                 'headers' => ['Content-Type' => 'application/json', 'Accept' => 'application/json'],
                 'body' => wp_json_encode([
@@ -101,6 +128,7 @@ class AgentAuth
                 'timeout' => 20,
                 'sslverify' => ! preg_match('#(localhost|127\.0\.0\.1|\.local)#', self::panelUrl()),
             ]);
+            self::closeChallenge();
         }
 
         self::forget();

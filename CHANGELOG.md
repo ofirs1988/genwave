@@ -6,6 +6,36 @@ changelog for WordPress.org lives in `readme.txt` and is written at release time
 
 ## Unreleased
 
+## 1.2.2 - 2026-10-25
+
+### Security
+
+- **REST authentication filter no longer clears core's cookie check.**
+  `AiRestApi::allow_own_routes_through` (`rest_authentication_errors`, 9999)
+  cleared any denial when the raw `REQUEST_URI` contained `/wp-json/gen-wave/v1/`,
+  query string included, and that also cleared `rest_cookie_invalid_nonce`. With
+  a wrong nonce WordPress keeps the cookie user logged in, so a request such as
+  `/wp-json/wp/v2/users?x=/wp-json/gen-wave/v1/` from another site ran as the
+  logged-in administrator (CSRF on every core route). Now
+  `rest_cookie_invalid_nonce` is never cleared, and "ours" is the route WordPress
+  parsed (`rest_route` query var, or `$_GET['rest_route']` on plain permalinks)
+  starting with `/gen-wave/v1/`.
+- **verify-domain answers a challenge only while the site is connecting.**
+  `AgentAuth::connect()` / `disconnect()` open a five-minute window
+  (`genwave_challenge_open` transient) before calling the panel and close it
+  after; outside it `GET gen-wave/v1/verify-domain?challenge=` answers 403.
+  Before, anyone holding the license key could have the panel connect the site
+  for them and receive its signing key. Connect to Genwave (`PanelConnect`) goes
+  through `connect()`, so it is covered.
+- The legacy `token` echo of verify-domain is gone (only the retired
+  account.genwave.ai flow used it): a request without a challenge gets 400.
+- The license key is no longer written to `debug.log` (`GenerationHandler`,
+  under `WP_DEBUG`); only whether one is set.
+- `genwave_get_post_data` (AJAX) is logged-in only and checks `edit_post` for the
+  post asked for; a nonce alone no longer reads any post.
+- Removed the `genwave_polling_results` and `genwave_poll_proxy` AJAX actions
+  (priv and nopriv): nothing called them but the unused streaming client.
+
 ## 1.2.1 - 2026-10-02
 
 ### Changed

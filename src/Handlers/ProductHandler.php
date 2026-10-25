@@ -249,6 +249,12 @@ class ProductHandler
                 return;
             }
 
+            // A nonce proves where the request came from, not who may read the post (1.2.2).
+            if (!current_user_can('edit_post', $post_id)) {
+                wp_send_json_error(__('You do not have permission to read this post.', 'gen-wave'), 403);
+                return;
+            }
+
             // Get the post
             $post = get_post($post_id);
             if (!$post) {
