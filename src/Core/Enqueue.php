@@ -116,28 +116,8 @@ class Enqueue {
         // Enqueue admin scripts
         wp_enqueue_script('gen-wave-plugin-admin-script', GEN_WAVE_ASSETS_URL .'/js/admin.js', ['jquery'], GEN_WAVE_VERSION, true);
 
-        // Always enqueue streaming client for LiteLLM functionality
-        wp_enqueue_script('gen-wave-plugin-streaming-client', GEN_WAVE_ASSETS_URL .'/js/streaming-client.js', ['jquery'], GEN_WAVE_VERSION, true);
-
-        // Credentials are stored in plaintext (the shared-key AES layer was removed
-        // — findings F1/F9). Only expose them to users who may operate the agent.
-        // This method also enqueues on post/page/product edit screens, which
-        // authors/editors can reach, so gating on manage_options keeps the SSO
-        // token, uidd and license key out of window.genwaveConfig for low-privilege
-        // roles (finding F2). Server-side API calls read the credentials from
-        // Config directly and are unaffected.
-        // v2 signed auth: the browser never holds credentials. Generation runs
-        // through server-side AJAX, which signs requests from Config directly.
-        // Add config for streaming client
-        wp_localize_script('gen-wave-plugin-streaming-client', 'genwaveConfig', [
-            'isDev' => $this->isDevelopmentEnvironment(),
-            'isDebug' => defined('WP_DEBUG') && WP_DEBUG,
-            'environment' => $this->getEnvironment(),
-            'ajaxUrl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('genwave_admin_nonce'),
-            'domain' => $this->getCurrentDomain(),
-            'useProxy' => $this->isDevelopmentEnvironment(),
-        ]);
+        // The browser never holds credentials: generation runs through
+        // server-side AJAX, which signs requests from Config directly.
         // Localize script to pass PHP data to JS
         wp_localize_script('gen-wave-plugin-admin-script', 'genwave_admin_data', [
             'ajaxurl' => admin_url('admin-ajax.php'),
@@ -145,74 +125,6 @@ class Enqueue {
             'refresh_credits_nonce' => wp_create_nonce('refresh_credits_nonce'),
             'disconnect_account_nonce' => wp_create_nonce('disconnect_account_nonce'),
             'genwave_nonce' => wp_create_nonce('genwave_nonce'),
-            // Installing the Agent right after "Connect to Genwave" (PluginsHandler).
-            'plugins_nonce' => wp_create_nonce('genwave_plugins_nonce'),
         ]);
     }
-
-    /**
-     * Check if current environment is development
-     */
-    private function isDevelopmentEnvironment() {
-        // Method 1: Check WordPress constants
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            return true;
-        }
-
-        // Method 2: Check if it's a local development environment
-        $host = isset($_SERVER['HTTP_HOST']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_HOST'])) : '';
-        $localHosts = [
-            'localhost',
-            '127.0.0.1',
-            '::1',
-            '.local',
-            '.test',
-            '.dev',
-            'wp.local',
-            'ai.local'
-        ];
-
-        foreach ($localHosts as $localHost) {
-            if (strpos($host, $localHost) !== false) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Get current environment type
-     */
-    private function getEnvironment() {
-        if (defined('WP_ENVIRONMENT_TYPE')) {
-            return WP_ENVIRONMENT_TYPE;
-        }
-
-        if ($this->isDevelopmentEnvironment()) {
-            return 'development';
-        }
-
-        $host = isset($_SERVER['HTTP_HOST']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_HOST'])) : '';
-        if (strpos($host, 'staging') !== false || strpos($host, 'dev') !== false) {
-            return 'staging';
-        }
-
-        return 'production';
-    }
-
-    /**
-     * Get current domain for API calls
-     */
-    private function getCurrentDomain() {
-        $domain = isset($_SERVER['HTTP_HOST']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_HOST'])) : '';
-
-        // Remove www. prefix if exists
-        if (strpos($domain, 'www.') === 0) {
-            $domain = substr($domain, 4);
-        }
-
-        return $domain;
-    }
-
 }

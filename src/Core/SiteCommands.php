@@ -11,14 +11,14 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
- * Commands from the customer's Genwave account (app.genwave.ai) to this site.
+ * Read-only status questions from the customer's Genwave account (app.genwave.ai).
  *
- * Genwave plugins are installed from the account, not from this dashboard.
- * WordPress.org guideline 8: a plugin hosted there may not install plugins from
- * other servers on its own; a management service that pushes software from its
- * own domain may. The customer clicks "Install" in their Genwave account, the
- * account sends a signed command here, and this route installs the plugin from
- * Genwave's download server and activates it.
+ * The account's Sites page shows which Genwave plugins a connected site has.
+ * It asks here with a signed request, and this route answers with what is
+ * installed and active. Nothing is installed, activated or changed: since
+ * 1.3.1 this plugin never installs or activates other plugins. Genwave
+ * plugins are added by the site's administrator, by uploading the zip from
+ * their Genwave account in Plugins > Add New > Upload Plugin.
  *
  * Signed with a key only this site and the account can derive:
  *   command_key = HMAC-SHA256(site_key, "genwave-site-command-v1")
@@ -27,22 +27,15 @@ use WP_REST_Response;
  *   canonical = "POST" \n "/gen-wave/v1/command" \n sha256_hex(body) \n timestamp \n nonce
  *   headers   X-GW-Timestamp, X-GW-Nonce, X-GW-Signature (base64)
  * Five minutes either way, each nonce once.
- * Body (JSON): { "site": <site_uid>, "op": "status" | "install", "slug": <plugin> }.
- *
- * Only Genwave's own plugins, only from cdn.genwave.ai: a command names one of
- * the slugs below, never a URL.
+ * Body (JSON): { "site": <site_uid>, "op": "status" }.
  */
 class SiteCommands
 {
     const NS = 'gen-wave/v1';
     const ROUTE = '/command';
 
-    /** The plugins a command may install, and where each one comes from. */
-    const PLUGINS = [
-        'genwave-agent'    => 'https://cdn.genwave.ai/plugins/genwave-agent-latest.zip',
-        'genwave-chatbot'  => 'https://cdn.genwave.ai/plugins/genwave-chatbot-latest.zip',
-        'genwave-elements' => 'https://cdn.genwave.ai/plugins/genwave-elements-latest.zip',
-    ];
+    /** The Genwave plugins the status reports on. */
+    const PLUGINS = ['genwave-agent', 'genwave-chatbot', 'genwave-elements'];
 
     private const SKEW = 300;
 
@@ -114,24 +107,27 @@ class SiteCommands
             return new WP_REST_Response(['success' => true] + self::status(), 200);
         }
 
+        // Accounts built for 1.3.0 may still ask this site to install a plugin.
+        // It never does: the answer says how the administrator adds it instead.
         if ($op === 'install') {
-            $slug = (string) ($data['slug'] ?? '');
-            if (!isset(self::PLUGINS[$slug])) {
-                return new WP_REST_Response(['success' => false, 'code' => 'unknown_plugin', 'message' => __('Genwave does not offer this plugin.', 'gen-wave')], 400);
-            }
-            $result = self::install($slug);
-            return new WP_REST_Response($result + self::status(), $result['success'] ? 200 : 422);
+            return new WP_REST_Response([
+                'success' => false,
+                'code' => 'cannot_install',
+                'message' => __('This plugin does not install other plugins. Download the plugin from your Genwave account and upload it in Plugins > Add New > Upload Plugin.', 'gen-wave'),
+            ] + self::status(), 422);
         }
 
         return new WP_REST_Response(['success' => false, 'code' => 'unknown_op', 'message' => __('Unknown command.', 'gen-wave')], 400);
     }
 
-    /** Where each Genwave plugin stands here, and whether WordPress can install plugins by itself. */
+    /** Where each Genwave plugin stands here. */
     public static function status(): array
     {
-        self::loadAdminIncludes();
+        if (!function_exists('get_plugins')) {
+            require_once ABSPATH . 'wp-admin/includes/plugin.php';
+        }
         $plugins = [];
-        foreach (array_keys(self::PLUGINS) as $slug) {
+        foreach (self::PLUGINS as $slug) {
             $found = self::find($slug);
             $plugins[$slug] = [
                 'installed' => $found !== null,
@@ -141,67 +137,11 @@ class SiteCommands
         }
         return [
             'plugins' => $plugins,
-            'can_install' => self::canInstall(),
+            // The account offers its zip download instead of an install button.
+            'can_install' => false,
             'wp' => get_bloginfo('version'),
             'php' => PHP_VERSION,
         ];
-    }
-
-    /**
-     * Install (when missing) and activate one Genwave plugin.
-     *
-     * @return array{success:bool, code?:string, message?:string}
-     */
-    private static function install(string $slug): array
-    {
-        self::loadAdminIncludes();
-
-        $found = self::find($slug);
-        if ($found === null) {
-            if (!self::canInstall()) {
-                return [
-                    'success' => false,
-                    'code' => 'cannot_install',
-                    'message' => __('WordPress on this site cannot install plugins by itself (file changes are turned off or need FTP details). Download the plugin and upload it in Plugins > Add New.', 'gen-wave'),
-                ];
-            }
-            $upgrader = new \Plugin_Upgrader(new \Automatic_Upgrader_Skin());
-            $result = $upgrader->install(self::PLUGINS[$slug]);
-            if (is_wp_error($result)) {
-                return ['success' => false, 'code' => 'install_failed', 'message' => $result->get_error_message()];
-            }
-            if ($result !== true) {
-                $messages = $upgrader->skin->get_upgrade_messages();
-                return [
-                    'success' => false,
-                    'code' => 'install_failed',
-                    'message' => $messages ? wp_strip_all_tags(implode(' ', $messages)) : __('The plugin could not be installed.', 'gen-wave'),
-                ];
-            }
-            wp_clean_plugins_cache();
-            $found = self::find($slug);
-            if ($found === null) {
-                return ['success' => false, 'code' => 'install_failed', 'message' => __('The plugin was downloaded but its folder was not found.', 'gen-wave')];
-            }
-        }
-
-        if (!is_plugin_active($found['file'])) {
-            $activated = activate_plugin($found['file']);
-            if (is_wp_error($activated)) {
-                return ['success' => false, 'code' => 'activate_failed', 'message' => $activated->get_error_message()];
-            }
-        }
-
-        return ['success' => true];
-    }
-
-    /** True when WordPress can write plugin files without asking for FTP details. */
-    private static function canInstall(): bool
-    {
-        if (function_exists('wp_is_file_mod_allowed') && !wp_is_file_mod_allowed('genwave_site_command')) {
-            return false;
-        }
-        return get_filesystem_method([], WP_PLUGIN_DIR) === 'direct';
     }
 
     /** A plugin by its folder name: ['file' => "slug/main.php", 'version' => "1.2.3"], or null. */
@@ -213,13 +153,5 @@ class SiteCommands
             }
         }
         return null;
-    }
-
-    private static function loadAdminIncludes(): void
-    {
-        require_once ABSPATH . 'wp-admin/includes/plugin.php';
-        require_once ABSPATH . 'wp-admin/includes/file.php';
-        require_once ABSPATH . 'wp-admin/includes/misc.php';
-        require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
     }
 }

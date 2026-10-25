@@ -6,6 +6,7 @@
 /.gitignore
 /.gitattributes
 /.distignore
+/.wordpress-org
 /.gitleaks.toml
 /.pre-commit-config.yaml
 /.claude
@@ -14,7 +15,6 @@
 /CHANGELOG.md
 /README.md
 /package-lock.json
-/webpack.config.js
 
 # OS / editor cruft
 .DS_Store

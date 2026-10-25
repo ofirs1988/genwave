@@ -4,10 +4,71 @@ Developer-facing changelog for the GenWave (free / anchor) plugin. The customer
 changelog for WordPress.org lives in `readme.txt` and is written at release time
 (security items are described there generically, not by vulnerability).
 
-## Unreleased
+## 1.3.1
+
+### Changed
+
+- **This plugin no longer installs or activates other plugins (WordPress.org
+  guideline 8).** `Core\SiteCommands` keeps only the read-only `op=status`
+  (which Genwave plugins are installed/active, WP and PHP versions) and now
+  always reports `can_install: false`. `op=install` no longer downloads from
+  cdn.genwave.ai or calls `Plugin_Upgrader`/`activate_plugin`; it answers 422
+  `cannot_install` with the manual path, so accounts built for 1.3.0 show
+  their zip fallback. The `PLUGINS` map of CDN URLs is gone.
+- **No auto-install after connecting.** `PanelConnect::start()` sends
+  `agent=0`, so the approval page no longer offers "Also install Genwave
+  Agent", and the callback ignores `install_agent`: no more redirect to
+  `app.genwave.ai/sites/install?...&auto=1`. The admin lands on the Account
+  screen.
+- **Missing Genwave plugins link to the account.** `Links::install()`,
+  `Links::download()` and `Links::agentDownload()` are removed;
+  `Links::getPlugins()` (app.genwave.ai/connect, the page with every Genwave
+  plugin's zip) and `Links::uploadPlugin()` (Plugins > Add New > Upload
+  Plugin) replace them. `AgentPlugin::url()` for a missing agent and
+  `PluginsHandler` (`get_url`, no `install_url`/`zip_url`) use them. Account,
+  Overview and Plugins screens say plainly that the agent is not on
+  WordPress.org and is uploaded by hand ("Get Genwave Agent" + "Upload
+  Plugin").
+- **`GENWAVE_API_URL` defaults to https://app.genwave.ai.** account.genwave.ai
+  is retired. Nothing in this plugin requests that base (`ApiManager`'s
+  request methods have no caller here); the constant stays for older Genwave
+  plugins.
+- `.distignore`: `webpack.config.js` now ships (build tools with the source,
+  guideline 4); `.wordpress-org/` (listing assets) is excluded from trunk.
+- `wporg-release.yml`: new `version_type: none` releases the version already in
+  the files and keeps an existing readme changelog entry; the bump commit is
+  skipped when nothing changed. Note the deploy mirrors `.wordpress-org/` into
+  SVN `assets/` (with delete), so banners and icons are kept there too.
+
+### Fixed
+
+- **AI box on edit screens said "Connection Required" on connected sites.**
+  `MetaBox` only checked the legacy `uidd`; it now uses
+  `AgentAuth::isConnected()` (legacy `uidd` still counts).
+- **Plugin Check:** the four `parse_url()` calls in `AgentAuth` are
+  `wp_parse_url()`. Plugin Check 2.1.0 on a release-like build: 0 errors,
+  0 warnings.
+
+### Removed
+
+- `assets/js/streaming-client.js` (old LiteLLM client, dead since 1.1.2, with
+  a localhost:8000 fallback) and its enqueue/`genwaveConfig` localize, plus the
+  `Enqueue` helpers only it used. The unused `plugins_nonce` in
+  `genwave_admin_data` is gone too.
+- `AiRestApi::check_api_permission()` no longer accepts the license key in an
+  `X-Genwave-API-Key` header for `POST gen-wave/v1/responses`. No client sends
+  it (searched the brain, portal, dashboard, liteLLM and the Genwave plugins);
+  a logged-in user with `edit_posts` is still allowed.
 
 ### Docs
 
+- readme: version 1.3.1, how to add Genwave Agent by hand, a FAQ on why the
+  plugin does not install it, External services updated (account pages on
+  app.genwave.ai, read-only status requests, no cdn.genwave.ai downloads),
+  screenshot caption 4 matches the Plugins screen. Listing assets now live in
+  `.wordpress-org/` (banners, icons and the current screenshots copied from
+  SVN so the deploy's asset sync deletes nothing). New screenshots of the
+  1.3.x screens are still to be taken.
 - **WordPress.org readme rewritten to match the 1.3.0 code** (readme only, no
   code change, no version bump; meant for an in-place update of
   `trunk/readme.txt` and `tags/1.3.0/readme.txt` on SVN). The description now

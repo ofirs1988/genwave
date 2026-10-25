@@ -3,10 +3,10 @@ import Glyph from '../Glyph';
 import { data, t, ajax, Card, Button, Callout, PageHeader, Pill, Spinner } from '../ui';
 
 /**
- * The Genwave plugins and where each stands on this site. A missing one is
- * installed from the Genwave account (it sends this site a signed command,
- * Core\SiteCommands) or from its zip: a plugin hosted on WordPress.org may not
- * install plugins from other servers itself.
+ * The Genwave plugins and where each stands on this site. This plugin does not
+ * install them (a plugin hosted on WordPress.org may not install plugins from
+ * other servers): a missing one links to the Genwave account, where its zip is
+ * downloaded, and to WordPress's own Upload Plugin screen.
  */
 export default function Plugins() {
     const d = data();
@@ -39,10 +39,15 @@ export default function Plugins() {
                 eyebrow={t('Tools', 'כלים')}
                 title={t('Genwave plugins', 'התוספים של Genwave')}
                 sub={t(
-                    'Install a Genwave plugin from your Genwave account in one click: it installs it here and brings you back. Or download the zip and upload it in Plugins > Add New.',
-                    'מתקינים תוסף של Genwave מחשבון Genwave בלחיצה אחת: הוא מתקין אותו כאן ומחזיר אתכם. או מורידים את ה-ZIP ומעלים בתוספים > הוספת תוסף.',
+                    'These plugins are not on WordPress.org. To add one, download its zip from your Genwave account, then upload it in Plugins > Add New > Upload Plugin and activate it.',
+                    'התוספים האלה לא נמצאים ב-WordPress.org. כדי להוסיף אחד, מורידים את קובץ ה-ZIP שלו מחשבון Genwave, מעלים אותו בתוספים > הוספת תוסף > העלאת תוסף ומפעילים.',
                 )}
             />
+            {d.agent?.uploadUrl && (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                    <Button size="sm" variant="secondary" icon="download" href={d.agent.uploadUrl}>{t('Upload Plugin', 'העלאת תוסף')}</Button>
+                </div>
+            )}
 
             {error && <Callout tone="bad">{error}</Callout>}
 
@@ -86,11 +91,10 @@ function PluginRow({ p }) {
             <Pill>{t('Installed', 'מותקן')}</Pill>
         );
     } else {
-        action = (
-            <>
-                <Button size="sm" variant="ghost" icon="download" href={p.zip_url}>{t('Zip', 'ZIP')}</Button>
-                <Button size="sm" variant="primary" icon="arrowOut" href={p.install_url}>{t('Install', 'התקנה')}</Button>
-            </>
+        action = p.get_url ? (
+            <Button size="sm" variant="primary" icon="arrowOut" href={p.get_url} external>{t('Get it', 'להורדה')}</Button>
+        ) : (
+            <Pill>{t('Not installed', 'לא מותקן')}</Pill>
         );
     }
     return (

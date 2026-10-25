@@ -57,10 +57,10 @@ class AjaxManager
         // Dashboard stats endpoint
         add_action('wp_ajax_genwave_get_dashboard_stats', [$this, 'handle_get_dashboard_stats']);
 
-        // Plugin marketplace (install paid Genwave plugins from inside WP)
+        // The Genwave plugins and where each stands on this site (list only).
         add_action('wp_ajax_genwave_list_plugins', [$this->pluginsHandler, 'handle_list_plugins']);
-        // genwave_install_plugin is gone (1.3.0): Genwave plugins are installed from
-        // the customer's Genwave account (Core\SiteCommands), see Links::install().
+        // genwave_install_plugin is gone (1.3.0) and this plugin installs nothing
+        // (1.3.1): missing Genwave plugins link to the account, see Links::getPlugins().
 
         // REMOVED (1.2.2): genwave_polling_results and genwave_poll_proxy (also on
         // nopriv). Only the unused streaming client called them.

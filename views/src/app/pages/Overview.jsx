@@ -18,7 +18,7 @@ export default function Overview({ go }) {
     const agentAction = {
         active: { label: t('Open the Agent', 'פתיחת ה-Agent'), icon: 'chat' },
         inactive: { label: t('Activate Genwave Agent', 'הפעלת Genwave Agent'), icon: 'bolt' },
-        missing: { label: t('Install Genwave Agent', 'התקנת Genwave Agent'), icon: 'download' },
+        missing: { label: t('Get Genwave Agent', 'להורדת Genwave Agent'), icon: 'arrowOut' },
     }[agent.state] || { label: t('Open the Agent', 'פתיחת ה-Agent'), icon: 'chat' };
 
     return (
@@ -40,10 +40,15 @@ export default function Overview({ go }) {
                         <p className="gw-hero__detail">
                             {agent.state === 'active'
                                 ? t('Ask the Agent for anything on the site: pages, products, SEO, fixes.', 'בקשו מה-Agent כל דבר באתר: עמודים, מוצרים, SEO ותיקונים.')
-                                : t('One more step: the Agent chat is a separate plugin.', 'עוד צעד אחד: הצ׳אט של ה-Agent הוא תוסף נפרד.')}
+                                : agent.state === 'missing'
+                                  ? t('One more step: the Agent chat is a separate plugin. Download it from your Genwave account, then upload it in Plugins > Add New > Upload Plugin.', 'עוד צעד אחד: הצ׳אט של ה-Agent הוא תוסף נפרד. מורידים אותו מחשבון Genwave ומעלים בתוספים > הוספת תוסף > העלאת תוסף.')
+                                  : t('One more step: activate Genwave Agent, the Agent chat.', 'עוד צעד אחד: הפעלת Genwave Agent, הצ׳אט של ה-Agent.')}
                         </p>
                         <div className="gw-hero__actions">
-                            <Button variant="primary" href={agent.url} icon={agentAction.icon}>{agentAction.label}</Button>
+                            <Button variant="primary" href={agent.url} external={agent.state === 'missing'} icon={agentAction.icon}>{agentAction.label}</Button>
+                            {agent.state === 'missing' && agent.canUpload && (
+                                <Button variant="ghost" href={agent.uploadUrl} icon="download">{t('Upload Plugin', 'העלאת תוסף')}</Button>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -81,7 +86,7 @@ export default function Overview({ go }) {
                     <ActionRow icon="chat" label={t('Talk to the Agent', 'לדבר עם ה-Agent')} detail={t('Describe what you need in plain words. You see what will change before it happens.', 'מתארים מה צריך במילים פשוטות, ורואים מה ישתנה לפני שזה קורה.')} href={agent.url} />
                 )}
                 <ActionRow icon="write" label={t('Write with AI', 'כתיבה עם AI')} detail={t('Titles and descriptions for products and posts, one field at a time.', 'כותרות ותיאורים למוצרים ולפוסטים, שדה אחד בכל פעם.')} onClick={() => go('generate')} />
-                <ActionRow icon="puzzle" label={t('Genwave plugins', 'התוספים של Genwave')} detail={t('The Agent, the Chatbot and Elements, installed from your Genwave account.', 'ה-Agent, הצ׳אטבוט ו-Elements, מותקנים מחשבון Genwave שלך.')} onClick={() => go('plugins')} />
+                <ActionRow icon="puzzle" label={t('Genwave plugins', 'התוספים של Genwave')} detail={t('The Agent, the Chatbot and Elements, and where each one stands on this site.', 'ה-Agent, הצ׳אטבוט ו-Elements, ומה המצב של כל אחד מהם באתר.')} onClick={() => go('plugins')} />
                 <ActionRow icon="chart" label={t('Usage and plan', 'שימוש ותוכנית')} detail="app.genwave.ai" href={d.links?.usage} external />
             </Card>
         </div>

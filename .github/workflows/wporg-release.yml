@@ -9,6 +9,8 @@ name: Release to WordPress.org
 #
 # It bumps the version, writes the changelog, builds assets, deploys trunk +
 # tags/<version> to WordPress.org, commits the bump back, and cuts a GitHub Release.
+# The deploy also mirrors .wordpress-org/ (banners, icons, screenshots) into the
+# SVN assets/ folder, deleting anything there that is not in .wordpress-org/.
 
 on:
   workflow_dispatch:
@@ -22,8 +24,11 @@ on:
           - patch
           - minor
           - major
+          # Release the version already in gen-wave.php and readme.txt, with the
+          # changelog entry already written there (prepared and reviewed in a PR).
+          - none
       changelog:
-        description: 'Changelog (one line, shown under == Changelog ==)'
+        description: 'Changelog (one line, shown under == Changelog ==). With "none", only used for the GitHub Release when the readme already has the entry.'
         required: true
         type: string
 
@@ -55,6 +60,7 @@ jobs:
             major) MAJOR=$((MAJOR+1)); MINOR=0; PATCH=0 ;;
             minor) MINOR=$((MINOR+1)); PATCH=0 ;;
             patch) PATCH=$((PATCH+1)) ;;
+            none) ;;
           esac
           NEW="$MAJOR.$MINOR.$PATCH"
           echo "new=$NEW" >> "$GITHUB_OUTPUT"
@@ -85,10 +91,16 @@ jobs:
           else
             echo "::warning::Could not read the current WordPress version; Tested up to left unchanged."
           fi
-          awk -v v="$NEW" -v cl="$CL" '
-            /^== Changelog ==/ && !done { print; print ""; print "= " v " ="; print "* " cl; done=1; next }
-            { print }
-          ' readme.txt > readme.new && mv readme.new readme.txt
+          # A changelog entry for this version that is already in the readme
+          # (version_type "none") is kept as written, not added twice.
+          if grep -qxF "= $NEW =" readme.txt; then
+            echo "readme.txt already has a changelog entry for $NEW; keeping it."
+          else
+            awk -v v="$NEW" -v cl="$CL" '
+              /^== Changelog ==/ && !done { print; print ""; print "= " v " ="; print "* " cl; done=1; next }
+              { print }
+            ' readme.txt > readme.new && mv readme.new readme.txt
+          fi
           echo "--- Verification ---"
           grep -m1 "Version:" gen-wave.php
           grep "GEN_WAVE_VERSION" gen-wave.php
@@ -132,8 +144,14 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add gen-wave.php readme.txt
-          git commit -m "chore: release $NEW"
-          git push
+          # Nothing to commit when the version was prepared in advance ("none")
+          # and Tested up to did not change.
+          if git diff --cached --quiet; then
+            echo "No version changes to commit."
+          else
+            git commit -m "chore: release $NEW"
+            git push
+          fi
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2

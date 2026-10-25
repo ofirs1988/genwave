@@ -168,8 +168,8 @@ class AgentAuth
         $method = strtoupper($args['method'] ?? 'GET');
 
         // Sign path + query so query params can't be tampered.
-        $query = parse_url($url, PHP_URL_QUERY);
-        $path = (parse_url($url, PHP_URL_PATH) ?: '/') . ($query ? '?' . $query : '');
+        $query = wp_parse_url($url, PHP_URL_QUERY);
+        $path = (wp_parse_url($url, PHP_URL_PATH) ?: '/') . ($query ? '?' . $query : '');
 
         // Normalize the body so the signed bytes match what is actually sent. Array
         // bodies are JSON-encoded here (otherwise the transport would encode them
@@ -202,8 +202,8 @@ class AgentAuth
         $agentBase = defined('GENWAVE_AGENT_API_URL') && GENWAVE_AGENT_API_URL
             ? GENWAVE_AGENT_API_URL
             : 'https://agent.genwave.ai';
-        $agentHost = parse_url($agentBase, PHP_URL_HOST);
-        $host = parse_url((string) $url, PHP_URL_HOST);
+        $agentHost = wp_parse_url($agentBase, PHP_URL_HOST);
+        $host = wp_parse_url((string) $url, PHP_URL_HOST);
         return $host && $agentHost && strcasecmp($host, $agentHost) === 0;
     }
 

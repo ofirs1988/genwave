@@ -57,9 +57,11 @@ class MetaBox {
         // Add nonce for security
         wp_nonce_field('genwave_meta_box_nonce', 'genwave_meta_box_nonce_field');
 
-        // Check if user is connected
-        $uidd = \GenWavePlugin\Core\Config::get('uidd');
-        $is_connected = !empty($uidd) && strlen($uidd) > 3;
+        // Connected the current way (site_uid + site_key). Sites connected that
+        // way never hold the old `uidd`, so checking only that showed
+        // "Connection Required" on sites that were connected.
+        $uidd = (string) \GenWavePlugin\Core\Config::get('uidd');
+        $is_connected = \GenWavePlugin\Core\AgentAuth::isConnected() || strlen($uidd) > 3;
 
         // Get current post type
         $post_type = get_post_type($post);

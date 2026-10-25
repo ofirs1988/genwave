@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Genwave - AI Agent 1.2.2\n"
+"Project-Id-Version: Genwave - AI Agent 1.3.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/gen-wave\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-25T07:28:33+01:00\n"
+"POT-Creation-Date: 2026-10-25T15:57:04+01:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: gen-wave\n"
@@ -63,7 +63,7 @@ msgid "Genwave needs JavaScript to show this page."
 msgstr ""
 
 #: src/Core/AgentAuth.php:90
-#: src/Core/PanelConnect.php:157
+#: src/Core/PanelConnect.php:155
 msgid "Connection failed."
 msgstr ""
 
@@ -83,40 +83,40 @@ msgstr ""
 msgid "Reconnect now"
 msgstr ""
 
-#: src/Core/AiRestApi.php:125
-#: src/Core/AiRestApi.php:142
+#: src/Core/AiRestApi.php:117
+#: src/Core/AiRestApi.php:134
 msgid "You do not have permission to access this endpoint"
 msgstr ""
 
-#: src/Core/AiRestApi.php:252
+#: src/Core/AiRestApi.php:244
 msgid "Response data saved successfully"
 msgstr ""
 
-#: src/Core/AiRestApi.php:254
+#: src/Core/AiRestApi.php:246
 msgid "Invalid JSON in response"
 msgstr ""
 
-#: src/Core/AiRestApi.php:257
+#: src/Core/AiRestApi.php:249
 msgid "Missing response key in data"
 msgstr ""
 
-#: src/Core/AiRestApi.php:261
+#: src/Core/AiRestApi.php:253
 msgid "No data received"
 msgstr ""
 
-#: src/Core/AiRestApi.php:480
+#: src/Core/AiRestApi.php:472
 msgid "This site is not connecting right now. Connect it from its Genwave settings."
 msgstr ""
 
-#: src/Core/AiRestApi.php:487
+#: src/Core/AiRestApi.php:479
 msgid "Plugin is not configured with a license key"
 msgstr ""
 
-#: src/Core/AiRestApi.php:493
+#: src/Core/AiRestApi.php:485
 msgid "Genwave plugin is active"
 msgstr ""
 
-#: src/Core/AiRestApi.php:505
+#: src/Core/AiRestApi.php:497
 msgid "A verification challenge is required"
 msgstr ""
 
@@ -124,55 +124,42 @@ msgstr ""
 msgid "Only an administrator can connect this site to Genwave."
 msgstr ""
 
-#: src/Core/PanelConnect.php:119
+#: src/Core/PanelConnect.php:117
 msgid "This connection request could not be verified. Click “Connect to Genwave” to start again."
 msgstr ""
 
-#: src/Core/PanelConnect.php:125
+#: src/Core/PanelConnect.php:123
 msgid "Connection cancelled. Nothing was changed."
 msgstr ""
 
-#: src/Core/PanelConnect.php:128
+#: src/Core/PanelConnect.php:126
 msgid "Genwave did not send a valid connection code. Click “Connect to Genwave” to try again."
 msgstr ""
 
-#: src/Core/PanelConnect.php:148
+#: src/Core/PanelConnect.php:146
 #: src/Pages/Settings.php:89
 msgid "Connection failed. Please try again."
 msgstr ""
 
-#: src/Core/PanelConnect.php:164
-#: src/Core/PanelConnect.php:174
+#: src/Core/PanelConnect.php:160
 #: src/Pages/Settings.php:86
 msgid "Your site is connected to Genwave."
 msgstr ""
 
-#: src/Core/SiteCommands.php:75
+#: src/Core/SiteCommands.php:68
 msgid "This site is not connected to Genwave."
 msgstr ""
 
-#: src/Core/SiteCommands.php:78
+#: src/Core/SiteCommands.php:71
 msgid "This command is not signed by your Genwave account."
 msgstr ""
 
+#: src/Core/SiteCommands.php:116
+msgid "This plugin does not install other plugins. Download the plugin from your Genwave account and upload it in Plugins > Add New > Upload Plugin."
+msgstr ""
+
 #: src/Core/SiteCommands.php:120
-msgid "Genwave does not offer this plugin."
-msgstr ""
-
-#: src/Core/SiteCommands.php:126
 msgid "Unknown command."
-msgstr ""
-
-#: src/Core/SiteCommands.php:165
-msgid "WordPress on this site cannot install plugins by itself (file changes are turned off or need FTP details). Download the plugin and upload it in Plugins > Add New."
-msgstr ""
-
-#: src/Core/SiteCommands.php:178
-msgid "The plugin could not be installed."
-msgstr ""
-
-#: src/Core/SiteCommands.php:184
-msgid "The plugin was downloaded but its folder was not found."
 msgstr ""
 
 #: src/Handlers/GenerationHandler.php:42
@@ -262,24 +249,24 @@ msgstr ""
 msgid "Error: %s"
 msgstr ""
 
-#: src/Handlers/PluginsHandler.php:52
+#: src/Handlers/PluginsHandler.php:53
 msgid "Failed to fetch plugin list"
 msgstr ""
 
-#: src/Handlers/PluginsHandler.php:78
+#: src/Handlers/PluginsHandler.php:79
 msgid "Security check failed"
 msgstr ""
 
-#: src/Handlers/PluginsHandler.php:83
+#: src/Handlers/PluginsHandler.php:84
 msgid "You do not have permission to manage plugins"
 msgstr ""
 
-#: src/Handlers/PluginsHandler.php:118
+#: src/Handlers/PluginsHandler.php:119
 msgid "Please connect your Genwave account on the Account page first."
 msgstr ""
 
 #. translators: %d is the HTTP status code returned by the Genwave dashboard.
-#: src/Handlers/PluginsHandler.php:155
+#: src/Handlers/PluginsHandler.php:156
 #, php-format
 msgid "Dashboard returned HTTP %d"
 msgstr ""
@@ -298,203 +285,203 @@ msgstr ""
 msgid "Genwave - AI Generate"
 msgstr ""
 
-#: src/MetaBox.php:66
+#: src/MetaBox.php:68
 msgid "Product"
 msgstr ""
 
-#: src/MetaBox.php:66
+#: src/MetaBox.php:68
 msgid "Post"
 msgstr ""
 
-#: src/MetaBox.php:80
+#: src/MetaBox.php:82
 msgid "Connection Required"
 msgstr ""
 
-#: src/MetaBox.php:82
+#: src/MetaBox.php:84
 msgid "Please connect your Genwave account to start using AI features."
 msgstr ""
 
-#: src/MetaBox.php:88
+#: src/MetaBox.php:90
 msgid "Connect Account"
 msgstr ""
 
-#: src/MetaBox.php:105
+#: src/MetaBox.php:107
 msgid "Generate AI Content"
 msgstr ""
 
-#: src/MetaBox.php:113
+#: src/MetaBox.php:115
 msgid "Show Options"
 msgstr ""
 
 #. translators: %s: post type name (e.g., "post", "product")
-#: src/MetaBox.php:123
+#: src/MetaBox.php:125
 #, php-format
 msgid "Use Genwave to automatically generate content for this %s."
 msgstr ""
 
-#: src/MetaBox.php:132
+#: src/MetaBox.php:134
 msgid "Language:"
 msgstr ""
 
-#: src/MetaBox.php:135
+#: src/MetaBox.php:137
 msgid "Loading languages..."
 msgstr ""
 
-#: src/MetaBox.php:143
+#: src/MetaBox.php:145
 msgid "Content Length:"
 msgstr ""
 
-#: src/MetaBox.php:146
+#: src/MetaBox.php:148
 msgid "Short (~500 characters)"
 msgstr ""
 
-#: src/MetaBox.php:147
+#: src/MetaBox.php:149
 msgid "Medium (~1000 characters)"
 msgstr ""
 
-#: src/MetaBox.php:155
+#: src/MetaBox.php:157
 msgid "Instructions for AI:"
 msgstr ""
 
-#: src/MetaBox.php:161
+#: src/MetaBox.php:163
 msgid "Enter instructions for the AI to generate content... (max 1000 characters)"
 msgstr ""
 
-#: src/MetaBox.php:164
+#: src/MetaBox.php:166
 msgid "characters"
 msgstr ""
 
-#: src/MetaBox.php:172
+#: src/MetaBox.php:174
 msgid "Generation Method:"
 msgstr ""
 
-#: src/MetaBox.php:181
+#: src/MetaBox.php:183
 msgid "Generate Title"
 msgstr ""
 
-#: src/MetaBox.php:185
+#: src/MetaBox.php:187
 msgid "Create product title using AI"
 msgstr ""
 
-#: src/MetaBox.php:186
+#: src/MetaBox.php:188
 msgid "Create post title using AI"
 msgstr ""
 
-#: src/MetaBox.php:199
+#: src/MetaBox.php:201
 msgid "Generate Short Description"
 msgstr ""
 
-#: src/MetaBox.php:201
+#: src/MetaBox.php:203
 msgid "Create product short description using AI"
 msgstr ""
 
-#: src/MetaBox.php:212
+#: src/MetaBox.php:214
 msgid "Generate Description"
 msgstr ""
 
-#: src/MetaBox.php:216
+#: src/MetaBox.php:218
 msgid "Create full product description using AI"
 msgstr ""
 
-#: src/MetaBox.php:217
+#: src/MetaBox.php:219
 msgid "Create full post content using AI"
 msgstr ""
 
-#: src/MetaBox.php:229
+#: src/MetaBox.php:231
 msgid "Generate Content"
 msgstr ""
 
-#: src/MetaBox.php:238
+#: src/MetaBox.php:240
 msgid "Note:"
 msgstr ""
 
 #. translators: %s: link to Genwave Agent
-#: src/MetaBox.php:241
+#: src/MetaBox.php:243
 #, php-format
 msgid "To build pages, fix errors, manage WooCommerce and more by conversation, install %s."
 msgstr ""
 
-#: src/MetaBox.php:242
+#: src/MetaBox.php:244
 msgid "Genwave Agent"
 msgstr ""
 
-#: src/MetaBox.php:255
+#: src/MetaBox.php:257
 msgid "Instructions Required"
 msgstr ""
 
-#: src/MetaBox.php:263
+#: src/MetaBox.php:265
 msgid "To generate"
 msgstr ""
 
-#: src/MetaBox.php:263
+#: src/MetaBox.php:265
 msgid "content"
 msgstr ""
 
-#: src/MetaBox.php:263
+#: src/MetaBox.php:265
 msgid "please provide instructions for the AI."
 msgstr ""
 
-#: src/MetaBox.php:269
+#: src/MetaBox.php:271
 msgid "Examples:"
 msgstr ""
 
-#: src/MetaBox.php:272
+#: src/MetaBox.php:274
 msgid "\"Write a catchy title about sustainable gardening tips\""
 msgstr ""
 
-#: src/MetaBox.php:273
+#: src/MetaBox.php:275
 msgid "\"Create a professional description for a WordPress development service\""
 msgstr ""
 
-#: src/MetaBox.php:274
+#: src/MetaBox.php:276
 msgid "\"Generate an engaging product description for organic coffee beans\""
 msgstr ""
 
-#: src/MetaBox.php:275
+#: src/MetaBox.php:277
 msgid "\"Write content about the benefits of meditation for beginners\""
 msgstr ""
 
-#: src/MetaBox.php:280
+#: src/MetaBox.php:282
 msgid "Tip:"
 msgstr ""
 
-#: src/MetaBox.php:280
+#: src/MetaBox.php:282
 msgid "The more specific your instructions, the better the AI-generated content will be."
 msgstr ""
 
-#: src/MetaBox.php:287
+#: src/MetaBox.php:289
 msgid "Got it!"
 msgstr ""
 
-#: src/MetaBox.php:303
+#: src/MetaBox.php:305
 msgid "Generated Content"
 msgstr ""
 
-#: src/MetaBox.php:313
+#: src/MetaBox.php:315
 msgid "Input Tokens"
 msgstr ""
 
-#: src/MetaBox.php:317
+#: src/MetaBox.php:319
 msgid "Output Tokens"
 msgstr ""
 
-#: src/MetaBox.php:321
+#: src/MetaBox.php:323
 msgid "Total Tokens"
 msgstr ""
 
-#: src/MetaBox.php:330
+#: src/MetaBox.php:332
 msgid "Generated Content:"
 msgstr ""
 
-#: src/MetaBox.php:333
+#: src/MetaBox.php:335
 msgid "Loading..."
 msgstr ""
 
-#: src/MetaBox.php:342
+#: src/MetaBox.php:344
 msgid "Cancel"
 msgstr ""
 
-#: src/MetaBox.php:346
+#: src/MetaBox.php:348
 msgid "Update Post"
 msgstr ""
 

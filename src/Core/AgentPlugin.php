@@ -48,7 +48,9 @@ class AgentPlugin
 
     /**
      * The link for the current state: open the chat, activate the plugin
-     * (nonced, for users who may activate plugins), or download it.
+     * (nonced, for users who may activate plugins), or, when it is missing,
+     * the page in the Genwave account where it can be downloaded. This plugin
+     * does not install it: the administrator uploads the zip themselves.
      */
     public static function url(?string $state = null): string
     {
@@ -72,13 +74,7 @@ class AgentPlugin
                 admin_url('plugins.php')
             );
         }
-        // Missing: installed from the customer's Genwave account in one click,
-        // then back to the chat. Users who may not install plugins get the file
-        // to pass to someone who can.
-        if (current_user_can('install_plugins')) {
-            return Links::install(self::SLUG, admin_url('admin.php?page=' . self::SLUG));
-        }
-        return Links::agentDownload();
+        return Links::getPlugins();
     }
 
     /** State + link, for the React pages. */
@@ -88,9 +84,9 @@ class AgentPlugin
         return [
             'state'      => $state,
             'url'        => self::url($state),
-            'oneClick'   => $state === 'missing' && current_user_can('install_plugins'),
-            'uploadUrl'  => admin_url('plugin-install.php?tab=upload'),
-            'downloadUrl' => Links::agentDownload(),
+            // May upload a plugin here (Plugins > Add New > Upload Plugin).
+            'canUpload'  => current_user_can('install_plugins'),
+            'uploadUrl'  => Links::uploadPlugin(),
         ];
     }
 }

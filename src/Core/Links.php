@@ -9,12 +9,9 @@ if (!defined('ABSPATH')) {
 /**
  * Every page on Genwave that a button in this plugin opens.
  *
- * The buttons pointed at account.genwave.ai, the old dashboard. It now sends
- * every page to the new app's sign-in screen and drops the path, so "Sign up
- * free" opened a login form and "Buy more credits" never reached the credits
- * page; the Dashboard's "Learn more" was a 404. The app (app.genwave.ai)
- * remembers where a signed-out visitor was going and lands them there after
- * signing in, so these link to it directly.
+ * The customer account lives at app.genwave.ai (the old account address is
+ * retired). The app remembers where a signed-out visitor was going and lands
+ * them there after signing in, so these link to its pages directly.
  */
 class Links
 {
@@ -62,34 +59,21 @@ class Links
         return self::SITE . '/agent/';
     }
 
-    /** Genwave Agent download, counted like the site's own download buttons. */
-    public static function agentDownload(): string
-    {
-        return self::download('genwave-agent');
-    }
-
-    /** A Genwave plugin's zip, counted like the site's own download buttons. */
-    public static function download(string $slug): string
-    {
-        return self::app('api/download-track/' . rawurlencode($slug) . '?source=plugin');
-    }
-
     /**
-     * Install a Genwave plugin on this site from the customer's Genwave account
-     * (SiteCommands): the account page names this site, installs on a click
-     * (at once with $auto) and sends the admin back to $return.
+     * The page in the Genwave account where the Genwave plugins are offered
+     * for download ("Connect your site", app.genwave.ai/connect). This plugin
+     * never installs them: the administrator downloads the zip there and
+     * uploads it in Plugins > Add New > Upload Plugin.
      */
-    public static function install(string $slug, string $return = '', bool $auto = false): string
+    public static function getPlugins(): string
     {
-        $args = [
-            'plugin' => $slug,
-            'site'   => get_site_url(),
-            'return' => $return !== '' ? $return : admin_url('admin.php?page=gen-wave-plugins'),
-        ];
-        if ($auto) {
-            $args['auto'] = '1';
-        }
-        return self::app('sites/install') . '?' . http_build_query($args, '', '&', PHP_QUERY_RFC3986);
+        return self::app('connect');
+    }
+
+    /** WordPress's own "Upload Plugin" screen. */
+    public static function uploadPlugin(): string
+    {
+        return admin_url('plugin-install.php?tab=upload');
     }
 
     /** The links the React pages use. */

@@ -30,7 +30,7 @@ class Plugin {
         // "Connect to Genwave": connect by approving the site in the panel.
         \GenWavePlugin\Core\PanelConnect::register();
 
-        // Commands from the customer's Genwave account (install a Genwave plugin).
+        // Read-only status questions from the customer's Genwave account.
         \GenWavePlugin\Core\SiteCommands::register();
 
         // The Genwave screens: one full-screen app in the Agent's design.

@@ -102,21 +102,13 @@ class AiRestApi extends WP_REST_Controller
      */
     public function check_api_permission($request)
     {
-        // Option 1: Check if user is logged in and has edit_posts capability
+        // A logged-in user who may edit posts. The license key is no longer
+        // accepted as a credential in an X-Genwave-API-Key header: nothing sends
+        // it any more (the old dashboard that did is retired), and a key that
+        // also travels in outbound requests should not open an inbound route.
         if (is_user_logged_in() && current_user_can('edit_posts')) {
             return true;
         }
-
-        // Option 2: Validate API key from headers (for external Laravel backend)
-        $api_key = $request->get_header('X-Genwave-API-Key');
-        $stored_key = Config::get('license_key'); // Use license key as API key
-
-        if (!empty($api_key) && !empty($stored_key) && hash_equals($stored_key, $api_key)) {
-            return true;
-        }
-
-        // (Removed) the X-Genwave-UIDD branch — uidd is not a secret (it travels in
-        // every outbound request), so accepting it as an inbound credential was a bypass.
 
         if (defined('WP_DEBUG') && WP_DEBUG) {
             // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only

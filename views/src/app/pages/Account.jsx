@@ -105,17 +105,19 @@ function Connected({ a, d, agent, onDisconnect }) {
             {agent.state === 'missing' && (
                 <Callout
                     tone="warn"
-                    title={t('One more step: install Genwave Agent', 'עוד צעד אחד: התקנת Genwave Agent')}
+                    title={t('One more step: add Genwave Agent', 'עוד צעד אחד: הוספת Genwave Agent')}
                     actions={
-                        <>
-                            <Button size="sm" variant="primary" icon="download" href={agent.url}>{t('Install Genwave Agent', 'התקנת Genwave Agent')}</Button>
-                            <Button size="sm" variant="ghost" href={agent.downloadUrl}>{t('Download the zip', 'הורדת ה-ZIP')}</Button>
-                        </>
+                        agent.canUpload && (
+                            <>
+                                <Button size="sm" variant="primary" icon="arrowOut" href={agent.url} external>{t('Get Genwave Agent', 'להורדת Genwave Agent')}</Button>
+                                <Button size="sm" variant="ghost" icon="download" href={agent.uploadUrl}>{t('Upload Plugin', 'העלאת תוסף')}</Button>
+                            </>
+                        )
                     }
                 >
-                    {agent.oneClick
-                        ? t('The agent chat is a separate plugin. Install it in one click from your Genwave account, or download it and upload it in Plugins > Add New. Keep this plugin installed too: the Agent uses its connection.', 'הצ׳אט של ה-Agent הוא תוסף נפרד. התקינו אותו בלחיצה אחת מחשבון Genwave שלכם, או הורידו אותו והעלו בתוספים > הוספת תוסף. השאירו גם את התוסף הזה: ה-Agent משתמש בחיבור שלו.')
-                        : t('The agent chat is a separate plugin. Ask a site administrator to install it.', 'הצ׳אט של ה-Agent הוא תוסף נפרד. בקשו ממנהל האתר להתקין אותו.')}
+                    {agent.canUpload
+                        ? t('The agent chat is a separate plugin, and it is not on WordPress.org. Download its zip from your Genwave account, then upload it here in Plugins > Add New > Upload Plugin and activate it. Keep this plugin installed too: the Agent uses its connection.', 'הצ׳אט של ה-Agent הוא תוסף נפרד, והוא לא נמצא ב-WordPress.org. מורידים את קובץ ה-ZIP שלו מחשבון Genwave, מעלים אותו כאן בתוספים > הוספת תוסף > העלאת תוסף ומפעילים. השאירו גם את התוסף הזה: ה-Agent משתמש בחיבור שלו.')
+                        : t('The agent chat is a separate plugin. Ask a site administrator to add it.', 'הצ׳אט של ה-Agent הוא תוסף נפרד. בקשו ממנהל האתר להוסיף אותו.')}
                 </Callout>
             )}
             {agent.state === 'inactive' && (

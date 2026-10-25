@@ -14,10 +14,11 @@ use GenWavePlugin\Core\Links;
 /**
  * PluginsHandler — backs the in-WP "Plugins" page.
  *
- * Lists the Genwave plugins with where each stands on this site. Installing is
- * done from the customer's Genwave account (Core\SiteCommands, Links::install):
- * a plugin hosted on WordPress.org may not install plugins from other servers
- * itself (guideline 8). A plugin already here is activated the usual way.
+ * Lists the Genwave plugins with where each stands on this site. This plugin
+ * does not install them (WordPress.org guideline 8): a missing one links to
+ * the Genwave account, where its zip can be downloaded and then uploaded in
+ * Plugins > Add New > Upload Plugin. A plugin already here is activated the
+ * usual way.
  */
 class PluginsHandler
 {
@@ -104,7 +105,7 @@ class PluginsHandler
         // Sites connected the current way hold site_uid + site_key and never
         // receive the old token/uidd. Requiring those here told every recently
         // connected customer "Connect your Genwave account first" on a site that
-        // was connected, so this page could not install the agent for them.
+        // was connected, so this page could not list the plugins for them.
         // The dashboard's list is open to every site; the headers below only
         // identify the caller for its logs.
         $token = Config::get('token');
@@ -177,11 +178,11 @@ class PluginsHandler
             ? version_compare($local['version'], $plugin['version'], '<')
             : false;
 
-        // Install from the Genwave account, or the zip to upload by hand; a
-        // plugin already here is activated with WordPress's own link.
+        // A missing plugin is downloaded from the Genwave account and uploaded
+        // by the administrator; this plugin never installs it. A plugin
+        // already here is activated with WordPress's own link.
         unset($plugin['download_url']);
-        $plugin['install_url'] = Links::install($slug);
-        $plugin['zip_url'] = Links::download($slug);
+        $plugin['get_url'] = Links::getPlugins();
         $plugin['activate_url'] = ($local && ! $plugin['active'] && current_user_can('activate_plugins'))
             ? add_query_arg(
                 [

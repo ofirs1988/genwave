@@ -61,10 +61,8 @@ class PanelConnect
         $verifier = self::token(48);
         set_transient(self::flowKey(), ['state' => $state, 'verifier' => $verifier], self::TTL);
 
-        // Offer to install the Agent in the same approval when it is not here yet
-        // and this admin may install plugins.
-        $offerAgent = AgentPlugin::state() === 'missing' && current_user_can('install_plugins');
-
+        // 'agent' => '0': the approval page must not offer to install Genwave
+        // Agent. This plugin never installs other plugins (since 1.3.1).
         $params = [
             'v' => '1',
             'site_url' => get_site_url(),
@@ -72,7 +70,7 @@ class PanelConnect
             'state' => $state,
             'code_challenge' => self::base64url(hash('sha256', $verifier, true)),
             'code_challenge_method' => 'S256',
-            'agent' => $offerAgent ? '1' : '0',
+            'agent' => '0',
         ];
         // add_query_arg() does not encode values; these carry URLs.
         $url = add_query_arg(array_map('rawurlencode', $params), AgentAuth::panelUrl() . '/connect/authorize');
@@ -157,20 +155,8 @@ class PanelConnect
             self::finish('error', $result['message'] ?? __('Connection failed.', 'gen-wave'));
         }
 
-        // Approved together with the connection: the Genwave account installs the
-        // Agent (SiteCommands, on its own page with the progress) and sends the
-        // admin to the chat.
-        if (!empty($data['install_agent']) && current_user_can('install_plugins') && AgentPlugin::state() !== 'active') {
-            set_transient(self::noticeKey(), ['type' => 'success', 'message' => __('Your site is connected to Genwave.', 'gen-wave')], 5 * MINUTE_IN_SECONDS);
-            $panelHost = (string) wp_parse_url(AgentAuth::panelUrl(), PHP_URL_HOST);
-            add_filter('allowed_redirect_hosts', static function ($hosts) use ($panelHost) {
-                $hosts[] = $panelHost;
-                return $hosts;
-            });
-            wp_safe_redirect(Links::install(AgentPlugin::SLUG, admin_url('admin.php?page=' . AgentPlugin::SLUG), true));
-            exit;
-        }
-
+        // Back to the Account screen. If Genwave Agent is not here yet, that
+        // screen says how to add it; nothing is installed from here.
         self::finish('success', __('Your site is connected to Genwave.', 'gen-wave'));
     }
 
