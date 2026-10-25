@@ -87,7 +87,8 @@ changelog for WordPress.org lives in `readme.txt` and is written at release time
   `.wordpress-org/` (banners, icons and the current screenshots copied from
   SVN so the deploy's asset sync deletes nothing).
 - New screenshots 1-5 in English (1280x900, taken on a hosted test site
-  running this build with the admin temporarily in English): Account, Overview,
+  running this build with the admin temporarily in English and the site titled
+  "Demo Store"): Account, Overview,
   AI writing with a generated description (not saved), Genwave plugins, and
   Genwave Agent answering a read-only question about the store. The license
   key on the Account screen is masked. Captions 1, 3 and 5 updated; caption 5
