@@ -6,6 +6,26 @@ changelog for WordPress.org lives in `readme.txt` and is written at release time
 
 ## Unreleased
 
+### Docs
+
+- **WordPress.org readme rewritten to match the 1.3.0 code** (readme only, no
+  code change, no version bump; meant for an in-place update of
+  `trunk/readme.txt` and `tags/1.3.0/readme.txt` on SVN). The description now
+  lists what this plugin really does (connect, AI writing screen, Genwave
+  plugins installed from the account, Overview, Maintenance, light/dark, RTL)
+  and keeps Genwave Agent claims to the separate plugin. Removed: hosting
+  offer, "included in every paid plan", "any language", "full activity log"
+  and "undo" as claims of this plugin. Plans are named with a link to
+  /pricing, no numbers. FAQ languages list the 15 AI-writing languages in
+  `Generate.jsx` and the two UI languages (English, Hebrew). "Third Party
+  Services" became "External services" with what is sent, when, per host
+  (app.genwave.ai, agent.genwave.ai, cdn.genwave.ai), including the server IP
+  sent with the plugin list and the WP/PHP versions returned to signed
+  commands. Tags: `chatbot`/`ecommerce` replaced by `ai-writing`/`woocommerce`.
+  Screenshot captions now match the 1.3.0 screens. Changelog history: em
+  dashes removed, "250+ actions", retired product names (Pro, SEO, Site
+  Transfer) and the dead account.genwave.ai link dropped.
+
 ## 1.3.0
 
 ### Changed
