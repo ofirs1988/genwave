@@ -6,7 +6,6 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-use GenWavePlugin\Controllers\VerifyLoginController;
 use GenWavePlugin\WP_Error;
 
 class ApiManager {
@@ -190,11 +189,6 @@ class ApiManager {
         if (isset($response['error']) && $response['error'] === true) {
             // Return response if error = true
             return $response;
-        }
-        if (is_array($response) && key_exists('auth', $response)) {
-            if (isset($response['auth']) && !$response['auth']) {
-                VerifyLoginController::redirectLogin();
-            }
         }
 
         return $response;

@@ -18,7 +18,6 @@ $genwave_credits = get_option('aiaw_credits', $data['credits'] ?? 0);
 $genwave_agent_state = \GenWavePlugin\Core\AgentPlugin::state();
 $genwave_agent_url = \GenWavePlugin\Core\AgentPlugin::url($genwave_agent_state);
 // The customer approved "also install Genwave Agent" while connecting: do it now.
-$genwave_install_agent_now = $genwave_is_connected && \GenWavePlugin\Core\PanelConnect::takeAgentInstall();
 ?>
 <section class="gw-acct">
     <div class="gw-acct__shell">
@@ -85,29 +84,16 @@ $genwave_install_agent_now = $genwave_is_connected && \GenWavePlugin\Core\PanelC
                     <?php endif; ?>
                 </div>
 
-                <?php if ($genwave_install_agent_now): ?>
-                    <div class="gw-note gw-note--info" id="gw-agent-autoinstall"
-                         data-agent-url="<?php echo esc_url(admin_url('admin.php?page=' . \GenWavePlugin\Core\AgentPlugin::SLUG)); ?>"
-                         data-fail-title="<?php esc_attr_e('Genwave Agent was not installed automatically', 'gen-wave'); ?>"
-                         data-fail-text="<?php esc_attr_e('Your site is connected. Install the Agent in one click from the Genwave Plugins page.', 'gen-wave'); ?>">
-                        <svg class="gw-spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.22-8.56"/></svg>
-                        <div class="gw-note__body">
-                            <strong data-gw-title><?php esc_html_e('Installing Genwave Agent…', 'gen-wave'); ?></strong>
-                            <p data-gw-text><?php esc_html_e('This takes a few seconds. The agent chat opens as soon as it is ready.', 'gen-wave'); ?></p>
-                            <div class="gw-note__actions" data-gw-actions hidden>
-                                <a href="<?php echo esc_url(\GenWavePlugin\Core\AgentPlugin::url()); ?>" class="gw-b gw-b--primary gw-b--sm"><?php esc_html_e('Install Genwave Agent', 'gen-wave'); ?></a>
-                            </div>
-                        </div>
-                    </div>
-                <?php elseif ($genwave_agent_state === 'missing'): ?>
+                <?php if ($genwave_agent_state === 'missing'): ?>
                     <div class="gw-note gw-note--warn">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                         <div class="gw-note__body">
                             <strong><?php esc_html_e('One more step: install Genwave Agent', 'gen-wave'); ?></strong>
                             <?php if (current_user_can('install_plugins')): ?>
-                                <p><?php esc_html_e('The agent chat is a separate plugin. You can install it in one click from the Genwave Plugins page. Please keep this plugin installed too, because the agent uses its connection.', 'gen-wave'); ?></p>
+                                <p><?php esc_html_e('The agent chat is a separate plugin. Install it in one click from your Genwave account, or download it and upload it in Plugins > Add New. Please keep this plugin installed too, because the agent uses its connection.', 'gen-wave'); ?></p>
                                 <div class="gw-note__actions">
                                     <a href="<?php echo esc_url($genwave_agent_url); ?>" class="gw-b gw-b--primary gw-b--sm"><?php esc_html_e('Install Genwave Agent', 'gen-wave'); ?></a>
+                                    <a href="<?php echo esc_url(\GenWavePlugin\Core\Links::agentDownload()); ?>" class="gw-b gw-b--ghost gw-b--sm"><?php esc_html_e('Download the zip', 'gen-wave'); ?></a>
                                 </div>
                             <?php else: ?>
                                 <p><?php esc_html_e('The agent chat is a separate plugin. Please ask a site administrator to install it. Keep this plugin installed too, because the agent uses its connection.', 'gen-wave'); ?></p>

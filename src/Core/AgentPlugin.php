@@ -72,10 +72,11 @@ class AgentPlugin
                 admin_url('plugins.php')
             );
         }
-        // Missing: the Genwave Plugins page installs it in one click. Users who
-        // may not install plugins get the file to pass to someone who can.
+        // Missing: installed from the customer's Genwave account in one click,
+        // then back to the chat. Users who may not install plugins get the file
+        // to pass to someone who can.
         if (current_user_can('install_plugins')) {
-            return admin_url('admin.php?page=gen-wave-plugins');
+            return Links::install(self::SLUG, admin_url('admin.php?page=' . self::SLUG));
         }
         return Links::agentDownload();
     }
@@ -89,6 +90,7 @@ class AgentPlugin
             'url'        => self::url($state),
             'oneClick'   => $state === 'missing' && current_user_can('install_plugins'),
             'uploadUrl'  => admin_url('plugin-install.php?tab=upload'),
+            'downloadUrl' => Links::agentDownload(),
         ];
     }
 }

@@ -30,17 +30,12 @@ class Plugin {
         // "Connect to Genwave": connect by approving the site in the panel.
         \GenWavePlugin\Core\PanelConnect::register();
 
+        // Commands from the customer's Genwave account (install a Genwave plugin).
+        \GenWavePlugin\Core\SiteCommands::register();
+
         // Load AJAX manager for both admin and frontend
         new AjaxManager();
 
-        // Handle integration callback from Laravel (secure authentication flow)
-        // Use admin_init hook to ensure WordPress functions are loaded
-        add_action('admin_init', function() {
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- External OAuth-like callback, session-based auth
-            if (isset($_GET['credentials_session'])) {
-                \GenWavePlugin\Controllers\IntegrationCallbackController::handleCallback();
-            }
-        });
 
         $this->loadAdminClasses();
         new AiRestApi();

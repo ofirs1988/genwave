@@ -7,11 +7,9 @@ if (!defined('ABSPATH')) {
 }
 
 use GenWavePlugin\Core\AdminPageManager;
-use GenWavePlugin\Core\ApiManager;
 use GenWavePlugin\Core\Config;
 use GenWavePlugin\Core\ViewManager;
 use GenWavePlugin\Helper\Decrypt;
-use GenWavePlugin\Helper\License;
 
 class Settings
 {
@@ -20,23 +18,6 @@ class Settings
     public function __construct(AdminPageManager $adminPageManager)
     {
         $this->adminPageManager = $adminPageManager;
-        add_action('init', function () {
-            // Add headers to all requests
-            if (!headers_sent()) {
-                header("Access-Control-Allow-Origin: " . GENWAVE_API_URL);
-                header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-                header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept, Origin, Authorization");
-            }
-        });
-        add_action('rest_api_init', function () {
-            // Allow headers for OPTIONS requests as well
-            if (!headers_sent()) {
-                header("Access-Control-Allow-Origin: " . GENWAVE_API_URL);
-                header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-                header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept, Origin, Authorization");
-                header("Access-Control-Allow-Credentials: true");
-            }
-        }, 15);
         add_action('wp_loaded', array($this, 'registerSettings'));
         add_action('admin_notices', function() {
             // Only if we're on the plugin settings page
@@ -76,7 +57,6 @@ class Settings
 
     public function renderAdminPage()
     {
-        //$api_manager = new ApiManager('http://127.0.0.1:8000/api/');
 
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Display-only, no state changes
         if (isset($_GET['error'])) {
@@ -89,24 +69,26 @@ class Settings
         // REMOVED (finding F6): the legacy connect path read the SSO token, uuid,
         // domain and plan straight from $_GET and persisted them with no nonce and
         // no state check — a CSRF that let a crafted URL bind this site to an
-        // attacker's account. Connecting now happens ONLY through
-        // IntegrationCallbackController::handleCallback() (the credentials_session
-        // auth-code flow, hooked on admin_init), which verifies manage_options and
-        // the anti-CSRF state token. Do not reintroduce a $_GET credential handler.
+        // attacker's account. Connecting now happens only through app.genwave.ai:
+        // Connect to Genwave (Core\PanelConnect, state + PKCE) or a pasted key
+        // (AgentAuth::connect, HMAC challenge). Do not reintroduce a $_GET
+        // credential handler.
 
 
         if (isset($_POST['save_settings']) && check_admin_referer('save_ai_settings', 'ai_settings_nonce')) {
             $license_key = isset($_POST['ai_license_key']) ? sanitize_text_field(wp_unslash($_POST['ai_license_key'])) : '';
             // $domain = sanitize_text_field($_POST['ai_domain']);
             if (!empty($license_key)) {
-                License::$licenseKey = $license_key;
-                License::initialize(new ApiManager(GENWAVE_API_URL));
-                $verifyLicenseKey = License::verifyLicenseKey();
-                if ($verifyLicenseKey['success']) {
-                    //$this->redirect_to_laravel_login();
-                    echo '<div class="notice notice-success is-dismissible"><p>' . esc_html($verifyLicenseKey['message']) . '</p></div>';
+                // Connect with the pasted key right away (app.genwave.ai checks it
+                // and proves this site); if that fails the site keeps the key it had.
+                $previous_key = Config::get('license_key');
+                Config::set('license_key', $license_key);
+                $connected = \GenWavePlugin\Core\AgentAuth::connect();
+                if (!empty($connected['success'])) {
+                    echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__('Your site is connected to Genwave.', 'gen-wave') . '</p></div>';
                 } else {
-                    echo '<div class="notice notice-error is-dismissible"><p>' . esc_html($verifyLicenseKey['message']) . '</p></div>';
+                    Config::set('license_key', (string) $previous_key);
+                    echo '<div class="notice notice-error is-dismissible"><p>' . esc_html($connected['message'] ?? __('Connection failed. Please try again.', 'gen-wave')) . '</p></div>';
                     return false;
                 }
             } else {

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import {
     DownloadOutlined,
     CheckCircleOutlined,
-    LoadingOutlined,
     ReloadOutlined,
     LinkOutlined,
     AppstoreOutlined,
@@ -10,16 +9,17 @@ import {
 } from '@ant-design/icons';
 
 /**
- * Genwave Plugins marketplace page.
+ * Genwave Plugins page.
  *
- * Lists all available Genwave plugins, shows install/active status, and lets
- * the user install missing ones via WP_Upgrader in a single click.
+ * Lists the Genwave plugins and where each stands on this site. A missing one
+ * is installed from the customer's Genwave account (it sends this site a signed
+ * install command, see Core\SiteCommands) or from its zip; a plugin hosted on
+ * WordPress.org may not install plugins from other servers itself.
  */
 const Plugins = () => {
     const [plugins, setPlugins] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [installing, setInstalling] = useState({}); // { slug: true | error msg }
     const [refreshing, setRefreshing] = useState(false);
 
     const settings = window.genwaveFreeSettings || {};
@@ -73,39 +73,6 @@ const Plugins = () => {
         fetchPlugins();
     }, [fetchPlugins]);
 
-    const handleInstall = async (slug) => {
-        setInstalling((cur) => ({ ...cur, [slug]: true }));
-
-        try {
-            const body = new URLSearchParams({
-                action: 'genwave_install_plugin',
-                security: nonce,
-                slug,
-            });
-
-            const res = await fetch(ajaxurl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body,
-            });
-            const json = await res.json();
-
-            if (json && json.success) {
-                await fetchPlugins({ forceRefresh: true });
-                setInstalling((cur) => {
-                    const next = { ...cur };
-                    delete next[slug];
-                    return next;
-                });
-            } else {
-                const msg = (json && json.data && json.data.message) || 'Install failed';
-                setInstalling((cur) => ({ ...cur, [slug]: msg }));
-            }
-        } catch (e) {
-            setInstalling((cur) => ({ ...cur, [slug]: e.message || 'Network error' }));
-        }
-    };
-
     const header = (
         <header className="gw-mkt__hero">
             <div className="gw-mkt__hero-glow" aria-hidden="true" />
@@ -116,7 +83,7 @@ const Plugins = () => {
                     </span>
                     <h1 className="gw-mkt__title">Genwave Plugins</h1>
                     <p className="gw-mkt__subtitle">
-                        Install any Genwave plugin in one click.
+                        Install a Genwave plugin from your Genwave account in one click, or download its zip.
                     </p>
                 </div>
                 <button
@@ -162,8 +129,6 @@ const Plugins = () => {
                         key={p.slug}
                         plugin={p}
                         index={i}
-                        installing={installing[p.slug]}
-                        onInstall={() => handleInstall(p.slug)}
                     />
                 ))}
             </div>
@@ -181,20 +146,11 @@ const Plugins = () => {
 const initialsFor = (name = '') =>
     name.replace(/[^a-zA-Z0-9 ]/g, '').trim().split(/\s+/).slice(0, 2).map((w) => w[0]).join('').toUpperCase() || 'GW';
 
-const PluginCard = ({ plugin, index, installing, onInstall }) => {
-    const isInstalling = installing === true;
-    const installError = typeof installing === 'string' ? installing : null;
+const PluginCard = ({ plugin, index }) => {
     const [iconFailed, setIconFailed] = useState(false);
     const showIcon = plugin.icon && !iconFailed;
 
     const renderAction = () => {
-        if (isInstalling) {
-            return (
-                <button type="button" className="gw-mkt-btn gw-mkt-btn--primary" disabled>
-                    <LoadingOutlined /> Installing…
-                </button>
-            );
-        }
         if (plugin.active) {
             return (
                 <span className="gw-mkt-btn gw-mkt-btn--active" aria-disabled="true">
@@ -203,16 +159,25 @@ const PluginCard = ({ plugin, index, installing, onInstall }) => {
             );
         }
         if (plugin.installed) {
-            return (
-                <button type="button" className="gw-mkt-btn gw-mkt-btn--primary" onClick={onInstall}>
+            return plugin.activate_url ? (
+                <a className="gw-mkt-btn gw-mkt-btn--primary" href={plugin.activate_url}>
                     <ThunderboltOutlined /> Activate v{plugin.installed_version}
-                </button>
+                </a>
+            ) : (
+                <span className="gw-mkt-btn gw-mkt-btn--active" aria-disabled="true">
+                    Installed · v{plugin.installed_version}
+                </span>
             );
         }
         return (
-            <button type="button" className="gw-mkt-btn gw-mkt-btn--primary" onClick={onInstall}>
-                <DownloadOutlined /> Install v{plugin.version}
-            </button>
+            <>
+                <a className="gw-mkt-btn gw-mkt-btn--primary" href={plugin.install_url}>
+                    <LinkOutlined /> Install from your Genwave account
+                </a>
+                <a className="gw-mkt-card__link" href={plugin.zip_url}>
+                    <DownloadOutlined /> Download zip
+                </a>
+            </>
         );
     };
 
@@ -260,8 +225,6 @@ const PluginCard = ({ plugin, index, installing, onInstall }) => {
                     </a>
                 )}
             </div>
-
-            {installError && <div className="gw-mkt__alert gw-mkt__alert--inline">{installError}</div>}
 
             <div className="gw-mkt-card__foot">{renderAction()}</div>
         </article>

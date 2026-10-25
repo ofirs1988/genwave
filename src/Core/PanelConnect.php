@@ -157,23 +157,21 @@ class PanelConnect
             self::finish('error', $result['message'] ?? __('Connection failed.', 'gen-wave'));
         }
 
-        // Approved together with the connection: the settings page installs the
-        // Agent next, with progress on screen (a long download here could time out).
+        // Approved together with the connection: the Genwave account installs the
+        // Agent (SiteCommands, on its own page with the progress) and sends the
+        // admin to the chat.
         if (!empty($data['install_agent']) && current_user_can('install_plugins') && AgentPlugin::state() !== 'active') {
-            set_transient(self::installKey(), 1, 10 * MINUTE_IN_SECONDS);
+            set_transient(self::noticeKey(), ['type' => 'success', 'message' => __('Your site is connected to Genwave.', 'gen-wave')], 5 * MINUTE_IN_SECONDS);
+            $panelHost = (string) wp_parse_url(AgentAuth::panelUrl(), PHP_URL_HOST);
+            add_filter('allowed_redirect_hosts', static function ($hosts) use ($panelHost) {
+                $hosts[] = $panelHost;
+                return $hosts;
+            });
+            wp_safe_redirect(Links::install(AgentPlugin::SLUG, admin_url('admin.php?page=' . AgentPlugin::SLUG), true));
+            exit;
         }
 
         self::finish('success', __('Your site is connected to Genwave.', 'gen-wave'));
-    }
-
-    /** True once, right after a connect that asked for the Agent: the page installs it. */
-    public static function takeAgentInstall(): bool
-    {
-        $pending = (bool) get_transient(self::installKey());
-        if ($pending) {
-            delete_transient(self::installKey());
-        }
-        return $pending && AgentPlugin::state() !== 'active' && current_user_can('install_plugins');
     }
 
     /**
@@ -224,10 +222,6 @@ class PanelConnect
         return 'genwave_connect_flow_' . get_current_user_id();
     }
 
-    private static function installKey(): string
-    {
-        return 'genwave_connect_install_' . get_current_user_id();
-    }
 
     private static function noticeKey(): string
     {

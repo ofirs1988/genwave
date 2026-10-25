@@ -145,7 +145,6 @@ class Enqueue {
             'environment' => $this->getEnvironment(),
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('genwave_admin_nonce'),
-            'apiUrl' => $this->getApiUrl(),
             'domain' => $this->getCurrentDomain(),
             'useProxy' => $this->isDevelopmentEnvironment(),
         ]);
@@ -210,18 +209,6 @@ class Enqueue {
         }
 
         return 'production';
-    }
-
-    /**
-     * Get API URL based on environment
-     */
-    private function getApiUrl() {
-        // Allow override via constant for development
-        if (defined('GENWAVE_API_URL')) {
-            return GENWAVE_API_URL;
-        }
-
-        return 'https://account.genwave.ai/api';
     }
 
     /**

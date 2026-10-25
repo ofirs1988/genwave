@@ -9,12 +9,15 @@ if (!defined('ABSPATH')) {
 use GenWavePlugin\Core\AgentAuth;
 use GenWavePlugin\Core\ApiManager;
 use GenWavePlugin\Core\Config;
+use GenWavePlugin\Core\Links;
 
 /**
- * PluginsHandler — backs the in-WP "Plugins" marketplace page.
+ * PluginsHandler — backs the in-WP "Plugins" page.
  *
- * Talks to the Laravel dashboard's GET /api/plugins to list available
- * Genwave plugins, then installs them via WP_Upgrader on demand.
+ * Lists the Genwave plugins with where each stands on this site. Installing is
+ * done from the customer's Genwave account (Core\SiteCommands, Links::install):
+ * a plugin hosted on WordPress.org may not install plugins from other servers
+ * itself (guideline 8). A plugin already here is activated the usual way.
  */
 class PluginsHandler
 {
@@ -66,56 +69,6 @@ class PluginsHandler
     }
 
     /**
-     * AJAX: install (and activate) a single plugin by slug.
-     */
-    public function handle_install_plugin(): void
-    {
-        if (! $this->verify_admin_request()) {
-            return;
-        }
-
-        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce is verified in verify_admin_request() above.
-        $slug = isset($_POST['slug']) ? sanitize_key(wp_unslash($_POST['slug'])) : '';
-        if ($slug === '') {
-            wp_send_json_error(['message' => __('Missing plugin slug', 'gen-wave')]);
-            return;
-        }
-
-        // Pull a fresh list to get a non-expired signed download_url
-        $remote = $this->fetch_remote_list(true);
-        if (! $remote['ok']) {
-            wp_send_json_error([
-                'message' => $remote['message'] ?? __('Could not get download URL', 'gen-wave'),
-            ]);
-            return;
-        }
-
-        $target = null;
-        foreach ($remote['plugins'] as $p) {
-            if (($p['slug'] ?? '') === $slug) {
-                $target = $p;
-                break;
-            }
-        }
-        if (! $target || empty($target['download_url'])) {
-            wp_send_json_error(['message' => __('Plugin not available for download', 'gen-wave')]);
-            return;
-        }
-
-        $install_result = $this->install_and_activate($slug, $target['download_url']);
-        if (! $install_result['ok']) {
-            wp_send_json_error(['message' => $install_result['message']]);
-            return;
-        }
-
-        wp_send_json_success([
-            'message' => __('Plugin installed and activated', 'gen-wave'),
-            'plugin_file' => $install_result['plugin_file'] ?? null,
-            'activated' => $install_result['activated'] ?? false,
-        ]);
-    }
-
-    /**
      * Common admin-request guard. Returns false and sends a JSON error if blocked.
      */
     private function verify_admin_request(): bool
@@ -127,7 +80,7 @@ class PluginsHandler
         }
 
         if (! current_user_can('install_plugins')) {
-            wp_send_json_error(['message' => __('You do not have permission to install plugins', 'gen-wave')], 403);
+            wp_send_json_error(['message' => __('You do not have permission to manage plugins', 'gen-wave')], 403);
             return false;
         }
 
@@ -135,7 +88,7 @@ class PluginsHandler
     }
 
     /**
-     * Call GET /api/plugins on the dashboard. Caches the response in a transient.
+     * GET /api/plugins on app.genwave.ai (follows GENWAVE_PANEL_URL). Cached in a transient.
      *
      * @return array{ok:bool, plugins?:array, message?:string}
      */
@@ -166,7 +119,7 @@ class PluginsHandler
             ];
         }
 
-        $url = rtrim(GENWAVE_API_URL, '/') . '/api/plugins';
+        $url = AgentAuth::panelUrl() . '/api/plugins';
         $is_localhost = preg_match('#(localhost|127\.0\.0\.1|\.local)#', $url) === 1;
 
         $headers = [
@@ -209,30 +162,6 @@ class PluginsHandler
     }
 
     /**
-     * True for an https URL on Genwave's CDN or its own dashboard host (the
-     * dashboard may sign links on its own domain), or WordPress.org downloads.
-     */
-    private static function is_trusted_download(string $url): bool
-    {
-        $parts = wp_parse_url($url);
-        $host = strtolower($parts['host'] ?? '');
-        $scheme = strtolower($parts['scheme'] ?? '');
-        if ($host === '') {
-            return false;
-        }
-        $trusted = ['cdn.genwave.ai', 'downloads.wordpress.org'];
-        $api_host = strtolower((string) wp_parse_url(GENWAVE_API_URL, PHP_URL_HOST));
-        if ($api_host !== '') {
-            $trusted[] = $api_host;
-        }
-        if (! in_array($host, $trusted, true)) {
-            return false;
-        }
-        // Local development dashboards run over plain http.
-        return $scheme === 'https' || ($host === $api_host && preg_match('#(localhost|127\.0\.0\.1|\.local)$#', $host));
-    }
-
-    /**
      * Add installed/active status + current installed version to a remote entry.
      */
     private function augment_with_local_status(array $plugin): array
@@ -248,9 +177,21 @@ class PluginsHandler
             ? version_compare($local['version'], $plugin['version'], '<')
             : false;
 
-        // Strip the signed download_url from the public response — it's only
-        // needed for the install action, which re-fetches the list fresh.
+        // Install from the Genwave account, or the zip to upload by hand; a
+        // plugin already here is activated with WordPress's own link.
         unset($plugin['download_url']);
+        $plugin['install_url'] = Links::install($slug);
+        $plugin['zip_url'] = Links::download($slug);
+        $plugin['activate_url'] = ($local && ! $plugin['active'] && current_user_can('activate_plugins'))
+            ? add_query_arg(
+                [
+                    'action'   => 'activate',
+                    'plugin'   => rawurlencode($local['plugin_file']),
+                    '_wpnonce' => wp_create_nonce('activate-plugin_' . $local['plugin_file']),
+                ],
+                admin_url('plugins.php')
+            )
+            : null;
 
         return $plugin;
     }
@@ -276,88 +217,5 @@ class PluginsHandler
         }
 
         return null;
-    }
-
-    /**
-     * Download + install + activate via WP_Upgrader.
-     *
-     * @return array{ok:bool, message?:string, plugin_file?:string, activated?:bool}
-     */
-    private function install_and_activate(string $slug, string $download_url): array
-    {
-        if (! function_exists('request_filesystem_credentials')) {
-            require_once ABSPATH . 'wp-admin/includes/file.php';
-        }
-        if (! class_exists('Plugin_Upgrader')) {
-            require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
-        }
-        if (! class_exists('WP_Ajax_Upgrader_Skin')) {
-            require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader-skins.php';
-        }
-        if (! function_exists('activate_plugin')) {
-            require_once ABSPATH . 'wp-admin/includes/plugin.php';
-        }
-
-        // If already installed, don't re-download.
-        $existing = $this->find_installed_plugin($slug);
-        if ($existing) {
-            $activated = false;
-            if (! is_plugin_active($existing['plugin_file'])) {
-                $err = activate_plugin($existing['plugin_file']);
-                if (is_wp_error($err)) {
-                    return ['ok' => false, 'message' => $err->get_error_message()];
-                }
-                $activated = true;
-            }
-            return [
-                'ok' => true,
-                'plugin_file' => $existing['plugin_file'],
-                'activated' => $activated,
-            ];
-        }
-
-        // Install only from Genwave's own download hosts, whatever the list says.
-        if (! self::is_trusted_download($download_url)) {
-            return ['ok' => false, 'message' => __('This download is not from Genwave, so it was not installed.', 'gen-wave')];
-        }
-
-        $upgrader = new \Plugin_Upgrader(new \WP_Ajax_Upgrader_Skin());
-        $result = $upgrader->install($download_url);
-
-        if (is_wp_error($result)) {
-            return ['ok' => false, 'message' => $result->get_error_message()];
-        }
-        if ($result === false) {
-            $skin_errors = $upgrader->skin->get_error_messages();
-            return [
-                'ok' => false,
-                'message' => $skin_errors ? implode('; ', $skin_errors) : __('Install failed', 'gen-wave'),
-            ];
-        }
-
-        // Locate the new plugin file post-install.
-        $installed = $this->find_installed_plugin($slug);
-        if (! $installed) {
-            return ['ok' => false, 'message' => __('Installed but plugin folder not found', 'gen-wave')];
-        }
-
-        $err = activate_plugin($installed['plugin_file']);
-        if (is_wp_error($err)) {
-            return [
-                'ok' => true,
-                'plugin_file' => $installed['plugin_file'],
-                'activated' => false,
-                'message' => $err->get_error_message(),
-            ];
-        }
-
-        // Invalidate the list cache so the UI reflects the new state on refresh.
-        delete_transient(self::LIST_CACHE_KEY);
-
-        return [
-            'ok' => true,
-            'plugin_file' => $installed['plugin_file'],
-            'activated' => true,
-        ];
     }
 }

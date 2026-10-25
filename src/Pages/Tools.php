@@ -162,30 +162,6 @@ class Tools {
                             <td><code><?php echo esc_html(GEN_WAVE_VERSION); ?></code></td>
                         </tr>
                         <tr>
-                            <th scope="row">Update Server URL</th>
-                            <td><code><?php echo esc_html(GENWAVE_API_URL . '/api/check-update-free'); ?></code></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Cache Key</th>
-                            <td><code><?php echo esc_html('genwave_update_check_' . md5('ai/ai.php')); ?></code></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Cache Status</th>
-                            <td>
-                                <?php
-                                $cache_key = 'genwave_update_check_' . md5('ai/ai.php');
-                                $cached_data = get_transient($cache_key);
-                                if ($cached_data === false): ?>
-                                    <span style="color: #dc3232;">❌ No Cache</span>
-                                <?php else: ?>
-                                    <span style="color: #00a32a;">✅ Cache Present</span>
-                                    <?php if (is_object($cached_data) && isset($cached_data->new_version)): ?>
-                                        <br><small>Available version: <?php echo esc_html($cached_data->new_version); ?></small>
-                                    <?php endif; ?>
-                                <?php endif; ?>
-                            </td>
-                        </tr>
-                        <tr>
                             <th scope="row">WordPress Updates Status</th>
                             <td>
                                 <?php

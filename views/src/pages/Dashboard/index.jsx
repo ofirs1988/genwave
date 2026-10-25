@@ -123,8 +123,9 @@ const Dashboard = () => {
 
                     {agent.state === 'missing' && agent.oneClick && (
                         <p className="gw-dash-agent__note">
-                            The agent chat is a separate plugin. You can install it in one click from the Genwave
-                            Plugins page. Please keep this plugin installed too, because the agent uses its connection.
+                            The agent chat is a separate plugin. Install it in one click from your Genwave account,
+                            or <a href={agent.downloadUrl}>download the zip</a> and upload it in Plugins &gt; Add New.
+                            Please keep this plugin installed too, because the agent uses its connection.
                         </p>
                     )}
                     {agent.state === 'missing' && !agent.oneClick && (

@@ -65,7 +65,31 @@ class Links
     /** Genwave Agent download, counted like the site's own download buttons. */
     public static function agentDownload(): string
     {
-        return self::app('api/download-track/genwave-agent?source=plugin');
+        return self::download('genwave-agent');
+    }
+
+    /** A Genwave plugin's zip, counted like the site's own download buttons. */
+    public static function download(string $slug): string
+    {
+        return self::app('api/download-track/' . rawurlencode($slug) . '?source=plugin');
+    }
+
+    /**
+     * Install a Genwave plugin on this site from the customer's Genwave account
+     * (SiteCommands): the account page names this site, installs on a click
+     * (at once with $auto) and sends the admin back to $return.
+     */
+    public static function install(string $slug, string $return = '', bool $auto = false): string
+    {
+        $args = [
+            'plugin' => $slug,
+            'site'   => get_site_url(),
+            'return' => $return !== '' ? $return : admin_url('admin.php?page=gen-wave-plugins'),
+        ];
+        if ($auto) {
+            $args['auto'] = '1';
+        }
+        return self::app('sites/install') . '?' . http_build_query($args, '', '&', PHP_QUERY_RFC3986);
     }
 
     /** The links the React pages use. */

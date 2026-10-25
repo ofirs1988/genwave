@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Genwave - AI Agent 1.2.1\n"
+"Project-Id-Version: Genwave - AI Agent 1.2.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/gen-wave\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-25T02:28:21+02:00\n"
+"POT-Creation-Date: 2026-10-25T02:11:42+01:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: gen-wave\n"
@@ -50,15 +50,6 @@ msgstr ""
 
 #: src/AdminBar.php:49
 msgid "Free AI actions left this month"
-msgstr ""
-
-#: src/AjaxManager.php:980
-#: src/Handlers/GenerationHandler.php:351
-#: src/Handlers/PollingHandler.php:41
-#: src/Handlers/ProductHandler.php:34
-#: src/Handlers/ProductHandler.php:114
-#: src/Handlers/ProductHandler.php:242
-msgid "Security verification failed"
 msgstr ""
 
 #: src/Controllers/VerifyLoginController.php:26
@@ -141,11 +132,42 @@ msgid "Genwave did not send a valid connection code. Click “Connect to Genwave
 msgstr ""
 
 #: src/Core/PanelConnect.php:148
+#: src/Pages/Settings.php:91
 msgid "Connection failed. Please try again."
 msgstr ""
 
-#: src/Core/PanelConnect.php:166
+#: src/Core/PanelConnect.php:164
+#: src/Core/PanelConnect.php:174
+#: src/Pages/Settings.php:88
 msgid "Your site is connected to Genwave."
+msgstr ""
+
+#: src/Core/SiteCommands.php:75
+msgid "This site is not connected to Genwave."
+msgstr ""
+
+#: src/Core/SiteCommands.php:78
+msgid "This command is not signed by your Genwave account."
+msgstr ""
+
+#: src/Core/SiteCommands.php:120
+msgid "Genwave does not offer this plugin."
+msgstr ""
+
+#: src/Core/SiteCommands.php:126
+msgid "Unknown command."
+msgstr ""
+
+#: src/Core/SiteCommands.php:165
+msgid "WordPress on this site cannot install plugins by itself (file changes are turned off or need FTP details). Download the plugin and upload it in Plugins > Add New."
+msgstr ""
+
+#: src/Core/SiteCommands.php:178
+msgid "The plugin could not be installed."
+msgstr ""
+
+#: src/Core/SiteCommands.php:184
+msgid "The plugin was downloaded but its folder was not found."
 msgstr ""
 
 #: src/Handlers/GenerationHandler.php:42
@@ -206,6 +228,13 @@ msgstr ""
 msgid "Generation failed"
 msgstr ""
 
+#: src/Handlers/GenerationHandler.php:351
+#: src/Handlers/ProductHandler.php:34
+#: src/Handlers/ProductHandler.php:114
+#: src/Handlers/ProductHandler.php:242
+msgid "Security verification failed"
+msgstr ""
+
 #: src/Handlers/GenerationHandler.php:360
 msgid "Valid Post request ID is required"
 msgstr ""
@@ -228,80 +257,26 @@ msgstr ""
 msgid "Error: %s"
 msgstr ""
 
-#: src/Handlers/PluginsHandler.php:49
+#: src/Handlers/PluginsHandler.php:52
 msgid "Failed to fetch plugin list"
 msgstr ""
 
-#: src/Handlers/PluginsHandler.php:80
-msgid "Missing plugin slug"
-msgstr ""
-
-#: src/Handlers/PluginsHandler.php:88
-msgid "Could not get download URL"
-msgstr ""
-
-#: src/Handlers/PluginsHandler.php:101
-msgid "Plugin not available for download"
-msgstr ""
-
-#: src/Handlers/PluginsHandler.php:112
-msgid "Plugin installed and activated"
-msgstr ""
-
-#: src/Handlers/PluginsHandler.php:125
+#: src/Handlers/PluginsHandler.php:78
 msgid "Security check failed"
 msgstr ""
 
-#: src/Handlers/PluginsHandler.php:130
-msgid "You do not have permission to install plugins"
+#: src/Handlers/PluginsHandler.php:83
+msgid "You do not have permission to manage plugins"
 msgstr ""
 
-#: src/Handlers/PluginsHandler.php:165
+#: src/Handlers/PluginsHandler.php:118
 msgid "Please connect your Genwave account on the Account page first."
 msgstr ""
 
 #. translators: %d is the HTTP status code returned by the Genwave dashboard.
-#: src/Handlers/PluginsHandler.php:202
+#: src/Handlers/PluginsHandler.php:155
 #, php-format
 msgid "Dashboard returned HTTP %d"
-msgstr ""
-
-#: src/Handlers/PluginsHandler.php:321
-msgid "This download is not from Genwave, so it was not installed."
-msgstr ""
-
-#: src/Handlers/PluginsHandler.php:334
-msgid "Install failed"
-msgstr ""
-
-#: src/Handlers/PluginsHandler.php:341
-msgid "Installed but plugin folder not found"
-msgstr ""
-
-#: src/Handlers/PollingHandler.php:57
-msgid "No response data provided"
-msgstr ""
-
-#: src/Handlers/PollingHandler.php:69
-msgid "Response data exceeds maximum size"
-msgstr ""
-
-#. translators: %s: JSON error message
-#: src/Handlers/PollingHandler.php:82
-#, php-format
-msgid "Invalid JSON format: %s"
-msgstr ""
-
-#: src/Handlers/PollingHandler.php:94
-msgid "Response data must be an array"
-msgstr ""
-
-#: src/Handlers/PollingHandler.php:104
-msgid "Response data is empty"
-msgstr ""
-
-#: src/Handlers/PollingHandler.php:114
-msgid "Cannot process more than 100 posts at once"
 msgstr ""
 
 #: src/Handlers/ProductHandler.php:40
@@ -526,261 +501,248 @@ msgstr ""
 msgid "Plugins"
 msgstr ""
 
-#: src/Pages/Settings.php:48
+#: src/Pages/Settings.php:29
 msgid "You must enter a license key to use Genwave."
 msgstr ""
 
-#: views/settings.php:37
-#: views/settings.php:272
+#: views/settings.php:36
+#: views/settings.php:258
 msgid "Genwave"
 msgstr ""
 
-#: views/settings.php:38
+#: views/settings.php:37
 msgid "Account"
 msgstr ""
 
-#: views/settings.php:42
+#: views/settings.php:41
 msgid "Connected"
 msgstr ""
 
-#: views/settings.php:44
+#: views/settings.php:43
 msgid "License Expired"
 msgstr ""
 
-#: views/settings.php:46
+#: views/settings.php:45
 msgid "Not Connected"
 msgstr ""
 
-#: views/settings.php:65
+#: views/settings.php:64
 msgid "License expired"
 msgstr ""
 
-#: views/settings.php:66
+#: views/settings.php:65
 msgid "Renew now to keep using the AI Agent."
 msgstr ""
 
-#: views/settings.php:68
+#: views/settings.php:67
 msgid "Renew License"
 msgstr ""
 
-#: views/settings.php:82
+#: views/settings.php:81
 msgid "Your account is connected. Manage your site through the Genwave Agent chat."
 msgstr ""
 
-#: views/settings.php:84
+#: views/settings.php:83
 msgid "Open the Agent"
 msgstr ""
 
 #: views/settings.php:91
-msgid "Genwave Agent was not installed automatically"
-msgstr ""
-
-#: views/settings.php:92
-msgid "Your site is connected. Install the Agent in one click from the Genwave Plugins page."
-msgstr ""
-
-#: views/settings.php:95
-msgid "Installing Genwave Agent…"
-msgstr ""
-
-#: views/settings.php:96
-msgid "This takes a few seconds. The agent chat opens as soon as it is ready."
-msgstr ""
-
-#: views/settings.php:98
-#: views/settings.php:110
-msgid "Install Genwave Agent"
-msgstr ""
-
-#: views/settings.php:106
 msgid "One more step: install Genwave Agent"
 msgstr ""
 
-#: views/settings.php:108
-msgid "The agent chat is a separate plugin. You can install it in one click from the Genwave Plugins page. Please keep this plugin installed too, because the agent uses its connection."
+#: views/settings.php:93
+msgid "The agent chat is a separate plugin. Install it in one click from your Genwave account, or download it and upload it in Plugins > Add New. Please keep this plugin installed too, because the agent uses its connection."
 msgstr ""
 
-#: views/settings.php:113
+#: views/settings.php:95
+msgid "Install Genwave Agent"
+msgstr ""
+
+#: views/settings.php:96
+msgid "Download the zip"
+msgstr ""
+
+#: views/settings.php:99
 msgid "The agent chat is a separate plugin. Please ask a site administrator to install it. Keep this plugin installed too, because the agent uses its connection."
 msgstr ""
 
-#: views/settings.php:115
+#: views/settings.php:101
 msgid "Download Genwave Agent"
 msgstr ""
 
-#: views/settings.php:124
+#: views/settings.php:110
 msgid "Genwave Agent is installed but not active"
 msgstr ""
 
-#: views/settings.php:125
+#: views/settings.php:111
 msgid "Activate it to open the agent chat."
 msgstr ""
 
-#: views/settings.php:127
+#: views/settings.php:113
 msgid "Activate Genwave Agent"
 msgstr ""
 
-#: views/settings.php:138
+#: views/settings.php:124
 msgid "Usage"
 msgstr ""
 
-#: views/settings.php:140
+#: views/settings.php:126
 msgid "Normal use fully included"
 msgstr ""
 
-#: views/settings.php:141
+#: views/settings.php:127
 msgid "Usage and plan"
 msgstr ""
 
-#: views/settings.php:146
+#: views/settings.php:132
 msgid "Account details"
 msgstr ""
 
-#: views/settings.php:149
+#: views/settings.php:135
 msgid "License key"
 msgstr ""
 
-#: views/settings.php:153
+#: views/settings.php:139
 msgid "Status"
 msgstr ""
 
-#: views/settings.php:156
+#: views/settings.php:142
 msgid "Expired"
 msgstr ""
 
-#: views/settings.php:158
+#: views/settings.php:144
 msgid "Active"
 msgstr ""
 
-#: views/settings.php:164
+#: views/settings.php:150
 msgid "Manage account"
 msgstr ""
 
-#: views/settings.php:165
+#: views/settings.php:151
 msgid "Disconnect"
 msgstr ""
 
-#: views/settings.php:172
+#: views/settings.php:158
 msgid "Getting started"
 msgstr ""
 
-#: views/settings.php:175
+#: views/settings.php:161
 msgid "Open the Genwave Agent"
 msgstr ""
 
-#: views/settings.php:175
+#: views/settings.php:161
 msgid "Find it in your WordPress admin menu."
 msgstr ""
 
-#: views/settings.php:177
+#: views/settings.php:163
 msgid "Activate the Genwave Agent plugin"
 msgstr ""
 
-#: views/settings.php:177
+#: views/settings.php:163
 msgid "It is installed but not active. See the note above."
 msgstr ""
 
-#: views/settings.php:179
+#: views/settings.php:165
 msgid "Install the Genwave Agent plugin"
 msgstr ""
 
-#: views/settings.php:179
+#: views/settings.php:165
 msgid "The agent chat is a separate plugin. See the note above."
 msgstr ""
 
-#: views/settings.php:181
+#: views/settings.php:167
 msgid "Describe what you need"
 msgstr ""
 
-#: views/settings.php:181
+#: views/settings.php:167
 msgid "In plain language. Build pages, manage products, fix errors."
 msgstr ""
 
-#: views/settings.php:182
+#: views/settings.php:168
 msgid "Review &amp; approve"
 msgstr ""
 
-#: views/settings.php:182
+#: views/settings.php:168
 msgid "You see a preview before anything changes."
 msgstr ""
 
-#: views/settings.php:190
+#: views/settings.php:176
 msgid "Connect your Genwave account"
 msgstr ""
 
-#: views/settings.php:191
+#: views/settings.php:177
 msgid "Add the AI Agent to your site to build pages, fix errors, and manage everything through conversation."
 msgstr ""
 
-#: views/settings.php:195
+#: views/settings.php:181
 msgid "Natural conversation"
 msgstr ""
 
-#: views/settings.php:195
+#: views/settings.php:181
 msgid "Run your whole site by talking to the AI."
 msgstr ""
 
-#: views/settings.php:196
+#: views/settings.php:182
 msgid "Every area of WordPress"
 msgstr ""
 
-#: views/settings.php:196
+#: views/settings.php:182
 msgid "Content, WooCommerce, plugins, SEO and error fixing."
 msgstr ""
 
-#: views/settings.php:197
+#: views/settings.php:183
 msgid "Safe by design"
 msgstr ""
 
-#: views/settings.php:197
+#: views/settings.php:183
 msgid "A preview before every change to your site."
 msgstr ""
 
-#: views/settings.php:205
-#: views/settings.php:256
+#: views/settings.php:191
+#: views/settings.php:242
 msgid "Connect to Genwave"
 msgstr ""
 
-#: views/settings.php:207
+#: views/settings.php:193
 msgid "Sign in or create a free account, then approve this site. No key to copy."
 msgstr ""
 
-#: views/settings.php:209
+#: views/settings.php:195
 msgid "Ask a site administrator to connect this site to Genwave."
 msgstr ""
 
-#: views/settings.php:215
+#: views/settings.php:201
 msgid "Have an API key? Connect with it instead"
 msgstr ""
 
-#: views/settings.php:226
+#: views/settings.php:212
 msgid "Enter your license key"
 msgstr ""
 
-#: views/settings.php:237
+#: views/settings.php:223
 msgid "Find your license key in your Genwave account."
 msgstr ""
 
-#: views/settings.php:239
+#: views/settings.php:225
 msgid "Save license key"
 msgstr ""
 
-#: views/settings.php:241
+#: views/settings.php:227
 msgid "Update key"
 msgstr ""
 
-#: views/settings.php:251
+#: views/settings.php:237
 msgid "Connect your account"
 msgstr ""
 
-#: views/settings.php:253
+#: views/settings.php:239
 msgid "You will be redirected to log in and authorize this site."
 msgstr ""
 
-#: views/settings.php:264
+#: views/settings.php:250
 msgid "Need help? Contact support"
 msgstr ""
 
-#: views/settings.php:273
+#: views/settings.php:259
 msgid "Support"
 msgstr ""

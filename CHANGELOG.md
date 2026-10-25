@@ -6,6 +6,38 @@ changelog for WordPress.org lives in `readme.txt` and is written at release time
 
 ## Unreleased
 
+## 1.3.0
+
+### Changed
+
+- **Genwave plugins are installed from the Genwave account, not from inside
+  WordPress** (WordPress.org guideline 8: a plugin hosted there may not install
+  plugins from other servers itself; a management service that pushes software
+  from its own domain may). New `Core\SiteCommands`: `POST gen-wave/v1/command`,
+  signed by app.genwave.ai with `HMAC-SHA256(site_key, "genwave-site-command-v1")`
+  over `POST\n/gen-wave/v1/command\nsha256(body)\nts\nnonce` (±300 s, nonce
+  once, `site` in the body must be this site's uid). Ops: `status` (the Genwave
+  plugins here, `can_install`) and `install` (slug from a fixed list, zip from
+  cdn.genwave.ai, then activate). The command never carries a URL.
+- The Plugins page and every "Install Genwave Agent" button link to
+  `app.genwave.ai/sites/install?plugin=&site=&return=` (`Links::install`), with
+  the zip as the other way. A plugin already here is activated with WordPress's
+  own link. After "Connect to Genwave" with the Agent ticked, the admin goes to
+  that page (it installs at once) and comes back to the chat.
+- Removed the `genwave_install_plugin` AJAX action, the in-page install after
+  connecting (`admin.js`, `PanelConnect::takeAgentInstall`) and
+  `PluginsHandler::install_and_activate`.
+- **Nothing calls account.genwave.ai any more.** The plugin list comes from
+  `app.genwave.ai/api/plugins`; a pasted license key connects at once through
+  `AgentAuth::connect()` (the separate `/validate-license` step is gone).
+- Removed dead code that pointed at the old dashboard: the integration sign-in
+  flow (`IntegrationCallbackController`, `VerifyLoginController::redirectLogin`/
+  `getUrl`), `PollingHandler` and the unhooked polling methods in `AjaxManager`,
+  `InstantGeneratorSettings` and its script, `Helper\License`, the `apiUrl`
+  script value, the update-server rows on the Tools page, and the
+  `Access-Control-Allow-*` headers for account.genwave.ai sent on every request.
+  `GENWAVE_API_URL` stays defined for the premium plugins.
+
 ## 1.2.2 - 2026-10-25
 
 ### Security
