@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Genwave - AI Agent
  * Description: Run the WordPress site you already have by describing what you need: pages, WooCommerce, plugins, SEO and error fixes. Genwave Agent shows you the plan, you approve it, and it does the work.
- * Version: 1.3.1
+ * Version: 1.3.2
  * Author: Genwave.ai
  * Author URI: https://genwave.ai
  * Text Domain: gen-wave
@@ -28,7 +28,7 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
-define( 'GEN_WAVE_VERSION', '1.3.1' );
+define( 'GEN_WAVE_VERSION', '1.3.2' );
 
 define( 'GEN_WAVE__FILE__', __FILE__ );
 define( 'GEN_WAVE_PLUGIN_BASE', plugin_basename( GEN_WAVE__FILE__ ) );

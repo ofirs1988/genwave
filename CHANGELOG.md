@@ -4,7 +4,7 @@ Developer-facing changelog for the GenWave (free / anchor) plugin. The customer
 changelog for WordPress.org lives in `readme.txt` and is written at release time
 (security items are described there generically, not by vulnerability).
 
-## 1.3.1
+## 1.3.2
 
 ### Changed
 
@@ -80,7 +80,7 @@ changelog for WordPress.org lives in `readme.txt` and is written at release time
 
 ### Docs
 
-- readme: version 1.3.1, how to add Genwave Agent by hand, a FAQ on why the
+- readme: version 1.3.2, how to add Genwave Agent by hand, a FAQ on why the
   plugin does not install it, External services updated (account pages on
   app.genwave.ai, read-only status requests, no cdn.genwave.ai downloads),
   screenshot caption 4 matches the Plugins screen. Listing assets now live in
@@ -110,6 +110,8 @@ changelog for WordPress.org lives in `readme.txt` and is written at release time
   Screenshot captions now match the 1.3.0 screens. Changelog history: em
   dashes removed, "250+ actions", retired product names (Pro, SEO, Site
   Transfer) and the dead account.genwave.ai link dropped.
+
+## 1.3.1
 
 ### Changed
 

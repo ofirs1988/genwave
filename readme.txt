@@ -4,7 +4,7 @@ Tags: ai, ai-agent, ai-writing, content-generation, woocommerce
 Requires at least: 5.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,14 +133,16 @@ Yes. Each site in the network connects to Genwave on its own.
 
 == Changelog ==
 
-= 1.3.1 =
+= 1.3.2 =
 * This plugin no longer installs or activates other plugins. To add Genwave Agent, download it from your Genwave account and upload it in Plugins → Add New → Upload Plugin. The Account, Overview and Plugins screens now explain this and link to the right page.
 * Fixed: the AI box on the post and product screens said "Connection Required" on sites that were connected.
 * Fixed: AI writing could not write a short description (it always said the generation method was invalid).
 * Only administrators can store AI writing results through the plugin's REST API.
 * Removed unused code: an old script that was still loaded on edit screens, and a way to call one of the plugin's routes with the license key.
 * Small fixes for WordPress coding standards.
-* On the Free plan, the screens say in plain words how much of this month's AI use is left (limited use, almost used up, used up) instead of showing numbers.
+
+= 1.3.1 =
+* The Free plan shows limited use instead of a number, with an invitation to upgrade when the month's free use runs out.
 
 = 1.3.0 =
 * New design for the Genwave screens. Genwave plugins now install from your Genwave account.
@@ -262,7 +264,7 @@ Yes. Each site in the network connects to Genwave on its own.
 
 == Upgrade Notice ==
 
-= 1.3.1 =
+= 1.3.2 =
 Genwave Agent is now added by uploading its zip from your Genwave account. Fixes the AI box showing "Connection Required" on connected sites.
 
 = 1.1.6 =
