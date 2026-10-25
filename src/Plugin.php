@@ -33,6 +33,9 @@ class Plugin {
         // Commands from the customer's Genwave account (install a Genwave plugin).
         \GenWavePlugin\Core\SiteCommands::register();
 
+        // The Genwave screens: one full-screen app in the Agent's design.
+        \GenWavePlugin\Core\AdminApp::register();
+
         // Load AJAX manager for both admin and frontend
         new AjaxManager();
 

@@ -22,8 +22,8 @@ class Dashboard
     {
         $this->adminPageManager->addSubmenu(
             'gen-wave-plugin-settings',
-            'Dashboard',
-            'Dashboard',
+            __('Genwave', 'gen-wave'),
+            __('Overview', 'gen-wave'),
             'manage_options',
             'gen-wave-dashboard',
             array($this, 'render_page'),
@@ -33,10 +33,6 @@ class Dashboard
 
     public function render_page()
     {
-        // Localize script with settings (wp_localize_script is called in Enqueue.php)
-        // Just render the container div
-        ?>
-        <div id="genwave-dashboard-app"></div>
-        <?php
+        \GenWavePlugin\Core\AdminApp::render('overview');
     }
 }

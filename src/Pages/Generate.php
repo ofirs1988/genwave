@@ -22,8 +22,8 @@ class Generate
     {
         $this->adminPageManager->addSubmenu(
             'gen-wave-plugin-settings',
-            'Generate',
-            'Generate',
+            __('AI writing', 'gen-wave'),
+            __('AI writing', 'gen-wave'),
             'manage_options',
             'gen-wave-generate',
             array($this, 'render_page'),
@@ -33,10 +33,6 @@ class Generate
 
     public function render_page()
     {
-        // Localize script with settings (wp_localize_script is called in Enqueue.php)
-        // Just render the container div
-        ?>
-        <div id="genwave-generate-app"></div>
-        <?php
+        \GenWavePlugin\Core\AdminApp::render('generate');
     }
 }

@@ -61,22 +61,12 @@ class Enqueue {
     public function enqueueScripts($hook) {
         // Only load on Genwave plugin pages and post/product edit screens
         $screen = get_current_screen();
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Just checking page parameter for conditional loading
-        $current_page = isset($_GET['page']) ? sanitize_text_field(wp_unslash($_GET['page'])) : '';
-        $is_genwave_page = strpos($current_page, 'gen-wave') !== false;
         $is_edit_screen = $screen && in_array($screen->base, ['post', 'page']) && in_array($screen->post_type, ['post', 'page', 'product']);
 
-        // Check if we're on Dashboard, Generate, or Plugins pages (need React bundle)
-        $is_react_page = in_array($current_page, ['gen-wave-dashboard', 'gen-wave-generate', 'gen-wave-plugins']);
-
-        // Exit early if not on a relevant page
-        if (!$is_genwave_page && !$is_edit_screen) {
+        // The Genwave screens are one app with its own bundle (AdminApp); the
+        // libraries below are only for the AI box on edit screens.
+        if (AdminApp::isAppPage() || !$is_edit_screen) {
             return;
-        }
-
-        // Load React bundle for Dashboard and Generate pages
-        if ($is_react_page) {
-            $this->enqueueReactBundle();
         }
 
         // Enqueue Bootstrap CSS (bundled locally for WordPress.org compliance)
@@ -225,55 +215,4 @@ class Enqueue {
         return $domain;
     }
 
-    /**
-     * Enqueue React bundle for Dashboard and Generate pages
-     */
-    private function enqueueReactBundle() {
-        $dist_path = GEN_WAVE_PATH . '/dist';
-        $dist_url = GEN_WAVE_URL . '/dist';
-
-        // Find the bundle files (they have content hash in filename)
-        $js_files = glob($dist_path . '/bundle.*.js');
-        $css_files = glob($dist_path . '/styles.*.css');
-
-        // Enqueue CSS bundle if exists
-        if (!empty($css_files)) {
-            $css_file = basename($css_files[0]);
-            wp_enqueue_style(
-                'gen-wave-react-styles',
-                $dist_url . '/' . $css_file,
-                [],
-                GEN_WAVE_VERSION
-            );
-        }
-
-        // Enqueue JS bundle if exists
-        if (!empty($js_files)) {
-            $js_file = basename($js_files[0]);
-            wp_enqueue_script(
-                'gen-wave-react-bundle',
-                $dist_url . '/' . $js_file,
-                [],
-                GEN_WAVE_VERSION,
-                true
-            );
-
-            // Localize script with settings for React app
-            // Note: wp_localize_script converts booleans to strings, so we use '1'/'0' and check in JS
-            wp_localize_script(
-                'gen-wave-react-bundle',
-                'genwaveFreeSettings',
-                [
-                    'ajaxurl'        => admin_url('admin-ajax.php'),
-                    'nonce'          => wp_create_nonce('genwave_nonce'),
-                    'generateNonce'  => wp_create_nonce('genwave_generate_nonce'),
-                    'pluginsNonce'   => wp_create_nonce('genwave_plugins_nonce'),
-                    'isPro'          => '0',
-                    'hasWooCommerce' => class_exists('WooCommerce') ? '1' : '0',
-                    'agent'          => AgentPlugin::forScript(),
-                    'links'          => Links::forScript(),
-                ]
-            );
-        }
-    }
 }

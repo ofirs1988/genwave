@@ -195,13 +195,27 @@ class PanelConnect
     /** The outcome of the last connect attempt, shown once on the next admin page. */
     public static function resultNotice(): void
     {
-        $notice = get_transient(self::noticeKey());
-        if (!is_array($notice) || empty($notice['message'])) {
+        // The Genwave screens show it themselves (AdminApp::render → takeNotice).
+        if (AdminApp::isAppPage()) {
             return;
         }
+        $notice = self::takeNotice();
+        if ($notice === null) {
+            return;
+        }
+        echo '<div class="notice notice-' . esc_attr($notice['type']) . ' is-dismissible"><p>' . esc_html($notice['message']) . '</p></div>';
+    }
+
+    /** The outcome of the last connect attempt, once: ['type' => …, 'message' => …] or null. */
+    public static function takeNotice(): ?array
+    {
+        $notice = get_transient(self::noticeKey());
+        if (!is_array($notice) || empty($notice['message'])) {
+            return null;
+        }
         delete_transient(self::noticeKey());
-        $type = in_array($notice['type'] ?? '', ['success', 'warning', 'error'], true) ? $notice['type'] : 'info';
-        echo '<div class="notice notice-' . esc_attr($type) . ' is-dismissible"><p>' . esc_html($notice['message']) . '</p></div>';
+        $type = in_array($notice['type'] ?? '', ['success', 'warning', 'error'], true) ? $notice['type'] : 'success';
+        return ['type' => $type, 'message' => (string) $notice['message']];
     }
 
     /** Record the outcome and land on a clean settings URL (no code or state left in it). */

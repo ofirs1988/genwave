@@ -33,8 +33,6 @@ class Plugins
 
     public function render_page()
     {
-        ?>
-        <div id="genwave-plugins-app"></div>
-        <?php
+        \GenWavePlugin\Core\AdminApp::render('plugins');
     }
 }

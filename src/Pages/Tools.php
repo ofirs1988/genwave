@@ -6,6 +6,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+use GenWavePlugin\Core\AdminApp;
+
 class Tools {
 
     private $adminPageManager;
@@ -20,8 +22,8 @@ class Tools {
     public function register_tools_page() {
         $this->adminPageManager->addSubmenu(
             'gen-wave-plugin-settings',
-            'Tools',
-            'Tools',
+            __('Maintenance', 'gen-wave'),
+            __('Maintenance', 'gen-wave'),
             'manage_options',
             'ai-tools',
             array($this, 'render_tools_page'),
@@ -30,176 +32,18 @@ class Tools {
     }
 
     public function render_tools_page() {
-        // Handle success/error messages
-        $message = '';
-        $message_type = '';
-
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Display-only, no state changes
+        // The outcome of the last action (handle_* redirect back with it).
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- Display-only, no state changes
         if (isset($_GET['cache_cleared'])) {
-            $message = 'Cache cleared successfully!';
-            $message_type = 'success';
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Display-only, no state changes
-        } elseif (isset($_GET['update_checked'])) {
-            $message = 'Update check completed successfully!';
-            $message_type = 'success';
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Display-only, no state changes
+            \GenWavePlugin\Core\AdminApp::flash('success', __('The update checks were cleared.', 'gen-wave'));
         } elseif (isset($_GET['db_repaired'])) {
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Display-only, no state changes
-            $message = 'Database repair completed! ' . sanitize_text_field(wp_unslash($_GET['db_repaired']));
-            $message_type = 'success';
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Display-only, no state changes
+            \GenWavePlugin\Core\AdminApp::flash('success', __('Database checked and repaired.', 'gen-wave') . ' ' . sanitize_text_field(wp_unslash($_GET['db_repaired'])));
         } elseif (isset($_GET['error'])) {
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Display-only, no state changes
-            $message = 'An error occurred: ' . sanitize_text_field(wp_unslash($_GET['error']));
-            $message_type = 'error';
+            \GenWavePlugin\Core\AdminApp::flash('error', sanitize_text_field(wp_unslash($_GET['error'])));
         }
-
-        ?>
-        <div class="wrap">
-            <h1>
-                <span class="dashicons dashicons-admin-tools" style="margin-right: 8px;"></span>
-                Tools - Genwave Plugin
-            </h1>
-
-            <?php if ($message): ?>
-                <div class="notice notice-<?php echo esc_attr($message_type); ?> is-dismissible">
-                    <p><?php echo esc_html($message); ?></p>
-                </div>
-            <?php endif; ?>
-
-            <div class="card" style="max-width: 800px;">
-                <h2 class="title">Cache & Updates Management</h2>
-                <table class="form-table">
-                    <tbody>
-                        <tr>
-                            <th scope="row">
-                                <label>Clear Update Cache</label>
-                            </th>
-                            <td>
-                                <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="display: inline;">
-                                    <?php wp_nonce_field('ai_clear_cache_nonce', 'ai_nonce'); ?>
-                                    <input type="hidden" name="action" value="ai_clear_cache">
-                                    <button type="submit" class="button button-secondary" onclick="return confirm('Are you sure you want to clear the cache?')">
-                                        <span class="dashicons dashicons-trash" style="margin-top: 3px; margin-left: 5px;"></span>
-                                        Clear Cache
-                                    </button>
-                                </form>
-                                <p class="description">
-                                    Clears all plugin update cache and forces a fresh check from the server.
-                                </p>
-                            </td>
-                        </tr>
-
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="card" style="max-width: 800px; margin-top: 20px;">
-                <h2 class="title">Database Management</h2>
-                <?php $db_status = $this->get_database_status(); ?>
-                <table class="form-table">
-                    <tbody>
-                        <tr>
-                            <th scope="row">Database Status</th>
-                            <td>
-                                <?php if ($db_status['all_ok']): ?>
-                                    <span style="color: #00a32a;">✅ All tables OK</span>
-                                <?php else: ?>
-                                    <span style="color: #dc3232;">❌ Issues detected</span>
-                                <?php endif; ?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Tables Status</th>
-                            <td>
-                                <?php foreach ($db_status['tables'] as $table => $status): ?>
-                                    <div style="margin-bottom: 5px;">
-                                        <?php if ($status['exists']): ?>
-                                            <span style="color: #00a32a;">✅</span>
-                                        <?php else: ?>
-                                            <span style="color: #dc3232;">❌</span>
-                                        <?php endif; ?>
-                                        <code><?php echo esc_html($table); ?></code>
-                                        <?php if (!empty($status['missing_columns'])): ?>
-                                            <br><small style="color: #dc3232; margin-right: 20px;">Missing columns: <?php echo esc_html(implode(', ', $status['missing_columns'])); ?></small>
-                                        <?php endif; ?>
-                                    </div>
-                                <?php endforeach; ?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">DB Version</th>
-                            <td><code><?php echo esc_html(get_option('genwave_db_version', 'Not set')); ?></code></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">
-                                <label>Repair Database</label>
-                            </th>
-                            <td>
-                                <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="display: inline;">
-                                    <?php wp_nonce_field('ai_repair_database_nonce', 'ai_nonce'); ?>
-                                    <input type="hidden" name="action" value="ai_repair_database">
-                                    <button type="submit" class="button button-primary" onclick="return confirm('This will check and repair all database tables. Continue?')">
-                                        <span class="dashicons dashicons-database-add" style="margin-top: 3px; margin-left: 5px;"></span>
-                                        Check &amp; Repair Database
-                                    </button>
-                                </form>
-                                <p class="description">
-                                    Checks all plugin tables and adds any missing columns or tables.
-                                </p>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="card" style="max-width: 800px; margin-top: 20px;">
-                <h2 class="title">System Information</h2>
-                <table class="form-table">
-                    <tbody>
-                        <tr>
-                            <th scope="row">Current Version</th>
-                            <td><code><?php echo esc_html(GEN_WAVE_VERSION); ?></code></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">WordPress Updates Status</th>
-                            <td>
-                                <?php
-                                $wp_updates = get_site_transient('update_plugins');
-                                $plugin_slug = 'ai/ai.php';
-                                if ($wp_updates && isset($wp_updates->response[$plugin_slug])): ?>
-                                    <span style="color: #ff8c00;">🔄 Update Available</span>
-                                    <br><small>New version: <?php echo esc_html($wp_updates->response[$plugin_slug]->new_version); ?></small>
-                                <?php else: ?>
-                                    <span style="color: #00a32a;">✅ Up to Date</span>
-                                <?php endif; ?>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="card" style="max-width: 800px; margin-top: 20px;">
-                <h2 class="title">Useful Links</h2>
-                <p>
-                    <a href="<?php echo esc_url(admin_url('plugins.php')); ?>" class="button">
-                        <span class="dashicons dashicons-admin-plugins" style="margin-top: 3px; margin-left: 5px;"></span>
-                        Plugins Page
-                    </a>
-
-                    <a href="<?php echo esc_url(admin_url('update-core.php')); ?>" class="button" style="margin-right: 10px;">
-                        <span class="dashicons dashicons-update" style="margin-top: 3px; margin-left: 5px;"></span>
-                        WordPress Updates
-                    </a>
-
-                    <a href="<?php echo esc_url(admin_url('plugins.php?clear_update_cache=1')); ?>" class="button" style="margin-right: 10px;">
-                        <span class="dashicons dashicons-editor-refresh" style="margin-top: 3px; margin-left: 5px;"></span>
-                        Refresh Cache (URL)
-                    </a>
-                </p>
-            </div>
-        </div>
-        <?php
+        // phpcs:enable WordPress.Security.NonceVerification.Recommended
+        \GenWavePlugin\Core\AdminApp::databaseStatus($this->get_database_status());
+        \GenWavePlugin\Core\AdminApp::render('tools');
     }
 
     public function handle_clear_cache() {
