@@ -55,10 +55,19 @@ changelog for WordPress.org lives in `readme.txt` and is written at release time
   a localhost:8000 fallback) and its enqueue/`genwaveConfig` localize, plus the
   `Enqueue` helpers only it used. The unused `plugins_nonce` in
   `genwave_admin_data` is gone too.
-- `AiRestApi::check_api_permission()` no longer accepts the license key in an
-  `X-Genwave-API-Key` header for `POST gen-wave/v1/responses`. No client sends
-  it (searched the brain, portal, dashboard, liteLLM and the Genwave plugins);
-  a logged-in user with `edit_posts` is still allowed.
+- `POST gen-wave/v1/responses` no longer accepts the license key in an
+  `X-Genwave-API-Key` header. No client sends it (searched the brain, portal,
+  dashboard, liteLLM and the Genwave plugins).
+
+### Security
+
+- **`POST gen-wave/v1/responses` is admin-only (audit G9).** It writes rows
+  into `gen_requests_posts` for any post id and used to allow any user with
+  `edit_posts` (authors, contributors). It now uses `check_admin_permission`
+  (`manage_options`), like `GET response-data` and `GET converting-products`
+  that read those rows back. Nothing in the plugin calls the route, so no
+  screen changes. `AiRestApi::check_api_permission()` is removed (no other
+  user).
 
 ### Docs
 

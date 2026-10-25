@@ -97,28 +97,8 @@ class AiRestApi extends WP_REST_Controller
     }
 
     /**
-     * SECURITY: Check REST API permissions
-     * Validates that the request comes from authorized source
-     */
-    public function check_api_permission($request)
-    {
-        // A logged-in user who may edit posts. The license key is no longer
-        // accepted as a credential in an X-Genwave-API-Key header: nothing sends
-        // it any more (the old dashboard that did is retired), and a key that
-        // also travels in outbound requests should not open an inbound route.
-        if (is_user_logged_in() && current_user_can('edit_posts')) {
-            return true;
-        }
-
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug mode only
-            error_log('REST API Auth: Unauthorized - logged_in: ' . (is_user_logged_in() ? 'yes' : 'no') . ', can_edit: ' . (current_user_can('edit_posts') ? 'yes' : 'no'));
-        }
-        return new WP_Error('rest_forbidden', __('You do not have permission to access this endpoint', 'gen-wave'), ['status' => 403]);
-    }
-
-    /**
-     * Check permissions for response-data endpoint (admin only)
+     * Admin-only permission for the responses endpoints (POST /responses,
+     * GET /response-data, GET /converting-products).
      */
     public function check_admin_permission($request)
     {
@@ -139,7 +119,10 @@ class AiRestApi extends WP_REST_Controller
         register_rest_route($this->namespace, '/' . $this->base, [
             'methods' => 'POST',
             'callback' => [$this, 'handle_post_response'],
-            'permission_callback' => [$this, 'check_api_permission'], // SECURITY: Require authentication
+            // SECURITY (G9): writes site-wide rows into the responses table for any
+            // post id, so it is admin-only like the endpoints that read them back.
+            // Nothing in the plugin calls it; edit_posts let any author write rows.
+            'permission_callback' => [$this, 'check_admin_permission'],
         ]);
 
         register_rest_route($this->namespace, '/response-data', [
