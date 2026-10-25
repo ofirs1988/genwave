@@ -10,6 +10,18 @@ changelog for WordPress.org lives in `readme.txt` and is written at release time
 
 ### Changed
 
+- **The Genwave screens in the Genwave Agent's design.** Overview, Account,
+  AI writing, Plugins and Maintenance are one full-screen app
+  (`views/src/app`, `Core\AdminApp`) in the shell and tokens of the Agent and
+  the Chatbot: grouped navigation, "Back to WordPress" (Esc), light and dark
+  themes (the shared `genwave-theme` setting), RTL, English and Hebrew. Each
+  screen keeps its wp-admin page; moving between them does not reload. Fonts
+  (Outfit, Assistant) are bundled in `assets/fonts` with their OFL licence.
+  These screens load no Bootstrap, SweetAlert, Font Awesome or Select2; those
+  stay only on post and product edit screens for the AI box. Connect results
+  show inside the app (`PanelConnect::takeNotice`). Removed `views/settings.php`
+  and the old React pages and stylesheet.
+
 - **Genwave plugins are installed from the Genwave account, not from inside
   WordPress** (WordPress.org guideline 8: a plugin hosted there may not install
   plugins from other servers itself; a management service that pushes software
