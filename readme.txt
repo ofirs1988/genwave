@@ -140,6 +140,7 @@ Yes. Each site in the network connects to Genwave on its own.
 * Only administrators can store AI writing results through the plugin's REST API.
 * Removed unused code: an old script that was still loaded on edit screens, and a way to call one of the plugin's routes with the license key.
 * Small fixes for WordPress coding standards.
+* On the Free plan, the screens say in plain words how much of this month's AI use is left (limited use, almost used up, used up) instead of showing numbers.
 
 = 1.3.0 =
 * New design for the Genwave screens. Genwave plugins now install from your Genwave account.
