@@ -129,7 +129,7 @@ Yes. Each site in the network connects to Genwave on its own.
 2. The Overview screen
 3. Writing a product description with AI: you read it before it is saved
 4. The Genwave plugins and where each one stands on your site
-5. Genwave Agent, a separate plugin you add from your Genwave account, reporting finished work on a store
+5. Genwave Agent, a separate plugin you add from your Genwave account, answering a question about the store
 
 == Changelog ==
 

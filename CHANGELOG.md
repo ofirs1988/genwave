@@ -86,10 +86,10 @@ changelog for WordPress.org lives in `readme.txt` and is written at release time
   screenshot caption 4 matches the Plugins screen. Listing assets now live in
   `.wordpress-org/` (banners, icons and the current screenshots copied from
   SVN so the deploy's asset sync deletes nothing).
-- New screenshots 1-5 (1280x900, taken on a hosted test site running this
-  build, Hebrew admin: the site has no per-user language switch): Account,
-  Overview, AI writing with a generated description (not saved), Genwave
-  plugins, and Genwave Agent with a finished product-images report. The license
+- New screenshots 1-5 in English (1280x900, taken on a hosted test site
+  running this build with the admin temporarily in English): Account, Overview,
+  AI writing with a generated description (not saved), Genwave plugins, and
+  Genwave Agent answering a read-only question about the store. The license
   key on the Account screen is masked. Captions 1, 3 and 5 updated; caption 5
   says Genwave Agent is a separate plugin added from the Genwave account.
 - **WordPress.org readme rewritten to match the 1.3.0 code** (readme only, no
