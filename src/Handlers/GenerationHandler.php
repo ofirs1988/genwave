@@ -273,7 +273,9 @@ class GenerationHandler
                     'from-domain'   => ApiManager::getFromDomain(),
                 ],
                 'body' => wp_json_encode([
-                    'field'        => $generation_method,
+                    // The brain's field names (routes/sites.py): shortDescription, not
+                    // short_description, which it would treat as a full description.
+                    'field'        => $generation_method === 'short_description' ? 'shortDescription' : $generation_method,
                     'language'     => $language,
                     'instructions' => $custom_instructions,
                     'post'         => [

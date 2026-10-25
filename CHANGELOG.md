@@ -47,6 +47,10 @@ changelog for WordPress.org lives in `readme.txt` and is written at release time
   `title`, `short_description`, `description`, so it always answered "Invalid
   generation method". `Generate.jsx` now sends `short_description` (saving still
   uses the `shortDescription` field name `genwave_apply_content` expects).
+  `GenerationHandler` then passed `short_description` on to the brain's
+  `/generate-single`, which knows only `shortDescription` and fell back to a
+  full description (the edit-screen AI box had the same problem); it now sends
+  `shortDescription`.
 - **AI box on edit screens said "Connection Required" on connected sites.**
   `MetaBox` only checked the legacy `uidd`; it now uses
   `AgentAuth::isConnected()` (legacy `uidd` still counts).
