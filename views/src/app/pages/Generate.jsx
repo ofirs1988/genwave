@@ -63,7 +63,8 @@ export default function Generate() {
             nonce: d.nonces?.generate,
             post_id: selected.id,
             post_type: type === 'products' ? 'product' : 'post',
-            generation_method: field,
+            // The server's names (GenerationHandler): short_description, not shortDescription.
+            generation_method: field === 'shortDescription' ? 'short_description' : field,
             language,
             instructions,
         });

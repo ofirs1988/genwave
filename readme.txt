@@ -125,17 +125,19 @@ Yes. Each site in the network connects to Genwave on its own.
 
 == Screenshots ==
 
-1. Connecting your site to your Genwave account
+1. Your Genwave account, connected to the site
 2. The Overview screen
-3. Writing a product description with AI
+3. Writing a product description with AI: you read it before it is saved
 4. The Genwave plugins and where each one stands on your site
-5. Genwave Agent showing a change before it runs
+5. Genwave Agent, a separate plugin you add from your Genwave account, reporting finished work on a store
 
 == Changelog ==
 
 = 1.3.1 =
 * This plugin no longer installs or activates other plugins. To add Genwave Agent, download it from your Genwave account and upload it in Plugins → Add New → Upload Plugin. The Account, Overview and Plugins screens now explain this and link to the right page.
 * Fixed: the AI box on the post and product screens said "Connection Required" on sites that were connected.
+* Fixed: AI writing could not write a short description (it always said the generation method was invalid).
+* Only administrators can store AI writing results through the plugin's REST API.
 * Removed unused code: an old script that was still loaded on edit screens, and a way to call one of the plugin's routes with the license key.
 * Small fixes for WordPress coding standards.
 
