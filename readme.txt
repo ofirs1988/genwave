@@ -4,7 +4,7 @@ Tags: ai, ai-agent, chatbot, content-generation, ecommerce
 Requires at least: 5.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,9 @@ Yes. Each site in the network connects to a Genwave account on its own.
 4. Your plan and usage
 
 == Changelog ==
+
+= 1.2.2 =
+* Security hardening for the REST API and site verification.
 
 = 1.2.1 =
 * Clearer wording on the plugin and Account pages, and no separate sign-up link: Connect to Genwave takes you through sign-up.
