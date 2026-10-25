@@ -272,7 +272,6 @@ class AjaxManager
         // phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 
         wp_send_json_success([
-            'credit_balance' => $credit_balance,
             'total_requests' => $total_requests
         ]);
     }

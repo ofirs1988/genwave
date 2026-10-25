@@ -95,7 +95,7 @@ Yes. The plugin is free. AI writing and the agent use your Genwave plan, and the
 
 = How do the plans work? =
 
-Genwave has a Free plan and two paid plans, Pro and Business. The Free plan includes a small number of AI actions each month for one site. Paid plans have no credits to count. Each one has a fair-use allowance shared by the sites on the plan. See the current plans on our [pricing page](https://genwave.ai/pricing/).
+Genwave is free to start, with no credit card needed. The Free plan includes limited AI use each month on one site. Pro and Business have no credits to count: normal use is included across the sites on your plan, which share one fair-use allowance, and Genwave Studio is included too. See the current plans on our [pricing page](https://genwave.ai/pricing/).
 
 = Which languages does it support? =
 

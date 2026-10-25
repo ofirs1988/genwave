@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Glyph from '../Glyph';
-import { data, t, ajax, Card, Row, Button, Callout, Pill, PageHeader, Confirm, Note } from '../ui';
+import { data, t, ajax, Card, Row, Button, Callout, Pill, PageHeader, Confirm, Note, usageWords, UpgradeCallout } from '../ui';
 
 /**
  * Connecting the site to Genwave, and the account it is connected to.
@@ -102,6 +102,8 @@ function Connected({ a, d, agent, onDisconnect }) {
                 </div>
             </div>
 
+            <UpgradeCallout a={a} links={d.links} />
+
             {agent.state === 'missing' && (
                 <Callout
                     tone="warn"
@@ -130,7 +132,7 @@ function Connected({ a, d, agent, onDisconnect }) {
                 <dl>
                     <div className="gw-kv"><dt>{t('License key', 'מפתח רישיון')}</dt><dd><code dir="ltr">{a.licenseMasked || '—'}</code></dd></div>
                     <div className="gw-kv"><dt>{t('Status', 'סטטוס')}</dt><dd>{a.expired ? <Pill tone="warn">{t('Expired', 'פג תוקף')}</Pill> : <Pill tone="ok">{t('Active', 'פעיל')}</Pill>}</dd></div>
-                    <div className="gw-kv"><dt>{t('Usage', 'שימוש')}</dt><dd title={a.usageTitle || ''}>{a.usageText || t('Normal use fully included', 'שימוש רגיל כלול במלואו')}</dd></div>
+                    <div className="gw-kv"><dt>{t('Usage', 'שימוש')}</dt><dd>{usageWords(a)}</dd></div>
                 </dl>
                 <Row
                     label={t('Plan, usage and billing', 'תוכנית, שימוש וחיוב')}

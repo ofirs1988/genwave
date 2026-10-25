@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-25T15:57:04+01:00\n"
+"POT-Creation-Date: 2026-10-25T17:16:41+01:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: gen-wave\n"
@@ -34,22 +34,36 @@ msgstr ""
 msgid "https://genwave.ai"
 msgstr ""
 
-#: src/AdminBar.php:40
+#: src/AdminBar.php:42
 msgid "Light mode"
 msgstr ""
 
-#: src/AdminBar.php:41
+#: src/AdminBar.php:43
 msgid "This month went far past normal use, so Genwave is working on its lighter, faster model until your plan renews."
 msgstr ""
 
-#. translators: %d: approximate number of AI actions left this month
-#: src/AdminBar.php:48
-#, php-format
-msgid "~%d AI actions left"
+#: src/AdminBar.php:51
+msgid "Free use used up · Upgrade"
 msgstr ""
 
-#: src/AdminBar.php:49
-msgid "Free AI actions left this month"
+#: src/AdminBar.php:52
+msgid "You've used this month's free use. Upgrade and the agent keeps working for you."
+msgstr ""
+
+#: src/AdminBar.php:59
+msgid "Free use almost used up"
+msgstr ""
+
+#: src/AdminBar.php:60
+msgid "Your free use for this month is almost used up. Upgrade and the agent keeps working for you."
+msgstr ""
+
+#: src/AdminBar.php:66
+msgid "Limited use"
+msgstr ""
+
+#: src/AdminBar.php:67
+msgid "The Free plan includes limited AI use each month."
 msgstr ""
 
 #: src/Controllers/VerifyLoginController.php:26
@@ -83,40 +97,39 @@ msgstr ""
 msgid "Reconnect now"
 msgstr ""
 
-#: src/Core/AiRestApi.php:117
-#: src/Core/AiRestApi.php:134
+#: src/Core/AiRestApi.php:114
 msgid "You do not have permission to access this endpoint"
 msgstr ""
 
-#: src/Core/AiRestApi.php:244
+#: src/Core/AiRestApi.php:227
 msgid "Response data saved successfully"
 msgstr ""
 
-#: src/Core/AiRestApi.php:246
+#: src/Core/AiRestApi.php:229
 msgid "Invalid JSON in response"
 msgstr ""
 
-#: src/Core/AiRestApi.php:249
+#: src/Core/AiRestApi.php:232
 msgid "Missing response key in data"
 msgstr ""
 
-#: src/Core/AiRestApi.php:253
+#: src/Core/AiRestApi.php:236
 msgid "No data received"
 msgstr ""
 
-#: src/Core/AiRestApi.php:472
+#: src/Core/AiRestApi.php:455
 msgid "This site is not connecting right now. Connect it from its Genwave settings."
 msgstr ""
 
-#: src/Core/AiRestApi.php:479
+#: src/Core/AiRestApi.php:462
 msgid "Plugin is not configured with a license key"
 msgstr ""
 
-#: src/Core/AiRestApi.php:485
+#: src/Core/AiRestApi.php:468
 msgid "Genwave plugin is active"
 msgstr ""
 
-#: src/Core/AiRestApi.php:497
+#: src/Core/AiRestApi.php:480
 msgid "A verification challenge is required"
 msgstr ""
 
@@ -210,41 +223,41 @@ msgstr ""
 
 #. translators: %s: error message
 #. translators: %s: error message from the exception
-#: src/Handlers/GenerationHandler.php:293
-#: src/Handlers/GenerationHandler.php:332
+#: src/Handlers/GenerationHandler.php:295
+#: src/Handlers/GenerationHandler.php:334
 #, php-format
 msgid "Error generating content: %s"
 msgstr ""
 
-#: src/Handlers/GenerationHandler.php:303
+#: src/Handlers/GenerationHandler.php:305
 msgid "Generation failed"
 msgstr ""
 
-#: src/Handlers/GenerationHandler.php:351
+#: src/Handlers/GenerationHandler.php:353
 #: src/Handlers/ProductHandler.php:34
 #: src/Handlers/ProductHandler.php:114
 #: src/Handlers/ProductHandler.php:242
 msgid "Security verification failed"
 msgstr ""
 
-#: src/Handlers/GenerationHandler.php:360
+#: src/Handlers/GenerationHandler.php:362
 msgid "Valid Post request ID is required"
 msgstr ""
 
-#: src/Handlers/GenerationHandler.php:384
+#: src/Handlers/GenerationHandler.php:386
 msgid "You do not have permission to update this content"
 msgstr ""
 
-#: src/Handlers/GenerationHandler.php:406
+#: src/Handlers/GenerationHandler.php:408
 msgid "Post marked as converted"
 msgstr ""
 
-#: src/Handlers/GenerationHandler.php:412
+#: src/Handlers/GenerationHandler.php:414
 msgid "Failed to update conversion status"
 msgstr ""
 
 #. translators: %s: error message
-#: src/Handlers/GenerationHandler.php:421
+#: src/Handlers/GenerationHandler.php:423
 #, php-format
 msgid "Error: %s"
 msgstr ""
