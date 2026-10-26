@@ -20,6 +20,8 @@ class Config {
         // v2 signed auth: stable site id + derived per-site signing key (base64).
         'site_uid' => '',
         'site_key' => '',
+        // '1' after the admin disconnected on purpose: no "reconnect" nagging then.
+        'disconnected' => '0',
     ];
 
     public static function get($key) {

@@ -95,6 +95,9 @@ class AgentAuth
         Config::set('license_key', $licenseKey);
         Config::set('domain', $data['domain'] ?? get_site_url());
         Config::set('active', '1');
+        Config::set('disconnected', '0');
+        // A fresh connection: any "don't show again" from an earlier lost connection no longer applies.
+        delete_metadata('user', 0, 'genwave_reconnect_dismissed', '', true);
         Config::set('license_expired', !empty($data['expired']) ? '1' : '0');
         if (isset($data['plan'])) {
             Config::set('plan', $data['plan']);
@@ -132,6 +135,8 @@ class AgentAuth
         }
 
         self::forget();
+        // Chosen by the admin: the "reconnect" notice is for sites that lost the connection, not this.
+        Config::set('disconnected', '1');
         return ['success' => true, 'message' => __('Your site has been disconnected.', 'gen-wave')];
     }
 
@@ -144,19 +149,48 @@ class AgentAuth
     {
         add_filter('http_request_args', [self::class, 'signOutbound'], 20, 2);
         add_action('admin_notices', [self::class, 'reconnectNotice']);
+        add_action('admin_post_genwave_dismiss_reconnect', [self::class, 'dismissReconnect']);
     }
 
-    /** Nudge the admin to reconnect when a license is set but the site isn't v2-connected. */
+    private const DISMISSED_META = 'genwave_reconnect_dismissed';
+
+    /**
+     * Nudge the admin to reconnect when a license is set but the site isn't
+     * v2-connected (a site connected before signed auth, or one whose
+     * connection was lost). Not after the admin disconnected on purpose, not on
+     * Genwave's own screens (they say it themselves), and not for an admin who
+     * chose "Don't show again".
+     */
     public static function reconnectNotice(): void
     {
         if (! current_user_can('manage_options') || self::isConnected() || ! Config::get('license_key')) {
             return;
         }
+        if (Config::get('disconnected') === '1' || AdminApp::isAppPage()) {
+            return;
+        }
+        if (get_user_meta(get_current_user_id(), self::DISMISSED_META, true)) {
+            return;
+        }
         $url = admin_url('admin.php?page=gen-wave-plugin-settings');
+        $dismiss = wp_nonce_url(admin_url('admin-post.php?action=genwave_dismiss_reconnect'), 'genwave_dismiss_reconnect');
         echo '<div class="notice notice-warning"><p>'
             . esc_html__('Genwave needs to reconnect your site to keep working securely.', 'gen-wave')
             . ' <a href="' . esc_url($url) . '">' . esc_html__('Reconnect now', 'gen-wave') . '</a>'
+            . ' &middot; <a href="' . esc_url($dismiss) . '">' . esc_html__("Don't show this again", 'gen-wave') . '</a>'
             . '</p></div>';
+    }
+
+    /** "Don't show this again": remembered per admin, cleared by the next successful connect. */
+    public static function dismissReconnect(): void
+    {
+        if (! current_user_can('manage_options')) {
+            wp_die(esc_html__('You are not allowed to do this.', 'gen-wave'), 403);
+        }
+        check_admin_referer('genwave_dismiss_reconnect');
+        update_user_meta(get_current_user_id(), self::DISMISSED_META, 1);
+        wp_safe_redirect(wp_get_referer() ?: admin_url());
+        exit;
     }
 
     /** Inject X-GW-* signing headers on any outbound request to the agent host. */
