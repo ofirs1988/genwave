@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Glyph from '../Glyph';
-import { data, t, ajax, Card, Row, Button, Callout, Pill, PageHeader, Confirm, Note, usageWords, UpgradeCallout } from '../ui';
+import { data, ajax, Card, Row, Button, Callout, Pill, PageHeader, Confirm, Note, usageWords, UpgradeCallout } from '../ui';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Connecting the site to Genwave, and the account it is connected to.
@@ -26,7 +27,7 @@ export default function Account() {
         }
         setBusy(false);
         setAsking(false);
-        setError(r?.data?.message || t('The site could not be disconnected. Try again.', 'לא הצלחנו לנתק את האתר. נסו שוב.'));
+        setError(r?.data?.message || __("The site could not be disconnected. Try again.", 'gen-wave'));
     };
 
     const reconnect = async () => {
@@ -38,18 +39,18 @@ export default function Account() {
             return;
         }
         setBusy(false);
-        setError(r?.data?.message || t('Connection failed. Please try again.', 'החיבור נכשל. נסו שוב.'));
+        setError(r?.data?.message || __("Connection failed. Please try again.", 'gen-wave'));
     };
 
     return (
         <div className="gw-col">
             <PageHeader
                 eyebrow={d.site?.name}
-                title={a.connected ? t('Your Genwave account', 'חשבון Genwave שלך') : t('Connect your Genwave account', 'חיבור חשבון Genwave')}
+                title={a.connected ? __("Your Genwave account", 'gen-wave') : __("Connect your Genwave account", 'gen-wave')}
                 sub={
                     a.connected
-                        ? t('This site is connected. The Genwave plugins on it use this connection.', 'האתר מחובר. התוספים של Genwave באתר משתמשים בחיבור הזה.')
-                        : t('Connect once and the Genwave Agent can run the site with you: pages, products, SEO and fixes, by conversation.', 'מתחברים פעם אחת, ו-Genwave Agent יכול לנהל איתך את האתר בשיחה: עמודים, מוצרים, SEO ותיקונים.')
+                        ? __("This site is connected. The Genwave plugins on it use this connection.", 'gen-wave')
+                        : __("Connect once and the Genwave Agent can run the site with you: pages, products, SEO and fixes, by conversation.", 'gen-wave')
                 }
             />
 
@@ -61,37 +62,37 @@ export default function Account() {
             {a.connected && a.needsReconnect && (
                 <Callout
                     tone="warn"
-                    title={t('Reconnect this site', 'צריך לחבר את האתר מחדש')}
-                    actions={a.connectUrl ? <Button size="sm" variant="primary" href={a.connectUrl} icon="plug">{t('Reconnect', 'להתחבר מחדש')}</Button> : null}
+                    title={__("Reconnect this site", 'gen-wave')}
+                    actions={a.connectUrl ? <Button size="sm" variant="primary" href={a.connectUrl} icon="plug">{__("Reconnect", 'gen-wave')}</Button> : null}
                 >
                     {a.needsReconnect === 'moved'
-                        ? t('The site address changed since it was connected, so your Genwave account still knows it by the old one. Connect again to keep the Genwave plugins working.', 'כתובת האתר השתנתה מאז שחובר, ולכן חשבון Genwave עדיין מכיר אותו בכתובת הישנה. התחברו שוב כדי שהתוספים של Genwave ימשיכו לעבוד.')
-                        : t('Genwave no longer accepts this connection: it was removed from your account or the key was replaced. Connect again to keep the Genwave plugins working.', 'Genwave כבר לא מקבל את החיבור הזה: הוא הוסר מהחשבון או שהמפתח הוחלף. התחברו שוב כדי שהתוספים של Genwave ימשיכו לעבוד.')}
+                        ? __("The site address changed since it was connected, so your Genwave account still knows it by the old one. Connect again to keep the Genwave plugins working.", 'gen-wave')
+                        : __("Genwave no longer accepts this connection: it was removed from your account or the key was replaced. Connect again to keep the Genwave plugins working.", 'gen-wave')}
                 </Callout>
             )}
 
             {a.connected && a.expired && (
-                <Callout tone="warn" title={t('License expired', 'הרישיון פג')} actions={<Button size="sm" variant="primary" href={d.links?.billing} external>{t('Renew', 'חידוש')}</Button>}>
-                    {t('Renew to keep using the Genwave Agent.', 'חדשו כדי להמשיך להשתמש ב-Genwave Agent.')}
+                <Callout tone="warn" title={__("License expired", 'gen-wave')} actions={<Button size="sm" variant="primary" href={d.links?.billing} external>{__("Renew", 'gen-wave')}</Button>}>
+                    {__("Renew to keep using the Genwave Agent.", 'gen-wave')}
                 </Callout>
             )}
 
             {a.connected ? <Connected a={a} d={d} agent={agent} onDisconnect={() => setAsking(true)} /> : <NotConnected a={a} d={d} busy={busy} onReconnect={reconnect} />}
 
             <div className="gw-foot-links">
-                <a href={d.links?.support} target="_blank" rel="noopener noreferrer">{t('Need help? Contact support', 'צריכים עזרה? פנו לתמיכה')}</a>
+                <a href={d.links?.support} target="_blank" rel="noopener noreferrer">{__("Need help? Contact support", 'gen-wave')}</a>
             </div>
 
             {asking && (
                 <Confirm
-                    title={t('Disconnect this site?', 'לנתק את האתר?')}
-                    confirmLabel={t('Disconnect', 'ניתוק')}
+                    title={__("Disconnect this site?", 'gen-wave')}
+                    confirmLabel={__("Disconnect", 'gen-wave')}
                     danger
                     busy={busy}
                     onConfirm={disconnect}
                     onCancel={() => !busy && setAsking(false)}
                 >
-                    {t('The Genwave Agent and the other Genwave plugins stop working here until you connect again. Nothing on the site is deleted.', 'Genwave Agent ושאר התוספים של Genwave יפסיקו לעבוד כאן עד שתתחברו שוב. שום דבר באתר לא נמחק.')}
+                    {__("The Genwave Agent and the other Genwave plugins stop working here until you connect again. Nothing on the site is deleted.", 'gen-wave')}
                 </Confirm>
             )}
         </div>
@@ -104,11 +105,11 @@ function Connected({ a, d, agent, onDisconnect }) {
             <div className="gw-hero is-on">
                 <span className="gw-tile gw-tile--on"><Glyph name="check" size={20} /></span>
                 <div className="gw-hero__text">
-                    <p className="gw-hero__title">{t('Connected to Genwave', 'מחובר ל-Genwave')}</p>
-                    <p className="gw-hero__detail">{t('Manage your site through the Genwave Agent chat.', 'מנהלים את האתר דרך הצ׳אט של Genwave Agent.')}</p>
+                    <p className="gw-hero__title">{__("Connected to Genwave", 'gen-wave')}</p>
+                    <p className="gw-hero__detail">{__("Manage your site through the Genwave Agent chat.", 'gen-wave')}</p>
                     {agent.state === 'active' && (
                         <div className="gw-hero__actions">
-                            <Button variant="primary" icon="chat" href={agent.url}>{t('Open the Agent', 'פתיחת ה-Agent')}</Button>
+                            <Button variant="primary" icon="chat" href={agent.url}>{__("Open the Agent", 'gen-wave')}</Button>
                         </div>
                     )}
                 </div>
@@ -119,51 +120,51 @@ function Connected({ a, d, agent, onDisconnect }) {
             {agent.state === 'missing' && (
                 <Callout
                     tone="warn"
-                    title={t('One more step: add Genwave Agent', 'עוד צעד אחד: הוספת Genwave Agent')}
+                    title={__("One more step: add Genwave Agent", 'gen-wave')}
                     actions={
                         agent.canUpload && (
                             <>
-                                <Button size="sm" variant="primary" icon="arrowOut" href={agent.url} external>{t('Get Genwave Agent', 'להורדת Genwave Agent')}</Button>
-                                <Button size="sm" variant="ghost" icon="download" href={agent.uploadUrl}>{t('Upload Plugin', 'העלאת תוסף')}</Button>
+                                <Button size="sm" variant="primary" icon="arrowOut" href={agent.url} external>{__("Get Genwave Agent", 'gen-wave')}</Button>
+                                <Button size="sm" variant="ghost" icon="download" href={agent.uploadUrl}>{__("Upload Plugin", 'gen-wave')}</Button>
                             </>
                         )
                     }
                 >
                     {agent.canUpload
-                        ? t('The agent chat is a separate plugin, and it is not on WordPress.org. Download its zip from your Genwave account, then upload it here in Plugins > Add New > Upload Plugin and activate it. Keep this plugin installed too: the Agent uses its connection.', 'הצ׳אט של ה-Agent הוא תוסף נפרד, והוא לא נמצא ב-WordPress.org. מורידים את קובץ ה-ZIP שלו מחשבון Genwave, מעלים אותו כאן בתוספים > הוספת תוסף > העלאת תוסף ומפעילים. השאירו גם את התוסף הזה: ה-Agent משתמש בחיבור שלו.')
-                        : t('The agent chat is a separate plugin. Ask a site administrator to add it.', 'הצ׳אט של ה-Agent הוא תוסף נפרד. בקשו ממנהל האתר להוסיף אותו.')}
+                        ? __("The agent chat is a separate plugin, and it is not on WordPress.org. Download its zip from your Genwave account, then upload it here in Plugins > Add New > Upload Plugin and activate it. Keep this plugin installed too: the Agent uses its connection.", 'gen-wave')
+                        : __("The agent chat is a separate plugin. Ask a site administrator to add it.", 'gen-wave')}
                 </Callout>
             )}
             {agent.state === 'inactive' && (
-                <Callout tone="warn" title={t('Genwave Agent is installed but not active', 'Genwave Agent מותקן אבל לא פעיל')} actions={<Button size="sm" variant="primary" icon="bolt" href={agent.url}>{t('Activate Genwave Agent', 'הפעלת Genwave Agent')}</Button>}>
-                    {t('Activate it to open the agent chat.', 'הפעילו אותו כדי לפתוח את הצ׳אט.')}
+                <Callout tone="warn" title={__("Genwave Agent is installed but not active", 'gen-wave')} actions={<Button size="sm" variant="primary" icon="bolt" href={agent.url}>{__("Activate Genwave Agent", 'gen-wave')}</Button>}>
+                    {__("Activate it to open the agent chat.", 'gen-wave')}
                 </Callout>
             )}
 
-            <Card title={t('Account', 'חשבון')}>
+            <Card title={__("Account", 'gen-wave')}>
                 <dl>
-                    <div className="gw-kv"><dt>{t('License key', 'מפתח רישיון')}</dt><dd><code dir="ltr">{a.licenseMasked || '—'}</code></dd></div>
-                    <div className="gw-kv"><dt>{t('Status', 'סטטוס')}</dt><dd>{a.expired ? <Pill tone="warn">{t('Expired', 'פג תוקף')}</Pill> : <Pill tone="ok">{t('Active', 'פעיל')}</Pill>}</dd></div>
-                    <div className="gw-kv"><dt>{t('Usage', 'שימוש')}</dt><dd>{usageWords(a)}</dd></div>
+                    <div className="gw-kv"><dt>{__("License key", 'gen-wave')}</dt><dd><code dir="ltr">{a.licenseMasked || '—'}</code></dd></div>
+                    <div className="gw-kv"><dt>{__("Status", 'gen-wave')}</dt><dd>{a.expired ? <Pill tone="warn">{__("Expired", 'gen-wave')}</Pill> : <Pill tone="ok">{__("Active", 'gen-wave')}</Pill>}</dd></div>
+                    <div className="gw-kv"><dt>{__("Usage", 'gen-wave')}</dt><dd>{usageWords(a)}</dd></div>
                 </dl>
                 <Row
-                    label={t('Plan, usage and billing', 'תוכנית, שימוש וחיוב')}
-                    detail={t('In your Genwave account.', 'בחשבון Genwave שלך.')}
+                    label={__("Plan, usage and billing", 'gen-wave')}
+                    detail={__("In your Genwave account.", 'gen-wave')}
                     end={
                         <>
-                            <Button size="sm" variant="secondary" href={d.links?.usage} external icon="chart">{t('Usage', 'שימוש')}</Button>
-                            <Button size="sm" variant="secondary" href={d.links?.account} external icon="arrowOut">{t('Manage account', 'ניהול החשבון')}</Button>
+                            <Button size="sm" variant="secondary" href={d.links?.usage} external icon="chart">{__("Usage", 'gen-wave')}</Button>
+                            <Button size="sm" variant="secondary" href={d.links?.account} external icon="arrowOut">{__("Manage account", 'gen-wave')}</Button>
                         </>
                     }
                 />
             </Card>
 
             {a.canManage && (
-                <Card title={t('Disconnect', 'ניתוק')} danger>
+                <Card title={__("Disconnect", 'gen-wave')} danger>
                     <Row
-                        label={t('Disconnect this site from Genwave', 'ניתוק האתר מ-Genwave')}
-                        detail={t('You can connect it again at any time.', 'אפשר לחבר אותו שוב בכל זמן.')}
-                        end={<Button size="sm" variant="danger" icon="logout" onClick={onDisconnect}>{t('Disconnect', 'ניתוק')}</Button>}
+                        label={__("Disconnect this site from Genwave", 'gen-wave')}
+                        detail={__("You can connect it again at any time.", 'gen-wave')}
+                        end={<Button size="sm" variant="danger" icon="logout" onClick={onDisconnect}>{__("Disconnect", 'gen-wave')}</Button>}
                     />
                 </Card>
             )}
@@ -173,30 +174,30 @@ function Connected({ a, d, agent, onDisconnect }) {
 
 function NotConnected({ a, d, busy, onReconnect }) {
     const features = [
-        { icon: 'chat', label: t('Natural conversation', 'שיחה טבעית'), detail: t('Run the whole site by talking to it.', 'מנהלים את כל האתר בשיחה.') },
-        { icon: 'layout', label: t('Every area of WordPress', 'כל חלקי הוורדפרס'), detail: t('Content, WooCommerce, plugins, SEO and fixing errors.', 'תוכן, WooCommerce, תוספים, SEO ותיקון שגיאות.') },
-        { icon: 'shield', label: t('Safe by design', 'בטוח מהיסוד'), detail: t('A preview before every change to your site.', 'תצוגה מקדימה לפני כל שינוי באתר.') },
+        { icon: 'chat', label: __("Natural conversation", 'gen-wave'), detail: __("Run the whole site by talking to it.", 'gen-wave') },
+        { icon: 'layout', label: __("Every area of WordPress", 'gen-wave'), detail: __("Content, WooCommerce, plugins, SEO and fixing errors.", 'gen-wave') },
+        { icon: 'shield', label: __("Safe by design", 'gen-wave'), detail: __("A preview before every change to your site.", 'gen-wave') },
     ];
     return (
         <>
             <div className="gw-hero">
                 <span className="gw-tile"><Glyph name="plug" size={20} /></span>
                 <div className="gw-hero__text">
-                    <p className="gw-hero__title">{t('Connect to Genwave', 'התחברות ל-Genwave')}</p>
+                    <p className="gw-hero__title">{__("Connect to Genwave", 'gen-wave')}</p>
                     <p className="gw-hero__detail">
                         {a.canManage
-                            ? t('Sign in or create a free account, then approve this site. No key to copy.', 'נכנסים או פותחים חשבון חינם, ומאשרים את האתר. אין מפתח להעתיק.')
-                            : t('Ask a site administrator to connect this site to Genwave.', 'בקשו ממנהל האתר לחבר אותו ל-Genwave.')}
+                            ? __("Sign in or create a free account, then approve this site. No key to copy.", 'gen-wave')
+                            : __("Ask a site administrator to connect this site to Genwave.", 'gen-wave')}
                     </p>
                     {a.canManage && (
                         <div className="gw-hero__actions">
-                            <Button variant="primary" size="lg" icon="logout" href={a.connectUrl}>{t('Connect to Genwave', 'התחברות ל-Genwave')}</Button>
+                            <Button variant="primary" size="lg" icon="logout" href={a.connectUrl}>{__("Connect to Genwave", 'gen-wave')}</Button>
                         </div>
                     )}
                 </div>
             </div>
 
-            <Card title={t('What you get', 'מה מקבלים')}>
+            <Card title={__("What you get", 'gen-wave')}>
                 {features.map((f) => (
                     <div className="gw-row" key={f.label}>
                         <span className="gw-tile gw-tile--sm"><Glyph name={f.icon} size={18} /></span>
@@ -213,14 +214,14 @@ function NotConnected({ a, d, busy, onReconnect }) {
                     <div className="gw-card__body">
                         <details className="gw-details" open={a.hasLicense}>
                             <summary>
-                                {t('Have an API key? Connect with it instead', 'יש לכם מפתח API? התחברו איתו')}
+                                {__("Have an API key? Connect with it instead", 'gen-wave')}
                                 <Glyph name="arrow" className="gw-flip" />
                             </summary>
                             <div className="gw-details__body">
                                 <form method="post" action={d.pages?.account}>
                                     <input type="hidden" name="ai_settings_nonce" value={d.nonces?.key || ''} />
                                     <label className="gw-field">
-                                        <span className="gw-field__label">{t('License key', 'מפתח רישיון')}</span>
+                                        <span className="gw-field__label">{__("License key", 'gen-wave')}</span>
                                         <input
                                             className="gw-input gw-input--mono"
                                             name="ai_license_key"
@@ -230,14 +231,14 @@ function NotConnected({ a, d, busy, onReconnect }) {
                                             defaultValue={a.licenseKey || ''}
                                             required
                                         />
-                                        <span className="gw-field__hint">{t('Find it in your Genwave account, under the site.', 'נמצא בחשבון Genwave שלכם, ליד האתר.')}</span>
+                                        <span className="gw-field__hint">{__("Find it in your Genwave account, under the site.", 'gen-wave')}</span>
                                     </label>
                                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                                         <button type="submit" name="save_settings" value="1" className="gw-btn gw-btn--primary">
-                                            <Glyph name="key" /> {t('Connect with this key', 'התחברות עם המפתח')}
+                                            <Glyph name="key" /> {__("Connect with this key", 'gen-wave')}
                                         </button>
                                         {a.hasLicense && (
-                                            <Button variant="secondary" busy={busy} onClick={onReconnect}>{t('Try the saved key again', 'לנסות שוב את המפתח השמור')}</Button>
+                                            <Button variant="secondary" busy={busy} onClick={onReconnect}>{__("Try the saved key again", 'gen-wave')}</Button>
                                         )}
                                     </div>
                                 </form>
@@ -246,7 +247,7 @@ function NotConnected({ a, d, busy, onReconnect }) {
                     </div>
                 </div>
             )}
-            {!a.canManage && <Note>{t('Only an administrator can connect the site.', 'רק מנהל יכול לחבר את האתר.')}</Note>}
+            {!a.canManage && <Note>{__("Only an administrator can connect the site.", 'gen-wave')}</Note>}
         </>
     );
 }

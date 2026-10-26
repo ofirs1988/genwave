@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import Glyph from './Glyph';
+import { __ } from '@wordpress/i18n';
 
 /**
  * The building blocks of the Genwave admin screens (app.css), the same pieces
@@ -9,8 +10,6 @@ import Glyph from './Glyph';
 /** Everything the server put on the page (Core\AdminApp::data). */
 export const data = () => window.genwaveApp || {};
 
-/** English, or Hebrew when WordPress runs in Hebrew; the Chatbot's t(en, he). */
-export const t = (en, he) => (he && (data().locale || '').startsWith('he') ? he : en);
 
 /** POST to admin-ajax.php; resolves to the parsed JSON (or { success:false }). */
 export async function ajax(action, fields = {}) {
@@ -30,12 +29,12 @@ export async function ajax(action, fields = {}) {
 /** How usage stands, in words: never a number (AdminBar::usage_label states). */
 export function usageWords(a) {
     const words = {
-        ok: t('Limited use', 'שימוש מוגבל'),
-        low: t('Free use almost used up', 'השימוש החינמי כמעט נגמר'),
-        out: t('Free use used up', 'השימוש החינמי של החודש נוצל'),
-        light: t('Light mode', 'מצב חסכוני'),
+        ok: __("Limited use", 'gen-wave'),
+        low: __("Free use almost used up", 'gen-wave'),
+        out: __("Free use used up", 'gen-wave'),
+        light: __("Light mode", 'gen-wave'),
     };
-    return words[a?.usageState] || a?.usageText || t('Normal use fully included', 'שימוש רגיל כלול במלואו');
+    return words[a?.usageState] || a?.usageText || __("Normal use fully included", 'gen-wave');
 }
 
 /** The invitation when the Free plan's monthly use is almost or fully used. */
@@ -46,13 +45,10 @@ export function UpgradeCallout({ a, links }) {
         <Callout
             tone="ok"
             icon="sparkle"
-            title={out ? t("You've used this month's free use", 'השתמשת בכל השימוש החינמי של החודש') : t('Your free use is almost used up', 'השימוש החינמי של החודש כמעט נגמר')}
-            actions={<Button size="sm" variant="primary" icon="arrowOut" href={links?.plans} external>{t('Upgrade', 'לשדרוג')}</Button>}
+            title={out ? __("You've used this month's free use", 'gen-wave') : __("Your free use is almost used up", 'gen-wave')}
+            actions={<Button size="sm" variant="primary" icon="arrowOut" href={links?.plans} external>{__("Upgrade", 'gen-wave')}</Button>}
         >
-            {t(
-                'Enjoying what we built together? On a paid plan the agent keeps working for you, with the best models and AI images.',
-                'אהבת את מה שעשינו יחד? בתוכנית בתשלום הסוכן ממשיך לעבוד בשבילך, עם המודלים הטובים ביותר ויצירת תמונות.',
-            )}
+            {__("Enjoying what we built together? On a paid plan the agent keeps working for you, with the best models and AI images.", 'gen-wave')}
         </Callout>
     );
 }
@@ -200,7 +196,7 @@ export function Confirm({ title, children, confirmLabel, danger, busy, onConfirm
                 <div className="gw-dialog__head">{title}</div>
                 <div className="gw-dialog__body">{children}</div>
                 <div className="gw-dialog__foot">
-                    <Button variant="ghost" onClick={onCancel}>{t('Cancel', 'ביטול')}</Button>
+                    <Button variant="ghost" onClick={onCancel}>{__("Cancel", 'gen-wave')}</Button>
                     <Button variant={danger ? 'danger' : 'primary'} busy={busy} onClick={onConfirm}>{confirmLabel}</Button>
                 </div>
             </div>

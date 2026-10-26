@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Genwave - AI Agent 1.3.1\n"
+"Project-Id-Version: Genwave - AI Agent 1.3.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/gen-wave\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-25T17:16:41+01:00\n"
+"POT-Creation-Date: 2026-10-27T00:01:34+01:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: gen-wave\n"
@@ -35,6 +35,7 @@ msgid "https://genwave.ai"
 msgstr ""
 
 #: src/AdminBar.php:42
+#: dist/bundle.1bafdc22.js:2
 msgid "Light mode"
 msgstr ""
 
@@ -51,6 +52,7 @@ msgid "You've used this month's free use. Upgrade and the agent keeps working fo
 msgstr ""
 
 #: src/AdminBar.php:59
+#: dist/bundle.1bafdc22.js:2
 msgid "Free use almost used up"
 msgstr ""
 
@@ -59,6 +61,7 @@ msgid "Your free use for this month is almost used up. Upgrade and the agent kee
 msgstr ""
 
 #: src/AdminBar.php:66
+#: dist/bundle.1bafdc22.js:2
 msgid "Limited use"
 msgstr ""
 
@@ -72,7 +75,7 @@ msgstr ""
 msgid "Enter your license key first."
 msgstr ""
 
-#: src/Core/AdminApp.php:76
+#: src/Core/AdminApp.php:77
 msgid "Genwave needs JavaScript to show this page."
 msgstr ""
 
@@ -81,20 +84,28 @@ msgstr ""
 msgid "Connection failed."
 msgstr ""
 
-#: src/Core/AgentAuth.php:107
+#: src/Core/AgentAuth.php:111
 msgid "Your site is connected."
 msgstr ""
 
-#: src/Core/AgentAuth.php:135
+#: src/Core/AgentAuth.php:141
 msgid "Your site has been disconnected."
 msgstr ""
 
-#: src/Core/AgentAuth.php:157
+#: src/Core/AgentAuth.php:237
 msgid "Genwave needs to reconnect your site to keep working securely."
 msgstr ""
 
-#: src/Core/AgentAuth.php:158
+#: src/Core/AgentAuth.php:238
 msgid "Reconnect now"
+msgstr ""
+
+#: src/Core/AgentAuth.php:239
+msgid "Don't show this again"
+msgstr ""
+
+#: src/Core/AgentAuth.php:247
+msgid "You are not allowed to do this."
 msgstr ""
 
 #: src/Core/AiRestApi.php:114
@@ -151,6 +162,7 @@ msgstr ""
 
 #: src/Core/PanelConnect.php:146
 #: src/Pages/Settings.php:89
+#: dist/bundle.1bafdc22.js:2
 msgid "Connection failed. Please try again."
 msgstr ""
 
@@ -230,6 +242,7 @@ msgid "Error generating content: %s"
 msgstr ""
 
 #: src/Handlers/GenerationHandler.php:305
+#: dist/bundle.1bafdc22.js:2
 msgid "Generation failed"
 msgstr ""
 
@@ -491,6 +504,7 @@ msgid "Loading..."
 msgstr ""
 
 #: src/MetaBox.php:344
+#: dist/bundle.1bafdc22.js:2
 msgid "Cancel"
 msgstr ""
 
@@ -503,11 +517,13 @@ msgid "Genwave"
 msgstr ""
 
 #: src/Pages/Dashboard.php:26
+#: dist/bundle.1bafdc22.js:2
 msgid "Overview"
 msgstr ""
 
 #: src/Pages/Generate.php:25
 #: src/Pages/Generate.php:26
+#: dist/bundle.1bafdc22.js:2
 msgid "AI writing"
 msgstr ""
 
@@ -516,6 +532,7 @@ msgid "Genwave Plugins"
 msgstr ""
 
 #: src/Pages/Plugins.php:26
+#: dist/bundle.1bafdc22.js:2
 msgid "Plugins"
 msgstr ""
 
@@ -529,18 +546,600 @@ msgid "Genwave account"
 msgstr ""
 
 #: src/Pages/Settings.php:49
+#: dist/bundle.1bafdc22.js:2
 msgid "Account"
 msgstr ""
 
 #: src/Pages/Tools.php:25
 #: src/Pages/Tools.php:26
+#: dist/bundle.1bafdc22.js:2
 msgid "Maintenance"
 msgstr ""
 
 #: src/Pages/Tools.php:38
-msgid "The update checks were cleared."
+msgid "Genwave's caches were cleared."
 msgstr ""
 
 #: src/Pages/Tools.php:40
 msgid "Database checked and repaired."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Free use used up"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Normal use fully included"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "You've used this month's free use"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Your free use is almost used up"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Upgrade"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Enjoying what we built together? On a paid plan the agent keeps working for you, with the best models and AI images."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Connected to Genwave"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Manage your site through the Genwave Agent chat."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Open the Agent"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "One more step: add Genwave Agent"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Get Genwave Agent"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Upload Plugin"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "The agent chat is a separate plugin, and it is not on WordPress.org. Download its zip from your Genwave account, then upload it here in Plugins > Add New > Upload Plugin and activate it. Keep this plugin installed too: the Agent uses its connection."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "The agent chat is a separate plugin. Ask a site administrator to add it."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Genwave Agent is installed but not active"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Activate Genwave Agent"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Activate it to open the agent chat."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "License key"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Status"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Expired"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Active"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Usage"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Plan, usage and billing"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "In your Genwave account."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Manage account"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Disconnect"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Disconnect this site from Genwave"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "You can connect it again at any time."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Natural conversation"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Run the whole site by talking to it."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Every area of WordPress"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Content, WooCommerce, plugins, SEO and fixing errors."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Safe by design"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "A preview before every change to your site."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Connect to Genwave"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Sign in or create a free account, then approve this site. No key to copy."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Ask a site administrator to connect this site to Genwave."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "What you get"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Have an API key? Connect with it instead"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Find it in your Genwave account, under the site."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Connect with this key"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Try the saved key again"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Only an administrator can connect the site."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Title"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "A concise, search-friendly title"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Description"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "A full, detailed description"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Short description"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "A brief one-line summary"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Activate"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Installed"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Get it"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Not installed"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Free"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "With your Genwave plan"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Update ready"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Learn more"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Genwave on your site"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "This plugin connects the site to your Genwave account. The Genwave Agent then runs the site with you, by conversation."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Reconnect this site"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Reconnect"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "The site address changed since it was connected, so your Genwave account still knows it by the old one. Connect again to keep the Genwave plugins working."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Genwave no longer accepts this connection: it was removed from your account or the key was replaced. Connect again to keep the Genwave plugins working."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Your site is connected"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Ask the Agent for anything on the site: pages, products, SEO, fixes."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "One more step: the Agent chat is a separate plugin. Download it from your Genwave account, then upload it in Plugins > Add New > Upload Plugin."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "One more step: activate Genwave Agent, the Agent chat."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Connect this site to Genwave"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Sign in or create a free account, then approve the site. No key to copy."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Connect"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Requests"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Not active"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Next"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Talk to the Agent"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Describe what you need in plain words. You see what will change before it happens."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Write with AI"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Titles and descriptions for products and posts, one field at a time."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Genwave plugins"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "The Agent, the Chatbot and Elements, and where each one stands on this site."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Usage and plan"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "The site could not be disconnected. Try again."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Your Genwave account"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Connect your Genwave account"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "This site is connected. The Genwave plugins on it use this connection."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Connect once and the Genwave Agent can run the site with you: pages, products, SEO and fixes, by conversation."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "License expired"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Renew"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Renew to keep using the Genwave Agent."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Need help? Contact support"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Disconnect this site?"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "The Genwave Agent and the other Genwave plugins stop working here until you connect again. Nothing on the site is deleted."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Content"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "The text could not be saved."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Tools"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Titles and descriptions for your products and posts, one field at a time. You read it before it is saved."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Products"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Posts"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Choose a product"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Choose a post"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "The 50 most recent"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "No products yet."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "No posts yet."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Items"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "What to write"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Language"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Instructions"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Optional"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "e.g. Focus on the eco-friendly materials, in a warm tone."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Writing…"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Write"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "For"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Choose an item first."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Saved"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Save to the item"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Copied"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Copy"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Write again"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "The list could not be loaded."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "These plugins are not on WordPress.org. To add one, download its zip from your Genwave account, then upload it in Plugins > Add New > Upload Plugin and activate it."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Refresh"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "No plugins to show right now."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "The plugin keeps a few tables of its own. If something looks wrong, check and repair them here."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Database"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "All tables are in order."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Some tables need a repair."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "OK"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Needs repair"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Missing columns"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Missing"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Check and repair"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Adds any missing table or column. Nothing is deleted."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Repair"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Caches"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Clear Genwave's caches"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Forgets the saved list of Genwave plugins and checks again for plugin updates. The rest of the site is not touched."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Clear"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Clear Genwave's caches now?"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "System"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Nothing on the site changes. Genwave reads its plugin list again and WordPress checks for plugin updates."
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Your site"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Connected"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Not connected"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Back to WordPress"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Light theme"
+msgstr ""
+
+#: dist/bundle.1bafdc22.js:2
+msgid "Dark theme"
 msgstr ""

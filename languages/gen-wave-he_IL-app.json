@@ -1,0 +1,482 @@
+{
+ "translation-revision-date": "2026-10-26",
+ "generator": "gen-wave",
+ "domain": "messages",
+ "locale_data": {
+  "messages": {
+   "": {
+    "domain": "messages",
+    "lang": "he_IL",
+    "plural-forms": "nplurals=2; plural=(n != 1);"
+   },
+   "Your site": [
+    "האתר שלך"
+   ],
+   "Overview": [
+    "סקירה"
+   ],
+   "Account": [
+    "חשבון"
+   ],
+   "Tools": [
+    "כלים"
+   ],
+   "AI writing": [
+    "כתיבה עם AI"
+   ],
+   "Genwave plugins": [
+    "התוספים של Genwave"
+   ],
+   "Maintenance": [
+    "תחזוקה"
+   ],
+   "Reconnect": [
+    "להתחבר מחדש"
+   ],
+   "Connected": [
+    "מחובר"
+   ],
+   "Not connected": [
+    "לא מחובר"
+   ],
+   "Back to WordPress": [
+    "חזרה לוורדפרס"
+   ],
+   "Light theme": [
+    "ערכת נושא בהירה"
+   ],
+   "Dark theme": [
+    "ערכת נושא כהה"
+   ],
+   "The site could not be disconnected. Try again.": [
+    "לא הצלחנו לנתק את האתר. נסו שוב."
+   ],
+   "Connection failed. Please try again.": [
+    "החיבור נכשל. נסו שוב."
+   ],
+   "Your Genwave account": [
+    "חשבון Genwave שלך"
+   ],
+   "Connect your Genwave account": [
+    "חיבור חשבון Genwave"
+   ],
+   "This site is connected. The Genwave plugins on it use this connection.": [
+    "האתר מחובר. התוספים של Genwave באתר משתמשים בחיבור הזה."
+   ],
+   "Connect once and the Genwave Agent can run the site with you: pages, products, SEO and fixes, by conversation.": [
+    "מתחברים פעם אחת, ו-Genwave Agent יכול לנהל איתך את האתר בשיחה: עמודים, מוצרים, SEO ותיקונים."
+   ],
+   "Reconnect this site": [
+    "צריך לחבר את האתר מחדש"
+   ],
+   "The site address changed since it was connected, so your Genwave account still knows it by the old one. Connect again to keep the Genwave plugins working.": [
+    "כתובת האתר השתנתה מאז שחובר, ולכן חשבון Genwave עדיין מכיר אותו בכתובת הישנה. התחברו שוב כדי שהתוספים של Genwave ימשיכו לעבוד."
+   ],
+   "Genwave no longer accepts this connection: it was removed from your account or the key was replaced. Connect again to keep the Genwave plugins working.": [
+    "Genwave כבר לא מקבל את החיבור הזה: הוא הוסר מהחשבון או שהמפתח הוחלף. התחברו שוב כדי שהתוספים של Genwave ימשיכו לעבוד."
+   ],
+   "License expired": [
+    "הרישיון פג"
+   ],
+   "Renew": [
+    "חידוש"
+   ],
+   "Renew to keep using the Genwave Agent.": [
+    "חדשו כדי להמשיך להשתמש ב-Genwave Agent."
+   ],
+   "Need help? Contact support": [
+    "צריכים עזרה? פנו לתמיכה"
+   ],
+   "Disconnect this site?": [
+    "לנתק את האתר?"
+   ],
+   "Disconnect": [
+    "ניתוק"
+   ],
+   "The Genwave Agent and the other Genwave plugins stop working here until you connect again. Nothing on the site is deleted.": [
+    "Genwave Agent ושאר התוספים של Genwave יפסיקו לעבוד כאן עד שתתחברו שוב. שום דבר באתר לא נמחק."
+   ],
+   "Connected to Genwave": [
+    "מחובר ל-Genwave"
+   ],
+   "Manage your site through the Genwave Agent chat.": [
+    "מנהלים את האתר דרך הצ׳אט של Genwave Agent."
+   ],
+   "Open the Agent": [
+    "פתיחת ה-Agent"
+   ],
+   "One more step: add Genwave Agent": [
+    "עוד צעד אחד: הוספת Genwave Agent"
+   ],
+   "Get Genwave Agent": [
+    "להורדת Genwave Agent"
+   ],
+   "Upload Plugin": [
+    "העלאת תוסף"
+   ],
+   "The agent chat is a separate plugin, and it is not on WordPress.org. Download its zip from your Genwave account, then upload it here in Plugins > Add New > Upload Plugin and activate it. Keep this plugin installed too: the Agent uses its connection.": [
+    "הצ׳אט של ה-Agent הוא תוסף נפרד, והוא לא נמצא ב-WordPress.org. מורידים את קובץ ה-ZIP שלו מחשבון Genwave, מעלים אותו כאן בתוספים > הוספת תוסף > העלאת תוסף ומפעילים. השאירו גם את התוסף הזה: ה-Agent משתמש בחיבור שלו."
+   ],
+   "The agent chat is a separate plugin. Ask a site administrator to add it.": [
+    "הצ׳אט של ה-Agent הוא תוסף נפרד. בקשו ממנהל האתר להוסיף אותו."
+   ],
+   "Genwave Agent is installed but not active": [
+    "Genwave Agent מותקן אבל לא פעיל"
+   ],
+   "Activate Genwave Agent": [
+    "הפעלת Genwave Agent"
+   ],
+   "Activate it to open the agent chat.": [
+    "הפעילו אותו כדי לפתוח את הצ׳אט."
+   ],
+   "License key": [
+    "מפתח רישיון"
+   ],
+   "Status": [
+    "סטטוס"
+   ],
+   "Expired": [
+    "פג תוקף"
+   ],
+   "Active": [
+    "פעיל"
+   ],
+   "Usage": [
+    "שימוש"
+   ],
+   "Plan, usage and billing": [
+    "תוכנית, שימוש וחיוב"
+   ],
+   "In your Genwave account.": [
+    "בחשבון Genwave שלך."
+   ],
+   "Manage account": [
+    "ניהול החשבון"
+   ],
+   "Disconnect this site from Genwave": [
+    "ניתוק האתר מ-Genwave"
+   ],
+   "You can connect it again at any time.": [
+    "אפשר לחבר אותו שוב בכל זמן."
+   ],
+   "Natural conversation": [
+    "שיחה טבעית"
+   ],
+   "Run the whole site by talking to it.": [
+    "מנהלים את כל האתר בשיחה."
+   ],
+   "Every area of WordPress": [
+    "כל חלקי הוורדפרס"
+   ],
+   "Content, WooCommerce, plugins, SEO and fixing errors.": [
+    "תוכן, WooCommerce, תוספים, SEO ותיקון שגיאות."
+   ],
+   "Safe by design": [
+    "בטוח מהיסוד"
+   ],
+   "A preview before every change to your site.": [
+    "תצוגה מקדימה לפני כל שינוי באתר."
+   ],
+   "Connect to Genwave": [
+    "התחברות ל-Genwave"
+   ],
+   "Sign in or create a free account, then approve this site. No key to copy.": [
+    "נכנסים או פותחים חשבון חינם, ומאשרים את האתר. אין מפתח להעתיק."
+   ],
+   "Ask a site administrator to connect this site to Genwave.": [
+    "בקשו ממנהל האתר לחבר אותו ל-Genwave."
+   ],
+   "What you get": [
+    "מה מקבלים"
+   ],
+   "Have an API key? Connect with it instead": [
+    "יש לכם מפתח API? התחברו איתו"
+   ],
+   "Find it in your Genwave account, under the site.": [
+    "נמצא בחשבון Genwave שלכם, ליד האתר."
+   ],
+   "Connect with this key": [
+    "התחברות עם המפתח"
+   ],
+   "Try the saved key again": [
+    "לנסות שוב את המפתח השמור"
+   ],
+   "Only an administrator can connect the site.": [
+    "רק מנהל יכול לחבר את האתר."
+   ],
+   "Title": [
+    "כותרת"
+   ],
+   "A concise, search-friendly title": [
+    "כותרת קצרה וידידותית לחיפוש"
+   ],
+   "Description": [
+    "תיאור"
+   ],
+   "A full, detailed description": [
+    "תיאור מלא ומפורט"
+   ],
+   "Short description": [
+    "תיאור קצר"
+   ],
+   "A brief one-line summary": [
+    "סיכום קצר בשורה אחת"
+   ],
+   "Content": [
+    "תוכן"
+   ],
+   "Generation failed": [
+    "היצירה נכשלה"
+   ],
+   "The text could not be saved.": [
+    "לא הצלחנו לשמור את הטקסט."
+   ],
+   "Titles and descriptions for your products and posts, one field at a time. You read it before it is saved.": [
+    "כותרות ותיאורים למוצרים ולפוסטים, שדה אחד בכל פעם. קוראים את הטקסט לפני שהוא נשמר."
+   ],
+   "Products": [
+    "מוצרים"
+   ],
+   "Posts": [
+    "פוסטים"
+   ],
+   "Choose a product": [
+    "בחירת מוצר"
+   ],
+   "Choose a post": [
+    "בחירת פוסט"
+   ],
+   "The 50 most recent": [
+    "50 האחרונים"
+   ],
+   "No products yet.": [
+    "עוד אין מוצרים."
+   ],
+   "No posts yet.": [
+    "עוד אין פוסטים."
+   ],
+   "Items": [
+    "פריטים"
+   ],
+   "What to write": [
+    "מה לכתוב"
+   ],
+   "Language": [
+    "שפה"
+   ],
+   "Instructions": [
+    "הנחיות"
+   ],
+   "Optional": [
+    "לא חובה"
+   ],
+   "e.g. Focus on the eco-friendly materials, in a warm tone.": [
+    "לדוגמה: להדגיש את החומרים הידידותיים לסביבה, בטון חם."
+   ],
+   "Writing…": [
+    "כותבים…"
+   ],
+   "Write": [
+    "לכתוב"
+   ],
+   "For": [
+    "עבור"
+   ],
+   "Choose an item first.": [
+    "קודם בוחרים פריט."
+   ],
+   "Saved": [
+    "נשמר"
+   ],
+   "Save to the item": [
+    "שמירה בפריט"
+   ],
+   "Copied": [
+    "הועתק"
+   ],
+   "Copy": [
+    "העתקה"
+   ],
+   "Write again": [
+    "לכתוב שוב"
+   ],
+   "Genwave on your site": [
+    "Genwave באתר שלך"
+   ],
+   "This plugin connects the site to your Genwave account. The Genwave Agent then runs the site with you, by conversation.": [
+    "התוסף הזה מחבר את האתר לחשבון Genwave שלך. אחר כך Genwave Agent מנהל איתך את האתר בשיחה."
+   ],
+   "Your site is connected": [
+    "האתר שלך מחובר"
+   ],
+   "Ask the Agent for anything on the site: pages, products, SEO, fixes.": [
+    "בקשו מה-Agent כל דבר באתר: עמודים, מוצרים, SEO ותיקונים."
+   ],
+   "One more step: the Agent chat is a separate plugin. Download it from your Genwave account, then upload it in Plugins > Add New > Upload Plugin.": [
+    "עוד צעד אחד: הצ׳אט של ה-Agent הוא תוסף נפרד. מורידים אותו מחשבון Genwave ומעלים בתוספים > הוספת תוסף > העלאת תוסף."
+   ],
+   "One more step: activate Genwave Agent, the Agent chat.": [
+    "עוד צעד אחד: הפעלת Genwave Agent, הצ׳אט של ה-Agent."
+   ],
+   "Connect this site to Genwave": [
+    "חברו את האתר ל-Genwave"
+   ],
+   "Sign in or create a free account, then approve the site. No key to copy.": [
+    "נכנסים או פותחים חשבון חינם ומאשרים את האתר. אין מפתח להעתיק."
+   ],
+   "Connect": [
+    "חיבור"
+   ],
+   "Requests": [
+    "בקשות"
+   ],
+   "Not active": [
+    "לא פעיל"
+   ],
+   "Not installed": [
+    "לא מותקן"
+   ],
+   "Next": [
+    "הלאה"
+   ],
+   "Talk to the Agent": [
+    "לדבר עם ה-Agent"
+   ],
+   "Describe what you need in plain words. You see what will change before it happens.": [
+    "מתארים מה צריך במילים פשוטות, ורואים מה ישתנה לפני שזה קורה."
+   ],
+   "Write with AI": [
+    "כתיבה עם AI"
+   ],
+   "Titles and descriptions for products and posts, one field at a time.": [
+    "כותרות ותיאורים למוצרים ולפוסטים, שדה אחד בכל פעם."
+   ],
+   "The Agent, the Chatbot and Elements, and where each one stands on this site.": [
+    "ה-Agent, הצ׳אטבוט ו-Elements, ומה המצב של כל אחד מהם באתר."
+   ],
+   "Usage and plan": [
+    "שימוש ותוכנית"
+   ],
+   "The list could not be loaded.": [
+    "לא הצלחנו לטעון את הרשימה."
+   ],
+   "These plugins are not on WordPress.org. To add one, download its zip from your Genwave account, then upload it in Plugins > Add New > Upload Plugin and activate it.": [
+    "התוספים האלה לא נמצאים ב-WordPress.org. כדי להוסיף אחד, מורידים את קובץ ה-ZIP שלו מחשבון Genwave, מעלים אותו בתוספים > הוספת תוסף > העלאת תוסף ומפעילים."
+   ],
+   "Plugins": [
+    "תוספים"
+   ],
+   "Refresh": [
+    "רענון"
+   ],
+   "No plugins to show right now.": [
+    "אין כרגע תוספים להציג."
+   ],
+   "Activate": [
+    "הפעלה"
+   ],
+   "Installed": [
+    "מותקן"
+   ],
+   "Get it": [
+    "להורדה"
+   ],
+   "Free": [
+    "חינם"
+   ],
+   "With your Genwave plan": [
+    "כלול בתוכנית Genwave"
+   ],
+   "Update ready": [
+    "יש עדכון"
+   ],
+   "Learn more": [
+    "עוד פרטים"
+   ],
+   "The plugin keeps a few tables of its own. If something looks wrong, check and repair them here.": [
+    "התוסף שומר כמה טבלאות משלו. אם משהו נראה לא תקין, בודקים ומתקנים אותן כאן."
+   ],
+   "Database": [
+    "מסד נתונים"
+   ],
+   "All tables are in order.": [
+    "כל הטבלאות תקינות."
+   ],
+   "Some tables need a repair.": [
+    "חלק מהטבלאות צריכות תיקון."
+   ],
+   "OK": [
+    "תקין"
+   ],
+   "Needs repair": [
+    "צריך תיקון"
+   ],
+   "Missing": [
+    "חסרה"
+   ],
+   "Missing columns": [
+    "עמודות חסרות"
+   ],
+   "Check and repair": [
+    "בדיקה ותיקון"
+   ],
+   "Adds any missing table or column. Nothing is deleted.": [
+    "מוסיף טבלה או עמודה שחסרות. שום דבר לא נמחק."
+   ],
+   "Repair": [
+    "תיקון"
+   ],
+   "Caches": [
+    "מטמון"
+   ],
+   "Clear Genwave's caches": [
+    "ניקוי המטמון של Genwave"
+   ],
+   "Forgets the saved list of Genwave plugins and checks again for plugin updates. The rest of the site is not touched.": [
+    "שוכח את רשימת התוספים של Genwave שנשמרה ובודק שוב אם יש עדכונים לתוספים. שאר האתר לא מושפע."
+   ],
+   "Clear": [
+    "ניקוי"
+   ],
+   "Clear Genwave's caches now?": [
+    "לנקות עכשיו את המטמון של Genwave?"
+   ],
+   "System": [
+    "מערכת"
+   ],
+   "Nothing on the site changes. Genwave reads its plugin list again and WordPress checks for plugin updates.": [
+    "שום דבר באתר לא משתנה. Genwave קורא שוב את רשימת התוספים, ווורדפרס בודק אם יש עדכונים לתוספים."
+   ],
+   "Limited use": [
+    "שימוש מוגבל"
+   ],
+   "Free use almost used up": [
+    "השימוש החינמי כמעט נגמר"
+   ],
+   "Free use used up": [
+    "השימוש החינמי של החודש נוצל"
+   ],
+   "Light mode": [
+    "מצב חסכוני"
+   ],
+   "Normal use fully included": [
+    "שימוש רגיל כלול במלואו"
+   ],
+   "You've used this month's free use": [
+    "השתמשת בכל השימוש החינמי של החודש"
+   ],
+   "Your free use is almost used up": [
+    "השימוש החינמי של החודש כמעט נגמר"
+   ],
+   "Upgrade": [
+    "לשדרוג"
+   ],
+   "Enjoying what we built together? On a paid plan the agent keeps working for you, with the best models and AI images.": [
+    "אהבת את מה שעשינו יחד? בתוכנית בתשלום הסוכן ממשיך לעבוד בשבילך, עם המודלים הטובים ביותר ויצירת תמונות."
+   ],
+   "Cancel": [
+    "ביטול"
+   ]
+  }
+ }
+}

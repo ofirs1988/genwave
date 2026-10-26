@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Glyph from '../Glyph';
-import { data, t, Card, Row, Callout, PageHeader, Pill, Confirm } from '../ui';
+import { data, Card, Row, Callout, PageHeader, Pill, Confirm } from '../ui';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Maintenance: the plugin's own database tables (check and repair), clearing
@@ -39,17 +40,17 @@ export default function Tools() {
     return (
         <div className="gw-col">
             <PageHeader
-                eyebrow={t('Tools', 'כלים')}
-                title={t('Maintenance', 'תחזוקה')}
-                sub={t('The plugin keeps a few tables of its own. If something looks wrong, check and repair them here.', 'התוסף שומר כמה טבלאות משלו. אם משהו נראה לא תקין, בודקים ומתקנים אותן כאן.')}
+                eyebrow={__("Tools", 'gen-wave')}
+                title={__("Maintenance", 'gen-wave')}
+                sub={__("The plugin keeps a few tables of its own. If something looks wrong, check and repair them here.", 'gen-wave')}
             />
 
             {d.flash?.message && <Callout tone={d.flash.type === 'error' ? 'bad' : 'ok'}>{d.flash.message}</Callout>}
 
             <Card
-                title={t('Database', 'מסד נתונים')}
-                hint={db.all_ok ? t('All tables are in order.', 'כל הטבלאות תקינות.') : t('Some tables need a repair.', 'חלק מהטבלאות צריכות תיקון.')}
-                end={db.all_ok ? <Pill tone="ok">{t('OK', 'תקין')}</Pill> : <Pill tone="bad">{t('Needs repair', 'צריך תיקון')}</Pill>}
+                title={__("Database", 'gen-wave')}
+                hint={db.all_ok ? __("All tables are in order.", 'gen-wave') : __("Some tables need a repair.", 'gen-wave')}
+                end={db.all_ok ? <Pill tone="ok">{__("OK", 'gen-wave')}</Pill> : <Pill tone="bad">{__("Needs repair", 'gen-wave')}</Pill>}
             >
                 {tables.map(([name, s]) => (
                     <Row
@@ -58,42 +59,42 @@ export default function Tools() {
                         label={<code dir="ltr">{name}</code>}
                         detail={
                             !s.exists
-                                ? t('Missing', 'חסרה')
+                                ? __("Missing", 'gen-wave')
                                 : s.missing_columns?.length
-                                  ? `${t('Missing columns', 'עמודות חסרות')}: ${s.missing_columns.join(', ')}`
+                                  ? `${__("Missing columns", 'gen-wave')}: ${s.missing_columns.join(', ')}`
                                   : null
                         }
                         end={s.exists && !s.missing_columns?.length ? <Glyph name="check" className="gw-list__done" /> : <Glyph name="warning" />}
                     />
                 ))}
                 <Row
-                    label={t('Check and repair', 'בדיקה ותיקון')}
-                    detail={t('Adds any missing table or column. Nothing is deleted.', 'מוסיף טבלה או עמודה שחסרות. שום דבר לא נמחק.')}
-                    end={post('ai_repair_database', 'ai_nonce', tools.repairNonce, t('Repair', 'תיקון'), 'database', db.all_ok ? 'secondary' : 'primary')}
+                    label={__("Check and repair", 'gen-wave')}
+                    detail={__("Adds any missing table or column. Nothing is deleted.", 'gen-wave')}
+                    end={post('ai_repair_database', 'ai_nonce', tools.repairNonce, __("Repair", 'gen-wave'), 'database', db.all_ok ? 'secondary' : 'primary')}
                 />
             </Card>
 
-            <Card title={t('Caches', 'מטמון')}>
+            <Card title={__("Caches", 'gen-wave')}>
                 <Row
-                    label={t("Clear Genwave's caches", 'ניקוי המטמון של Genwave')}
-                    detail={t('Forgets the saved list of Genwave plugins and checks again for plugin updates. The rest of the site is not touched.', 'שוכח את רשימת התוספים של Genwave שנשמרה ובודק שוב אם יש עדכונים לתוספים. שאר האתר לא מושפע.')}
-                    end={post('ai_clear_cache', 'ai_nonce', tools.cacheNonce, t('Clear', 'ניקוי'), 'broom', 'secondary', t("Clear Genwave's caches now?", 'לנקות עכשיו את המטמון של Genwave?'))}
+                    label={__("Clear Genwave's caches", 'gen-wave')}
+                    detail={__("Forgets the saved list of Genwave plugins and checks again for plugin updates. The rest of the site is not touched.", 'gen-wave')}
+                    end={post('ai_clear_cache', 'ai_nonce', tools.cacheNonce, __("Clear", 'gen-wave'), 'broom', 'secondary', __("Clear Genwave's caches now?", 'gen-wave'))}
                 />
             </Card>
 
-            <Card title={t('System', 'מערכת')}>
+            <Card title={__("System", 'gen-wave')}>
                 <dl>
                     <div className="gw-kv"><dt>Genwave</dt><dd className="gw-num" dir="ltr">{d.version}</dd></div>
                     <div className="gw-kv"><dt>WordPress</dt><dd className="gw-num" dir="ltr">{tools.wp}</dd></div>
                     <div className="gw-kv"><dt>PHP</dt><dd className="gw-num" dir="ltr">{tools.php}</dd></div>
-                    <div className="gw-kv"><dt>WooCommerce</dt><dd>{d.hasWoo ? t('Active', 'פעיל') : t('Not active', 'לא פעיל')}</dd></div>
+                    <div className="gw-kv"><dt>WooCommerce</dt><dd>{d.hasWoo ? __("Active", 'gen-wave') : __("Not active", 'gen-wave')}</dd></div>
                 </dl>
             </Card>
 
             {asking && (
                 <Confirm
                     title={asking.text}
-                    confirmLabel={t('Clear', 'ניקוי')}
+                    confirmLabel={__("Clear", 'gen-wave')}
                     busy={sending}
                     onCancel={() => !sending && setAsking(null)}
                     onConfirm={() => {
@@ -102,7 +103,7 @@ export default function Tools() {
                         asking.form.requestSubmit();
                     }}
                 >
-                    {t('Nothing on the site changes. Genwave reads its plugin list again and WordPress checks for plugin updates.', 'שום דבר באתר לא משתנה. Genwave קורא שוב את רשימת התוספים, ווורדפרס בודק אם יש עדכונים לתוספים.')}
+                    {__("Nothing on the site changes. Genwave reads its plugin list again and WordPress checks for plugin updates.", 'gen-wave')}
                 </Confirm>
             )}
         </div>

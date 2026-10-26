@@ -43,6 +43,7 @@ class AdminApp
     {
         add_action('admin_enqueue_scripts', [self::class, 'enqueue'], 20);
         add_filter('admin_body_class', [self::class, 'bodyClass']);
+        add_filter('load_script_translation_file', [self::class, 'scriptTranslationFile'], 10, 3);
     }
 
     /** The current request is one of the app's pages. */
@@ -91,8 +92,27 @@ class AdminApp
             wp_add_inline_style('gen-wave-app', self::fontFaces());
         }
         if (!empty($js)) {
-            wp_enqueue_script('gen-wave-app', GEN_WAVE_URL . '/dist/' . basename($js[0]), [], GEN_WAVE_VERSION, true);
+            // The screens' words go through WordPress translations (wp.i18n,
+            // text domain gen-wave): language packs from translate.wordpress.org
+            // first, then the plugin's own languages/ folder.
+            wp_enqueue_script('gen-wave-app', GEN_WAVE_URL . '/dist/' . basename($js[0]), ['wp-i18n'], GEN_WAVE_VERSION, true);
+            wp_set_script_translations('gen-wave-app', 'gen-wave', GEN_WAVE_PATH . 'languages');
         }
+    }
+
+    /**
+     * The bundle's file name changes with every build, so a translation file
+     * named for it (gen-wave-<locale>-<md5 of the path>.json) would go stale.
+     * When no such file exists, the plugin's own gen-wave-<locale>-app.json is
+     * used (the Hebrew of the screens ships with the plugin).
+     */
+    public static function scriptTranslationFile($file, $handle, $domain)
+    {
+        if ($handle !== 'gen-wave-app' || $domain !== 'gen-wave' || ($file && is_readable($file))) {
+            return $file;
+        }
+        $own = GEN_WAVE_PATH . 'languages/gen-wave-' . determine_locale() . '-app.json';
+        return is_readable($own) ? $own : $file;
     }
 
     /** The bundled fonts, under names of their own so they never clash with wp-admin's. */

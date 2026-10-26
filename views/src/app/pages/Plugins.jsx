@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Glyph from '../Glyph';
-import { data, t, ajax, Card, Button, Callout, PageHeader, Pill, Spinner } from '../ui';
+import { data, ajax, Card, Button, Callout, PageHeader, Pill, Spinner } from '../ui';
+import { __ } from '@wordpress/i18n';
 
 /**
  * The Genwave plugins and where each stands on this site. This plugin does not
@@ -22,7 +23,7 @@ export default function Plugins() {
             if (r?.success) setPlugins(r.data?.plugins || []);
             else {
                 setPlugins((p) => p || []);
-                setError(r?.data?.message || t('The list could not be loaded.', 'לא הצלחנו לטעון את הרשימה.'));
+                setError(r?.data?.message || __("The list could not be loaded.", 'gen-wave'));
             }
             setRefreshing(false);
         },
@@ -36,25 +37,22 @@ export default function Plugins() {
     return (
         <div className="gw-col">
             <PageHeader
-                eyebrow={t('Tools', 'כלים')}
-                title={t('Genwave plugins', 'התוספים של Genwave')}
-                sub={t(
-                    'These plugins are not on WordPress.org. To add one, download its zip from your Genwave account, then upload it in Plugins > Add New > Upload Plugin and activate it.',
-                    'התוספים האלה לא נמצאים ב-WordPress.org. כדי להוסיף אחד, מורידים את קובץ ה-ZIP שלו מחשבון Genwave, מעלים אותו בתוספים > הוספת תוסף > העלאת תוסף ומפעילים.',
-                )}
+                eyebrow={__("Tools", 'gen-wave')}
+                title={__("Genwave plugins", 'gen-wave')}
+                sub={__("These plugins are not on WordPress.org. To add one, download its zip from your Genwave account, then upload it in Plugins > Add New > Upload Plugin and activate it.", 'gen-wave')}
             />
             {d.agent?.uploadUrl && (
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                    <Button size="sm" variant="secondary" icon="download" href={d.agent.uploadUrl}>{t('Upload Plugin', 'העלאת תוסף')}</Button>
+                    <Button size="sm" variant="secondary" icon="download" href={d.agent.uploadUrl}>{__("Upload Plugin", 'gen-wave')}</Button>
                 </div>
             )}
 
             {error && <Callout tone="bad">{error}</Callout>}
 
             <Card
-                title={t('Plugins', 'תוספים')}
+                title={__("Plugins", 'gen-wave')}
                 end={
-                    <button type="button" className="gw-iconbtn" onClick={() => load(true)} disabled={refreshing || plugins === null} aria-label={t('Refresh', 'רענון')} title={t('Refresh', 'רענון')}>
+                    <button type="button" className="gw-iconbtn" onClick={() => load(true)} disabled={refreshing || plugins === null} aria-label={__("Refresh", 'gen-wave')} title={__("Refresh", 'gen-wave')}>
                         {refreshing ? <Spinner /> : <Glyph name="refresh" />}
                     </button>
                 }
@@ -70,7 +68,7 @@ export default function Plugins() {
                         </div>
                     ))
                 ) : plugins.length === 0 ? (
-                    <div className="gw-empty"><Glyph name="puzzle" size={28} />{t('No plugins to show right now.', 'אין כרגע תוספים להציג.')}</div>
+                    <div className="gw-empty"><Glyph name="puzzle" size={28} />{__("No plugins to show right now.", 'gen-wave')}</div>
                 ) : (
                     plugins.map((p) => <PluginRow key={p.slug} p={p} />)
                 )}
@@ -83,18 +81,18 @@ function PluginRow({ p }) {
     const [iconFailed, setIconFailed] = useState(false);
     let action;
     if (p.active) {
-        action = <Pill tone="ok">{t('Active', 'פעיל')}{p.installed_version ? ` · ${p.installed_version}` : ''}</Pill>;
+        action = <Pill tone="ok">{__("Active", 'gen-wave')}{p.installed_version ? ` · ${p.installed_version}` : ''}</Pill>;
     } else if (p.installed) {
         action = p.activate_url ? (
-            <Button size="sm" variant="primary" icon="bolt" href={p.activate_url}>{t('Activate', 'הפעלה')}</Button>
+            <Button size="sm" variant="primary" icon="bolt" href={p.activate_url}>{__("Activate", 'gen-wave')}</Button>
         ) : (
-            <Pill>{t('Installed', 'מותקן')}</Pill>
+            <Pill>{__("Installed", 'gen-wave')}</Pill>
         );
     } else {
         action = p.get_url ? (
-            <Button size="sm" variant="primary" icon="arrowOut" href={p.get_url} external>{t('Get it', 'להורדה')}</Button>
+            <Button size="sm" variant="primary" icon="arrowOut" href={p.get_url} external>{__("Get it", 'gen-wave')}</Button>
         ) : (
-            <Pill>{t('Not installed', 'לא מותקן')}</Pill>
+            <Pill>{__("Not installed", 'gen-wave')}</Pill>
         );
     }
     return (
@@ -106,9 +104,9 @@ function PluginRow({ p }) {
                 <div className="gw-row__label">{p.name}</div>
                 <p className="gw-plugin__desc">{p.tagline || p.description}</p>
                 <div className="gw-plugin__meta">
-                    {p.is_free ? <span>{t('Free', 'חינם')}</span> : <span>{t('With your Genwave plan', 'כלול בתוכנית Genwave')}</span>}
-                    {p.active && p.update_available && <Pill tone="warn">{t('Update ready', 'יש עדכון')}</Pill>}
-                    {p.homepage && <a href={p.homepage} target="_blank" rel="noopener noreferrer">{t('Learn more', 'עוד פרטים')}</a>}
+                    {p.is_free ? <span>{__("Free", 'gen-wave')}</span> : <span>{__("With your Genwave plan", 'gen-wave')}</span>}
+                    {p.active && p.update_available && <Pill tone="warn">{__("Update ready", 'gen-wave')}</Pill>}
+                    {p.homepage && <a href={p.homepage} target="_blank" rel="noopener noreferrer">{__("Learn more", 'gen-wave')}</a>}
                 </div>
             </div>
             <div className="gw-row__end">{action}</div>

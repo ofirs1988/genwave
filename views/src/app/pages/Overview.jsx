@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Glyph from '../Glyph';
-import { data, t, ajax, Card, ActionRow, Button, Callout, Stats, PageHeader, Spinner, usageWords, UpgradeCallout } from '../ui';
+import { data, ajax, Card, ActionRow, Button, Callout, Stats, PageHeader, Spinner, usageWords, UpgradeCallout } from '../ui';
+import { __ } from '@wordpress/i18n';
 
 /** Where this site stands with Genwave, and the ways in. */
 export default function Overview({ go }) {
@@ -16,31 +17,28 @@ export default function Overview({ go }) {
     }, [d.nonces]);
 
     const agentAction = {
-        active: { label: t('Open the Agent', 'פתיחת ה-Agent'), icon: 'chat' },
-        inactive: { label: t('Activate Genwave Agent', 'הפעלת Genwave Agent'), icon: 'bolt' },
-        missing: { label: t('Get Genwave Agent', 'להורדת Genwave Agent'), icon: 'arrowOut' },
-    }[agent.state] || { label: t('Open the Agent', 'פתיחת ה-Agent'), icon: 'chat' };
+        active: { label: __("Open the Agent", 'gen-wave'), icon: 'chat' },
+        inactive: { label: __("Activate Genwave Agent", 'gen-wave'), icon: 'bolt' },
+        missing: { label: __("Get Genwave Agent", 'gen-wave'), icon: 'arrowOut' },
+    }[agent.state] || { label: __("Open the Agent", 'gen-wave'), icon: 'chat' };
 
     return (
         <div className="gw-col">
             <PageHeader
                 eyebrow={d.site?.name}
-                title={t('Genwave on your site', 'Genwave באתר שלך')}
-                sub={t(
-                    'This plugin connects the site to your Genwave account. The Genwave Agent then runs the site with you, by conversation.',
-                    'התוסף הזה מחבר את האתר לחשבון Genwave שלך. אחר כך Genwave Agent מנהל איתך את האתר בשיחה.',
-                )}
+                title={__("Genwave on your site", 'gen-wave')}
+                sub={__("This plugin connects the site to your Genwave account. The Genwave Agent then runs the site with you, by conversation.", 'gen-wave')}
             />
 
             {a.connected && a.needsReconnect && (
                 <Callout
                     tone="warn"
-                    title={t('Reconnect this site', 'צריך לחבר את האתר מחדש')}
-                    actions={a.connectUrl ? <Button size="sm" variant="primary" href={a.connectUrl} icon="plug">{t('Reconnect', 'להתחבר מחדש')}</Button> : null}
+                    title={__("Reconnect this site", 'gen-wave')}
+                    actions={a.connectUrl ? <Button size="sm" variant="primary" href={a.connectUrl} icon="plug">{__("Reconnect", 'gen-wave')}</Button> : null}
                 >
                     {a.needsReconnect === 'moved'
-                        ? t('The site address changed since it was connected, so your Genwave account still knows it by the old one. Connect again to keep the Genwave plugins working.', 'כתובת האתר השתנתה מאז שחובר, ולכן חשבון Genwave עדיין מכיר אותו בכתובת הישנה. התחברו שוב כדי שהתוספים של Genwave ימשיכו לעבוד.')
-                        : t('Genwave no longer accepts this connection: it was removed from your account or the key was replaced. Connect again to keep the Genwave plugins working.', 'Genwave כבר לא מקבל את החיבור הזה: הוא הוסר מהחשבון או שהמפתח הוחלף. התחברו שוב כדי שהתוספים של Genwave ימשיכו לעבוד.')}
+                        ? __("The site address changed since it was connected, so your Genwave account still knows it by the old one. Connect again to keep the Genwave plugins working.", 'gen-wave')
+                        : __("Genwave no longer accepts this connection: it was removed from your account or the key was replaced. Connect again to keep the Genwave plugins working.", 'gen-wave')}
                 </Callout>
             )}
 
@@ -48,18 +46,18 @@ export default function Overview({ go }) {
                 <div className="gw-hero is-on">
                     <span className="gw-tile gw-tile--on"><Glyph name="check" size={20} /></span>
                     <div className="gw-hero__text">
-                        <p className="gw-hero__title">{t('Your site is connected', 'האתר שלך מחובר')}</p>
+                        <p className="gw-hero__title">{__("Your site is connected", 'gen-wave')}</p>
                         <p className="gw-hero__detail">
                             {agent.state === 'active'
-                                ? t('Ask the Agent for anything on the site: pages, products, SEO, fixes.', 'בקשו מה-Agent כל דבר באתר: עמודים, מוצרים, SEO ותיקונים.')
+                                ? __("Ask the Agent for anything on the site: pages, products, SEO, fixes.", 'gen-wave')
                                 : agent.state === 'missing'
-                                  ? t('One more step: the Agent chat is a separate plugin. Download it from your Genwave account, then upload it in Plugins > Add New > Upload Plugin.', 'עוד צעד אחד: הצ׳אט של ה-Agent הוא תוסף נפרד. מורידים אותו מחשבון Genwave ומעלים בתוספים > הוספת תוסף > העלאת תוסף.')
-                                  : t('One more step: activate Genwave Agent, the Agent chat.', 'עוד צעד אחד: הפעלת Genwave Agent, הצ׳אט של ה-Agent.')}
+                                  ? __("One more step: the Agent chat is a separate plugin. Download it from your Genwave account, then upload it in Plugins > Add New > Upload Plugin.", 'gen-wave')
+                                  : __("One more step: activate Genwave Agent, the Agent chat.", 'gen-wave')}
                         </p>
                         <div className="gw-hero__actions">
                             <Button variant="primary" href={agent.url} external={agent.state === 'missing'} icon={agentAction.icon}>{agentAction.label}</Button>
                             {agent.state === 'missing' && agent.canUpload && (
-                                <Button variant="ghost" href={agent.uploadUrl} icon="download">{t('Upload Plugin', 'העלאת תוסף')}</Button>
+                                <Button variant="ghost" href={agent.uploadUrl} icon="download">{__("Upload Plugin", 'gen-wave')}</Button>
                             )}
                         </div>
                     </div>
@@ -68,12 +66,12 @@ export default function Overview({ go }) {
                 <div className="gw-hero">
                     <span className="gw-tile"><Glyph name="plug" size={20} /></span>
                     <div className="gw-hero__text">
-                        <p className="gw-hero__title">{t('Connect this site to Genwave', 'חברו את האתר ל-Genwave')}</p>
+                        <p className="gw-hero__title">{__("Connect this site to Genwave", 'gen-wave')}</p>
                         <p className="gw-hero__detail">
-                            {t('Sign in or create a free account, then approve the site. No key to copy.', 'נכנסים או פותחים חשבון חינם ומאשרים את האתר. אין מפתח להעתיק.')}
+                            {__("Sign in or create a free account, then approve the site. No key to copy.", 'gen-wave')}
                         </p>
                         <div className="gw-hero__actions">
-                            <Button variant="primary" icon="logout" onClick={() => go('account')}>{t('Connect', 'חיבור')}</Button>
+                            <Button variant="primary" icon="logout" onClick={() => go('account')}>{__("Connect", 'gen-wave')}</Button>
                         </div>
                     </div>
                 </div>
@@ -84,24 +82,24 @@ export default function Overview({ go }) {
             {a.connected && (
                 <Stats
                     items={[
-                        { icon: 'chart', label: t('Usage', 'שימוש'), value: usageWords(a) },
-                        { icon: 'bolt', label: t('Requests', 'בקשות'), value: requests === null ? <Spinner /> : requests },
+                        { icon: 'chart', label: __("Usage", 'gen-wave'), value: usageWords(a) },
+                        { icon: 'bolt', label: __("Requests", 'gen-wave'), value: requests === null ? <Spinner /> : requests },
                         {
                             icon: 'bot',
                             label: 'Genwave Agent',
-                            value: { active: t('Active', 'פעיל'), inactive: t('Not active', 'לא פעיל'), missing: t('Not installed', 'לא מותקן') }[agent.state],
+                            value: { active: __("Active", 'gen-wave'), inactive: __("Not active", 'gen-wave'), missing: __("Not installed", 'gen-wave') }[agent.state],
                         },
                     ]}
                 />
             )}
 
-            <Card title={t('Next', 'הלאה')}>
+            <Card title={__("Next", 'gen-wave')}>
                 {a.connected && agent.state === 'active' && (
-                    <ActionRow icon="chat" label={t('Talk to the Agent', 'לדבר עם ה-Agent')} detail={t('Describe what you need in plain words. You see what will change before it happens.', 'מתארים מה צריך במילים פשוטות, ורואים מה ישתנה לפני שזה קורה.')} href={agent.url} />
+                    <ActionRow icon="chat" label={__("Talk to the Agent", 'gen-wave')} detail={__("Describe what you need in plain words. You see what will change before it happens.", 'gen-wave')} href={agent.url} />
                 )}
-                <ActionRow icon="write" label={t('Write with AI', 'כתיבה עם AI')} detail={t('Titles and descriptions for products and posts, one field at a time.', 'כותרות ותיאורים למוצרים ולפוסטים, שדה אחד בכל פעם.')} onClick={() => go('generate')} />
-                <ActionRow icon="puzzle" label={t('Genwave plugins', 'התוספים של Genwave')} detail={t('The Agent, the Chatbot and Elements, and where each one stands on this site.', 'ה-Agent, הצ׳אטבוט ו-Elements, ומה המצב של כל אחד מהם באתר.')} onClick={() => go('plugins')} />
-                <ActionRow icon="chart" label={t('Usage and plan', 'שימוש ותוכנית')} detail="app.genwave.ai" href={d.links?.usage} external />
+                <ActionRow icon="write" label={__("Write with AI", 'gen-wave')} detail={__("Titles and descriptions for products and posts, one field at a time.", 'gen-wave')} onClick={() => go('generate')} />
+                <ActionRow icon="puzzle" label={__("Genwave plugins", 'gen-wave')} detail={__("The Agent, the Chatbot and Elements, and where each one stands on this site.", 'gen-wave')} onClick={() => go('plugins')} />
+                <ActionRow icon="chart" label={__("Usage and plan", 'gen-wave')} detail="app.genwave.ai" href={d.links?.usage} external />
             </Card>
         </div>
     );

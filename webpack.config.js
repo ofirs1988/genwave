@@ -38,6 +38,10 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.jsx'],
     },
+    // WordPress provides wp.i18n (the script depends on wp-i18n): not bundled.
+    externals: {
+        '@wordpress/i18n': ['wp', 'i18n'],
+    },
     optimization: {
         splitChunks: false,
         runtimeChunk: false,

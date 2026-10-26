@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Glyph from './Glyph';
-import { data, t, Pill } from './ui';
+import { data, Pill } from './ui';
 import Overview from './pages/Overview';
 import Account from './pages/Account';
 import Generate from './pages/Generate';
 import Plugins from './pages/Plugins';
 import Tools from './pages/Tools';
+import { __ } from '@wordpress/i18n';
 
 /**
  * One full-screen app for every Genwave screen of this plugin, in the shell of
@@ -25,18 +26,18 @@ const PAGES = {
 
 const NAV = () => [
     {
-        label: t('Your site', 'האתר שלך'),
+        label: __("Your site", 'gen-wave'),
         items: [
-            { route: 'overview', icon: 'home', label: t('Overview', 'סקירה') },
-            { route: 'account', icon: 'key', label: t('Account', 'חשבון') },
+            { route: 'overview', icon: 'home', label: __("Overview", 'gen-wave') },
+            { route: 'account', icon: 'key', label: __("Account", 'gen-wave') },
         ],
     },
     {
-        label: t('Tools', 'כלים'),
+        label: __("Tools", 'gen-wave'),
         items: [
-            { route: 'generate', icon: 'write', label: t('AI writing', 'כתיבה עם AI') },
-            { route: 'plugins', icon: 'puzzle', label: t('Genwave plugins', 'התוספים של Genwave') },
-            { route: 'tools', icon: 'tool', label: t('Maintenance', 'תחזוקה') },
+            { route: 'generate', icon: 'write', label: __("AI writing", 'gen-wave') },
+            { route: 'plugins', icon: 'puzzle', label: __("Genwave plugins", 'gen-wave') },
+            { route: 'tools', icon: 'tool', label: __("Maintenance", 'gen-wave') },
         ],
     },
 ];
@@ -124,13 +125,13 @@ export default function App({ initialRoute }) {
                     <Glyph name="wave" size={20} />
                     <span className="gw-brand__name">Genwave</span>
                     {connected && d.account?.needsReconnect ? (
-                        <Pill tone="warn">{t('Reconnect', 'להתחבר מחדש')}</Pill>
+                        <Pill tone="warn">{__("Reconnect", 'gen-wave')}</Pill>
                     ) : connected ? (
-                        <Pill tone="ok">{t('Connected', 'מחובר')}</Pill>
+                        <Pill tone="ok">{__("Connected", 'gen-wave')}</Pill>
                     ) : (
-                        <Pill>{t('Not connected', 'לא מחובר')}</Pill>
+                        <Pill>{__("Not connected", 'gen-wave')}</Pill>
                     )}
-                    <a className="gw-iconbtn gw-mobile-back" href={d.adminUrl} aria-label={t('Back to WordPress', 'חזרה לוורדפרס')}>
+                    <a className="gw-iconbtn gw-mobile-back" href={d.adminUrl} aria-label={__("Back to WordPress", 'gen-wave')}>
                         <Glyph name="close" />
                     </a>
                 </div>
@@ -163,8 +164,8 @@ export default function App({ initialRoute }) {
                         type="button"
                         className="gw-iconbtn"
                         onClick={toggleTheme}
-                        aria-label={theme === 'dark' ? t('Light theme', 'ערכת נושא בהירה') : t('Dark theme', 'ערכת נושא כהה')}
-                        title={theme === 'dark' ? t('Light theme', 'ערכת נושא בהירה') : t('Dark theme', 'ערכת נושא כהה')}
+                        aria-label={theme === 'dark' ? __("Light theme", 'gen-wave') : __("Dark theme", 'gen-wave')}
+                        title={theme === 'dark' ? __("Light theme", 'gen-wave') : __("Dark theme", 'gen-wave')}
                     >
                         <Glyph name={theme === 'dark' ? 'sun' : 'moon'} />
                     </button>
@@ -174,7 +175,7 @@ export default function App({ initialRoute }) {
             <div className="gw-main">
                 <div className="gw-topbar">
                     <a className="gw-btn gw-btn--ghost" style={{ height: 36, fontSize: 13 }} href={d.adminUrl}>
-                        {t('Back to WordPress', 'חזרה לוורדפרס')} <kbd className="gw-kbd">Esc</kbd>
+                        {__("Back to WordPress", 'gen-wave')} <kbd className="gw-kbd">Esc</kbd>
                     </a>
                 </div>
                 <main className="gw-content">
