@@ -4,7 +4,7 @@ import { data, t, Card, Row, Callout, PageHeader, Pill, Confirm } from '../ui';
 
 /**
  * Maintenance: the plugin's own database tables (check and repair), clearing
- * its caches, and the versions it runs on. The buttons post to admin-post.php
+ * its own caches (never the site's), and the versions it runs on. The buttons post to admin-post.php
  * (Pages\Tools) and come back here with the outcome.
  */
 export default function Tools() {
@@ -75,9 +75,9 @@ export default function Tools() {
 
             <Card title={t('Caches', 'מטמון')}>
                 <Row
-                    label={t('Clear update checks', 'ניקוי בדיקות העדכונים')}
-                    detail={t('WordPress checks again for new versions of plugins and themes.', 'וורדפרס יבדוק מחדש אם יש גרסאות חדשות לתוספים ולתבניות.')}
-                    end={post('ai_clear_cache', 'ai_nonce', tools.cacheNonce, t('Clear', 'ניקוי'), 'broom', 'secondary', t('Clear the update checks now?', 'לנקות עכשיו את בדיקות העדכונים?'))}
+                    label={t("Clear Genwave's caches", 'ניקוי המטמון של Genwave')}
+                    detail={t('Forgets the saved list of Genwave plugins and checks again for plugin updates. The rest of the site is not touched.', 'שוכח את רשימת התוספים של Genwave שנשמרה ובודק שוב אם יש עדכונים לתוספים. שאר האתר לא מושפע.')}
+                    end={post('ai_clear_cache', 'ai_nonce', tools.cacheNonce, t('Clear', 'ניקוי'), 'broom', 'secondary', t("Clear Genwave's caches now?", 'לנקות עכשיו את המטמון של Genwave?'))}
                 />
             </Card>
 
@@ -102,7 +102,7 @@ export default function Tools() {
                         asking.form.requestSubmit();
                     }}
                 >
-                    {t('Nothing on the site changes. WordPress simply asks for updates again.', 'שום דבר באתר לא משתנה. וורדפרס פשוט בודק שוב אם יש עדכונים.')}
+                    {t('Nothing on the site changes. Genwave reads its plugin list again and WordPress checks for plugin updates.', 'שום דבר באתר לא משתנה. Genwave קורא שוב את רשימת התוספים, ווורדפרס בודק אם יש עדכונים לתוספים.')}
                 </Confirm>
             )}
         </div>

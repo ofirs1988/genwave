@@ -35,7 +35,7 @@ class Tools {
         // The outcome of the last action (handle_* redirect back with it).
         // phpcs:disable WordPress.Security.NonceVerification.Recommended -- Display-only, no state changes
         if (isset($_GET['cache_cleared'])) {
-            \GenWavePlugin\Core\AdminApp::flash('success', __('The update checks were cleared.', 'gen-wave'));
+            \GenWavePlugin\Core\AdminApp::flash('success', __("Genwave's caches were cleared.", 'gen-wave'));
         } elseif (isset($_GET['db_repaired'])) {
             \GenWavePlugin\Core\AdminApp::flash('success', __('Database checked and repaired.', 'gen-wave') . ' ' . sanitize_text_field(wp_unslash($_GET['db_repaired'])));
         } elseif (isset($_GET['error'])) {
@@ -58,18 +58,12 @@ class Tools {
         }
 
         try {
-            // Clear AI plugin cache
-            $cache_key = 'genwave_update_check_' . md5('ai/ai.php');
-            delete_transient($cache_key);
-
-            // Clear WordPress update caches
-            delete_site_transient('update_plugins');
-            delete_site_transient('update_themes');
-            delete_site_transient('update_core');
-
-            // Clear additional caches
-            wp_cache_flush();
-            wp_clean_plugins_cache();
+            // Only what Genwave keeps: the list of Genwave plugins, and the
+            // plugin update check (so a new Genwave version shows at once).
+            // Never the site's whole object cache, themes or core: those
+            // belong to the site, and flushing them slows every page down.
+            delete_transient('genwave_plugin_marketplace_list');
+            wp_clean_plugins_cache(true);
 
             // Redirect with success message
             wp_safe_redirect(add_query_arg('cache_cleared', '1', admin_url('admin.php?page=ai-tools')));
