@@ -139,6 +139,8 @@ class AdminApp
             ],
             'account' => [
                 'connected'     => $connected,
+                // '' | 'rejected' (the agent refused the key) | 'moved' (the site's address changed)
+                'needsReconnect' => AgentAuth::needsReconnect() ?? '',
                 'expired'       => Config::get('license_expired') === '1',
                 'hasLicense'    => strlen($licenseKey) > 10,
                 'licenseMasked' => $licenseKey !== '' ? substr($licenseKey, 0, 8) . '••••' . substr($licenseKey, -4) : '',

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Glyph from '../Glyph';
-import { data, t, ajax, Card, ActionRow, Button, Stats, PageHeader, Spinner, usageWords, UpgradeCallout } from '../ui';
+import { data, t, ajax, Card, ActionRow, Button, Callout, Stats, PageHeader, Spinner, usageWords, UpgradeCallout } from '../ui';
 
 /** Where this site stands with Genwave, and the ways in. */
 export default function Overview({ go }) {
@@ -31,6 +31,18 @@ export default function Overview({ go }) {
                     'התוסף הזה מחבר את האתר לחשבון Genwave שלך. אחר כך Genwave Agent מנהל איתך את האתר בשיחה.',
                 )}
             />
+
+            {a.connected && a.needsReconnect && (
+                <Callout
+                    tone="warn"
+                    title={t('Reconnect this site', 'צריך לחבר את האתר מחדש')}
+                    actions={a.connectUrl ? <Button size="sm" variant="primary" href={a.connectUrl} icon="plug">{t('Reconnect', 'להתחבר מחדש')}</Button> : null}
+                >
+                    {a.needsReconnect === 'moved'
+                        ? t('The site address changed since it was connected, so your Genwave account still knows it by the old one. Connect again to keep the Genwave plugins working.', 'כתובת האתר השתנתה מאז שחובר, ולכן חשבון Genwave עדיין מכיר אותו בכתובת הישנה. התחברו שוב כדי שהתוספים של Genwave ימשיכו לעבוד.')
+                        : t('Genwave no longer accepts this connection: it was removed from your account or the key was replaced. Connect again to keep the Genwave plugins working.', 'Genwave כבר לא מקבל את החיבור הזה: הוא הוסר מהחשבון או שהמפתח הוחלף. התחברו שוב כדי שהתוספים של Genwave ימשיכו לעבוד.')}
+                </Callout>
+            )}
 
             {a.connected ? (
                 <div className="gw-hero is-on">

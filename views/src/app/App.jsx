@@ -123,7 +123,13 @@ export default function App({ initialRoute }) {
                 <div className="gw-brand">
                     <Glyph name="wave" size={20} />
                     <span className="gw-brand__name">Genwave</span>
-                    {connected ? <Pill tone="ok">{t('Connected', 'מחובר')}</Pill> : <Pill>{t('Not connected', 'לא מחובר')}</Pill>}
+                    {connected && d.account?.needsReconnect ? (
+                        <Pill tone="warn">{t('Reconnect', 'להתחבר מחדש')}</Pill>
+                    ) : connected ? (
+                        <Pill tone="ok">{t('Connected', 'מחובר')}</Pill>
+                    ) : (
+                        <Pill>{t('Not connected', 'לא מחובר')}</Pill>
+                    )}
                     <a className="gw-iconbtn gw-mobile-back" href={d.adminUrl} aria-label={t('Back to WordPress', 'חזרה לוורדפרס')}>
                         <Glyph name="close" />
                     </a>

@@ -58,6 +58,18 @@ export default function Account() {
             )}
             {error && <Callout tone="bad">{error}</Callout>}
 
+            {a.connected && a.needsReconnect && (
+                <Callout
+                    tone="warn"
+                    title={t('Reconnect this site', 'צריך לחבר את האתר מחדש')}
+                    actions={a.connectUrl ? <Button size="sm" variant="primary" href={a.connectUrl} icon="plug">{t('Reconnect', 'להתחבר מחדש')}</Button> : null}
+                >
+                    {a.needsReconnect === 'moved'
+                        ? t('The site address changed since it was connected, so your Genwave account still knows it by the old one. Connect again to keep the Genwave plugins working.', 'כתובת האתר השתנתה מאז שחובר, ולכן חשבון Genwave עדיין מכיר אותו בכתובת הישנה. התחברו שוב כדי שהתוספים של Genwave ימשיכו לעבוד.')
+                        : t('Genwave no longer accepts this connection: it was removed from your account or the key was replaced. Connect again to keep the Genwave plugins working.', 'Genwave כבר לא מקבל את החיבור הזה: הוא הוסר מהחשבון או שהמפתח הוחלף. התחברו שוב כדי שהתוספים של Genwave ימשיכו לעבוד.')}
+                </Callout>
+            )}
+
             {a.connected && a.expired && (
                 <Callout tone="warn" title={t('License expired', 'הרישיון פג')} actions={<Button size="sm" variant="primary" href={d.links?.billing} external>{t('Renew', 'חידוש')}</Button>}>
                     {t('Renew to keep using the Genwave Agent.', 'חדשו כדי להמשיך להשתמש ב-Genwave Agent.')}

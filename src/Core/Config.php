@@ -22,6 +22,8 @@ class Config {
         'site_key' => '',
         // '1' after the admin disconnected on purpose: no "reconnect" nagging then.
         'disconnected' => '0',
+        // '1' once the agent refused this site's signature (401): the key was revoked or the site disconnected in the account.
+        'auth_rejected' => '0',
     ];
 
     public static function get($key) {

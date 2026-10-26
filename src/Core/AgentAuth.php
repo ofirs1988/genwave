@@ -96,6 +96,7 @@ class AgentAuth
         Config::set('domain', $data['domain'] ?? get_site_url());
         Config::set('active', '1');
         Config::set('disconnected', '0');
+        Config::set('auth_rejected', '0');
         // A fresh connection: any "don't show again" from an earlier lost connection no longer applies.
         delete_metadata('user', 0, 'genwave_reconnect_dismissed', '', true);
         Config::set('license_expired', !empty($data['expired']) ? '1' : '0');
@@ -150,6 +151,59 @@ class AgentAuth
         add_filter('http_request_args', [self::class, 'signOutbound'], 20, 2);
         add_action('admin_notices', [self::class, 'reconnectNotice']);
         add_action('admin_post_genwave_dismiss_reconnect', [self::class, 'dismissReconnect']);
+        add_filter('http_response', [self::class, 'watchAgentAuth'], 10, 3);
+    }
+
+    /**
+     * Remember whether the agent still accepts this site's signature. A 401 to a
+     * signed request means the key was revoked (or the site was disconnected in
+     * the Genwave account); the next accepted request clears it. Other errors
+     * (402 plan limits, 5xx) say nothing about the connection.
+     */
+    public static function watchAgentAuth($response, $args, $url)
+    {
+        if (is_wp_error($response) || !self::isAgentUrl($url) || empty($args['headers']['X-GW-Signature'])) {
+            return $response;
+        }
+        $code = (int) wp_remote_retrieve_response_code($response);
+        if ($code === 401) {
+            Config::set('auth_rejected', '1');
+        } elseif ($code >= 200 && $code < 300 && Config::get('auth_rejected') === '1') {
+            Config::set('auth_rejected', '0');
+        }
+        return $response;
+    }
+
+    /** "example.com/shop" from "https://www.Example.com/shop/": the same site however it is written. */
+    private static function siteIdentity(string $url): string
+    {
+        $url = strtolower(trim($url));
+        $url = preg_replace('#^[a-z]+://#', '', $url);
+        $url = preg_replace('#^www\.#', '', $url);
+        return rtrim($url, '/');
+    }
+
+    /**
+     * Why a connected site has to connect again, or null when it doesn't:
+     * 'rejected' (the agent refused its signature) or 'moved' (the site's
+     * address is no longer the one it connected with, so the account knows it
+     * under the old address).
+     */
+    public static function needsReconnect(): ?string
+    {
+        if (!self::isConnected()) {
+            return null;
+        }
+        if (Config::get('auth_rejected') === '1') {
+            return 'rejected';
+        }
+        $connectedAs = self::siteIdentity((string) Config::get('domain'));
+        if ($connectedAs !== ''
+            && $connectedAs !== self::siteIdentity(home_url())
+            && $connectedAs !== self::siteIdentity(get_site_url())) {
+            return 'moved';
+        }
+        return null;
     }
 
     private const DISMISSED_META = 'genwave_reconnect_dismissed';
@@ -163,10 +217,15 @@ class AgentAuth
      */
     public static function reconnectNotice(): void
     {
-        if (! current_user_can('manage_options') || self::isConnected() || ! Config::get('license_key')) {
+        if (! current_user_can('manage_options') || AdminApp::isAppPage()) {
             return;
         }
-        if (Config::get('disconnected') === '1' || AdminApp::isAppPage()) {
+        // A connection the agent refused or an address that changed always counts;
+        // otherwise only a site that holds a license, is not connected, and was not
+        // disconnected on purpose.
+        $broken = self::needsReconnect() !== null;
+        $lost = ! self::isConnected() && Config::get('license_key') && Config::get('disconnected') !== '1';
+        if (! $broken && ! $lost) {
             return;
         }
         if (get_user_meta(get_current_user_id(), self::DISMISSED_META, true)) {
