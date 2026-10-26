@@ -69,8 +69,9 @@ class Enqueue {
             return;
         }
 
-        // Enqueue Bootstrap CSS (bundled locally for WordPress.org compliance)
-        wp_enqueue_style('bootstrap-css', GEN_WAVE_ASSETS_URL . '/vendor/bootstrap/bootstrap.min.css', [], '5.3.0');
+        // No Bootstrap or Font Awesome here: the AI box uses WordPress's own
+        // classes and its own genwave-* styles, and a global Bootstrap restyled
+        // the block and classic editors around it.
 
         // Enqueue metabox CSS and JS on post/product edit screens
         if ($is_edit_screen) {
@@ -95,17 +96,11 @@ class Enqueue {
         // Enqueue SweetAlert2 CSS (bundled locally for WordPress.org compliance)
         wp_enqueue_style('sweetalert2-css', GEN_WAVE_ASSETS_URL . '/vendor/sweetalert2/sweetalert2.min.css', [], '11');
 
-        // Enqueue Font Awesome (bundled locally for WordPress.org compliance)
-        wp_enqueue_style('font-awesome', GEN_WAVE_ASSETS_URL . '/vendor/fontawesome/css/all.min.css', [], '6.0.0');
-
         // Enqueue Select2 (bundled locally for WordPress.org compliance)
         wp_enqueue_style('select2', GEN_WAVE_ASSETS_URL . '/vendor/select2/select2.min.css', [], '4.1.0');
 
         // Enqueue admin styles
         wp_enqueue_style('gen-wave-plugin-admin-style', GEN_WAVE_ASSETS_URL . '/css/admin.css', [], GEN_WAVE_VERSION);
-
-        // Enqueue Bootstrap JS (bundled locally for WordPress.org compliance)
-        wp_enqueue_script('bootstrap-js', GEN_WAVE_ASSETS_URL . '/vendor/bootstrap/bootstrap.bundle.min.js', [], '5.3.0', true);
 
         // Enqueue SweetAlert2 JS (bundled locally for WordPress.org compliance)
         wp_enqueue_script('sweetalert2-js', GEN_WAVE_ASSETS_URL . '/vendor/sweetalert2/sweetalert2.all.min.js', [], '11', true);
