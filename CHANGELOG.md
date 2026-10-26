@@ -4,6 +4,49 @@ Developer-facing changelog for the GenWave (free / anchor) plugin. The customer
 changelog for WordPress.org lives in `readme.txt` and is written at release time
 (security items are described there generically, not by vulnerability).
 
+## 1.3.3 - unreleased
+
+### Changed
+
+- **Reconnect notice.** `AgentAuth::reconnectNotice()` no longer shows after
+  the admin disconnected on purpose (new option `genwave_disconnected`, set by
+  `disconnect()`, cleared by `connect()`), never on Genwave's own screens, and
+  has a "Don't show this again" link (`admin_post_genwave_dismiss_reconnect`,
+  user meta `genwave_reconnect_dismissed`, cleared on the next connect). It
+  does show when a connected site needs reconnecting (below).
+- **"Reconnect" instead of "Connected" when the connection is broken.**
+  `AgentAuth::watchAgentAuth()` (an `http_response` filter) records a 401 from
+  the agent to a signed request in `genwave_auth_rejected` and clears it on the
+  next 2xx. `AgentAuth::needsReconnect()` returns `rejected`, or `moved` when
+  the stored `genwave_domain` no longer matches `home_url()`/`site_url()`
+  (scheme and `www.` ignored). The app gets `account.needsReconnect`; the side
+  pill, Account and Overview show it with a Reconnect button.
+- **No Bootstrap or Font Awesome on edit screens.** The AI box uses WordPress
+  classes and its own `genwave-*` styles; the global Bootstrap restyled the
+  block and classic editors. `assets/vendor/bootstrap` and
+  `assets/vendor/fontawesome` are removed, with the unused tooltip code in
+  `admin.js`.
+- **Maintenance > Clear** empties only Genwave's caches (the Genwave plugin
+  list transient and the plugin update check). No more `wp_cache_flush()`, no
+  theme/core update transients, no leftover `ai/ai.php` check.
+- **The screens are translatable.** Every string in `views/src/app` goes
+  through `__()` from `@wordpress/i18n` (external `wp.i18n`, script dependency
+  `wp-i18n`, `wp_set_script_translations`), so it is in `languages/gen-wave.pot`
+  (made-pot from `dist/`, 156 strings) and translate.wordpress.org can
+  translate it. The Hebrew that was inline (`t(en, he)`) ships as
+  `languages/gen-wave-he_IL-app.json`, used through
+  `load_script_translation_file` when no language pack exists for the current
+  bundle. `t()` is gone.
+
+### Added
+
+- **`uninstall.php`.** Deleting the plugin removes its options (the
+  connection: license key, site id, signing key; settings, plan, credits), its
+  transients and its tables (`gen_requests_posts`, `gen_requests`,
+  `gen_settings`, `gen_token_usage`, `gen_status`) on every site of a network.
+  Left on purpose: options the Agent shares (`genwave_agent_plan_state`,
+  `aiaw_credits`) and the generically named `{prefix}jobs` table unless empty.
+
 ## 1.3.2
 
 ### Changed
