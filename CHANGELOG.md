@@ -4,7 +4,7 @@ Developer-facing changelog for the GenWave (free / anchor) plugin. The customer
 changelog for WordPress.org lives in `readme.txt` and is written at release time
 (security items are described there generically, not by vulnerability).
 
-## 1.3.3 - unreleased
+## 1.3.3 - 2026-10-27
 
 ### Changed
 
