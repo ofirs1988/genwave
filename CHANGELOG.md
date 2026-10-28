@@ -1,8 +1,16 @@
 # Changelog
 
-Developer-facing changelog for the GenWave (free / anchor) plugin. The customer
+Developer-facing changelog for the Genwave (free / anchor) plugin. The customer
 changelog for WordPress.org lives in `readme.txt` and is written at release time
 (security items are described there generically, not by vulnerability).
+
+## Unreleased
+
+### Changed
+
+- Brand name check: every string a person reads already says "Genwave". The
+  last "GenWave" left was the intro line of this changelog. Code names
+  (`GenWavePlugin\` namespace, `GENWAVE_*` constants) stay as they are.
 
 ## 1.3.3 - 2026-10-27
 
