@@ -4,7 +4,7 @@ Tags: ai, ai-agent, ai-writing, content-generation, woocommerce
 Requires at least: 5.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -134,6 +134,9 @@ Yes. Each site in the network connects to Genwave on its own.
 5. Genwave Agent, a separate plugin you add from your Genwave account, answering a question about the store
 
 == Changelog ==
+
+= 1.3.4 =
+* New Genwave logo and icon. The launch video on the plugin page. The Genwave wave in the admin menu.
 
 = 1.3.3 =
 * Cleaner editing screens, a proper uninstall, translatable screens, and a clearer connection status.
