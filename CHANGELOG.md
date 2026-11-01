@@ -8,6 +8,9 @@ changelog for WordPress.org lives in `readme.txt` and is written at release time
 
 ### Changed
 
+- New logo on the WordPress.org page: banners, icons and the Agent's header
+  in screenshot 5. The launch video sits in the readme's Description.
+- The wp-admin menu shows the Genwave wave instead of the gear.
 - Brand name check: every string a person reads already says "Genwave". The
   last "GenWave" left was the intro line of this changelog. Code names
   (`GenWavePlugin\` namespace, `GENWAVE_*` constants) stay as they are.

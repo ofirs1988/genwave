@@ -16,6 +16,8 @@ Genwave helps you run the WordPress site you already have by describing what you
 
 This plugin is the starting point. It connects your site to your Genwave account and adds an AI writing screen for posts and products. Genwave Agent, the chat where you ask for changes to your site, is a separate plugin that you add yourself (see below).
 
+https://www.youtube.com/watch?v=eb_tTcoxoKY
+
 [Visit Genwave](https://genwave.ai/) · [Create a free account](https://app.genwave.ai/register)
 
 = What this plugin does =

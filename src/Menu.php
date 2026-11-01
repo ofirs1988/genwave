@@ -16,7 +16,7 @@ class Main {
             'manage_options',
             'gen-wave-plugin-settings',
             [$this, 'renderAdminPage'],
-            'dashicons-admin-generic'
+            'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+PHBhdGggZD0iTS42IDExLjJDMi4yIDYuNiA1IDUgNy40IDUuMWMzIC4xIDQuNCAyLjMgNiAzLjggMS4yIDEgMy0uOSA0LjItMiAuOC0uNyAyLS44IDEuOC4xLS44IDIuNi0yLjggNi42LTUuOCA3LTMgLjQtNC44LTIuMi02LjYtMy42LTIuMi0xLjYtNC44LTEuMi02LjQuOHoiLz48cGF0aCBkPSJNMi42IDE0LjZjMS0zIDIuOC00IDQuNC00IDEuNiAxLjQgMyAzLjYgNS42IDQtMiAuMy0zLjItMS42LTUuOC0xLjctMS42IDAtMyAuNy00LjIgMS43eiIvPjwvc3ZnPg=='
         );
     }
 
