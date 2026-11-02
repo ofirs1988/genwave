@@ -15,6 +15,19 @@ changelog for WordPress.org lives in `readme.txt` and is written at release time
   last "GenWave" left was the intro line of this changelog. Code names
   (`GenWavePlugin\` namespace, `GENWAVE_*` constants) stay as they are.
 
+### Fixed
+
+- **Multisite: the second site got no `gen_requests_posts` table.** The table's
+  foreign key had a fixed name (`fk_gen_request_id`), and MySQL wants a
+  constraint name unique in the whole database, so from the second site of a
+  Multisite (or a second install on the same database) `CREATE TABLE` failed
+  with "Duplicate foreign key constraint name". The install then ran again on
+  every page load, since the tables never all existed. The name now carries
+  the table prefix; a site already hit creates the table on its next load.
+- Six queries read `wp_gen_requests_posts` by its literal name, so any site
+  whose prefix is not `wp_` (every Multisite sub-site) read the wrong table or
+  none. They use `$wpdb->prefix` now.
+
 ## 1.3.3 - 2026-10-27
 
 ### Changed

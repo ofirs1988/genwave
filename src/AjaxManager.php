@@ -333,30 +333,32 @@ class AjaxManager
                 global $product;
 
                 $post_id = $product->get_id();
-                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table query for plugin data
+                // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name is safe (uses $wpdb->prefix)
                 $is_converted = $wpdb->get_var(
                     $wpdb->prepare(
                         "SELECT is_converted
-                     FROM wp_gen_requests_posts
+                     FROM {$wpdb->prefix}gen_requests_posts
                      WHERE post_id = %d",
                         $post_id
                     )
                 );
+                // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
 
                 // Skip products that are already converted
                 if ($is_converted === '1') {
                     continue;
                 }
 
-                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table query for plugin data
+                // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name is safe (uses $wpdb->prefix)
                 $is_generated = $wpdb->get_var(
                     $wpdb->prepare(
                         "SELECT COUNT(*)
-                     FROM wp_gen_requests_posts
+                     FROM {$wpdb->prefix}gen_requests_posts
                      WHERE post_id = %d AND get_response = 1",
                         $post_id
                     )
                 );
+                // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
 
                 $image_id = $product->get_image_id(); // Get image ID
                 $image_url = wp_get_attachment_url($image_id); // Get image URL
@@ -418,30 +420,32 @@ class AjaxManager
                 global $post;
 
                 $post_id = $post->ID;
-                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table query for plugin data
+                // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name is safe (uses $wpdb->prefix)
                 $is_converted = $wpdb->get_var(
                     $wpdb->prepare(
                         "SELECT is_converted
-                     FROM wp_gen_requests_posts
+                     FROM {$wpdb->prefix}gen_requests_posts
                      WHERE post_id = %d",
                         $post_id
                     )
                 );
+                // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
 
                 // Skip posts that are already converted
                 if ($is_converted === '1') {
                     continue;
                 }
 
-                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table query for plugin data
+                // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name is safe (uses $wpdb->prefix)
                 $is_generated = $wpdb->get_var(
                     $wpdb->prepare(
                         "SELECT COUNT(*)
-                     FROM wp_gen_requests_posts
+                     FROM {$wpdb->prefix}gen_requests_posts
                      WHERE post_id = %d AND get_response = 1",
                         $post_id
                     )
                 );
+                // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
 
                 $featured_image_id = get_post_thumbnail_id($post_id);
                 $featured_image_url = wp_get_attachment_url($featured_image_id);

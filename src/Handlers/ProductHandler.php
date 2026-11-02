@@ -80,10 +80,11 @@ class ProductHandler
                     'image' => $image_url,
                     'description' => $description,
                     'categories' => $product_categories,
-                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table query for plugin data
+                    // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name is safe (uses $wpdb->prefix)
                     'generated' => $wpdb->get_var(
-                            $wpdb->prepare("SELECT COUNT(*) FROM wp_gen_requests_posts WHERE post_id = %d AND status = 'completed'", $post_id)
+                            $wpdb->prepare("SELECT COUNT(*) FROM {$wpdb->prefix}gen_requests_posts WHERE post_id = %d AND status = 'completed'", $post_id)
                         ) > 0,
+                    // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
                 ];
             }
             wp_reset_postdata();
@@ -139,30 +140,32 @@ class ProductHandler
                 global $post;
 
                 $post_id = $post->ID;
-                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table query for plugin data
+                // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name is safe (uses $wpdb->prefix)
                 $is_converted = $wpdb->get_var(
                     $wpdb->prepare(
                         "SELECT is_converted
-                     FROM wp_gen_requests_posts
+                     FROM {$wpdb->prefix}gen_requests_posts
                      WHERE post_id = %d",
                         $post_id
                     )
                 );
+                // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
 
                 // Skip posts that are already converted
                 if ($is_converted === '1') {
                     continue;
                 }
 
-                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table query for plugin data
+                // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name is safe (uses $wpdb->prefix)
                 $is_generated = $wpdb->get_var(
                     $wpdb->prepare(
                         "SELECT COUNT(*)
-                     FROM wp_gen_requests_posts
+                     FROM {$wpdb->prefix}gen_requests_posts
                      WHERE post_id = %d AND status = 'completed'",
                         $post_id
                     )
                 );
+                // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
 
                 $featured_image_id = get_post_thumbnail_id($post_id);
                 $featured_image_url = wp_get_attachment_url($featured_image_id);

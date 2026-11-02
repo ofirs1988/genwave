@@ -80,6 +80,10 @@ function genwave_create_tables() {
      * Links between requests and posts with additional metadata
      */
     $table_name_posts = $wpdb->prefix . 'gen_requests_posts';
+    // A constraint name is unique in the whole database, not per table: with
+    // a fixed name the second site of a Multisite (or a second install on the
+    // same database) could not create this table. MySQL allows 64 characters.
+    $fk_name = substr($wpdb->prefix . 'fk_gen_request_id', 0, 64);
     $sql_posts = "CREATE TABLE IF NOT EXISTS {$table_name_posts} (
         id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
         request_id BIGINT(20) UNSIGNED NOT NULL,
@@ -106,7 +110,7 @@ function genwave_create_tables() {
         KEY request_id (request_id),
         KEY post_id (post_id),
         KEY idx_status (status),
-        CONSTRAINT fk_gen_request_id FOREIGN KEY (request_id)
+        CONSTRAINT {$fk_name} FOREIGN KEY (request_id)
             REFERENCES {$table_name_requests} (id)
             ON DELETE CASCADE
     ) {$charset_collate}";
